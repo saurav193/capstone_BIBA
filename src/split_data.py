@@ -25,8 +25,8 @@ def main(input_file, output_dir):
     
     test_split()
     
-    test_data.to_csv(output_dir+"/" + "test_data.csv", index = False)
-    train_data.to_csv(output_dir+"/" + "train_data.csv", index = False)
+    test_data.to_csv(output_dir+"/" + "test_data.csv", index = False, compression='gzip')
+    train_data.to_csv(output_dir+"/" + "train_data.csv", index = False, compression='gzip')
     print('Split successful!')
 
     
