@@ -4,14 +4,17 @@
 '''This script downloads the data from a given url and saves in the data
 folder in the project directory. This script takes a url to the data and a 
 file location as the arguments.
-Usage: src/get_data.py --url=<url> --file_location=<file_location>
- 
+Usage: get_data.py --url=<url> --file_location=<file_location>
+Options:
+--url=<url> URL to access the data
+--file_location=<file_location> Path to the file in which the raw data should be written
 '''
 
 import requests
 from docopt import docopt
 import pandas as pd
 import numpy as np
+
 
 opt = docopt(__doc__)
 
@@ -20,7 +23,7 @@ def main(url, file_location):
     r = requests.get(url)
     with open(file_location, "wb") as f:
         f.write(r.content) 
-    
+
     test_url(url)
     #test(file_location)
 
