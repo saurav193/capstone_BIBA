@@ -17,7 +17,7 @@ python src/get_data.py --url="https://archive.ics.uci.edu/ml/machine-learning-da
 To split the data between train and test set
 
 ```
-python src/split_data.py --input_file=data/raw_data.csv --output_dir=data
+python src/split_data.py --input_file=data/playground_stats.zip --output_dir=data
 ```
 
 
