@@ -2,7 +2,7 @@
 # date: 2020-05-07
 #
 """This script splits the data given as an input into training and test data.
-It saves the two sets in two seperate csv files, in the file that is given as an input.
+It saves the two sets in two separate csv files, in the file that is given as an input.
 This script takes two arguments : a path/filename pointing to the data to be read in
 and a path/filename pointing to where the cleaned data should live. 
 Usage: split_data.py
