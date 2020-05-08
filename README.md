@@ -11,7 +11,7 @@ the 'master' branch for that student.
 To split the data between train and test set
 
 ```
-python src/split_data.py --input_file=data/playground_stats.zip --output_dir=data
+python src/split_data.py
 ```
 
 
