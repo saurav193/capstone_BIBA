@@ -6,3 +6,12 @@ CAPSTONE Machine Learning
 A branch has been created for each student. These branches should be treated as
 the 'master' branch for that student.
 
+# Usage
+
+To split the data between train and test set
+
+```
+python src/split_data.py
+```
+
+
