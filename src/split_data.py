@@ -9,11 +9,7 @@ Usage: split_data.py
 """
 
 #import dependencies
-from docopt import docopt
 import pandas as pd
-
-opt = docopt(__doc__)
-
 
 def main():
     #Read the data and split between train and test set
