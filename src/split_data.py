@@ -24,8 +24,9 @@ def main():
     test_split(data, train_data, test_data)
 
     #Save the files
-    test_data.to_csv("data/test_data.zip", index = False, compression='gzip')
-    train_data.to_csv("data/train_data.zip", index = False, compression='gzip')
+    compression_opts = dict(method='zip',archive_name='out.csv')  
+    test_data.to_csv("data/test_data.zip", index = False, compression=compression_opts)
+    train_data.to_csv("data/train_data.zip", index = False, compression=compression_opts)
     print('Split successful!')
 
     
