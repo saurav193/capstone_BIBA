@@ -5,7 +5,7 @@
 It saves the two sets in two separate csv files, in the file that is given as an input.
 This script takes two arguments : a path/filename pointing to the data to be read in
 and a path/filename pointing to where the cleaned data should live. 
-Usage: split_data.py
+Usage: src/split_data.py
 """
 
 #import dependencies
@@ -16,6 +16,8 @@ def main():
     data = pd.read_csv('data/playground_stats.zip')
     test_data = data[(data['year']==2019) & (data['month'] > 9)]
     train_data = data[~data.index.isin(test_data.index)]
+    #Comment the following line to keep the January 2018 data
+    train_data = train_data.query("month != 1 | year != 2018")
     
     test_split(data, train_data, test_data)
 
@@ -27,7 +29,8 @@ def main():
 
     
 def test_split(data, train_data, test_data):
-    assert train_data.shape[0] + test_data.shape[0] == data.shape[0], "The split is wrong"
+    #Delete the `+ data.query("month == 1 & year == 2018").shape[0]` for the sum if you want to keep the January 2018 data 
+    assert train_data.shape[0] + test_data.shape[0] + data.query("month == 1 & year == 2018").shape[0] == data.shape[0], "The split is wrong"
     
 
 if __name__ == "__main__":
