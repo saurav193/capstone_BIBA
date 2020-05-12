@@ -16,6 +16,7 @@ def main():
     data = pd.read_csv('data/playground_stats.zip')
     test_data = data[(data['year']==2019) & (data['month'] > 9)]
     train_data = data[~data.index.isin(test_data.index)]
+    train_data = train_data.query('')
     
     test_split(data, train_data, test_data)
 
