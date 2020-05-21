@@ -118,8 +118,8 @@ def biba_pp(full_data):
     impute_biba_games_df = biba_games_df.fillna(0)
     
     #removing the previous columns in the input data
-    cols_to_drop = list(full_data.loc[:, 'monthly_number_of_sessions': 'distance_to_nearest_bus_stop'].columns) +\ 
-    list(full_data.loc[:, 'days_since_first_sess' : 'historic_snow'].columns)
+    cols_to_drop = list(full_data.loc[:, 'monthly_number_of_sessions': 'distance_to_nearest_bus_stop'].columns) +\
+                   list(full_data.loc[:, 'days_since_first_sess' : 'historic_snow'].columns)
     
     full_data = full_data.drop(columns = cols_to_drop)
     
