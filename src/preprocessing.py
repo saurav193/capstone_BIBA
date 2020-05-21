@@ -2,23 +2,17 @@
 import re
 from collections import defaultdict
 import pandas as pd
-import altair as alt
 import numpy as np
-import matplotlib.pyplot as plt
-from sklearn.decomposition import PCA
-from sklearn.svm import SVR
-from sklearn.model_selection import RandomizedSearchCV
-from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import OneHotEncoder
 
-# The three main functions are `preprocessing_na()` do impute NaNs 
+# The two main functions are `preprocessing_na()` do impute NaNs 
 # and delete some columns with a very low fill rate, 
 # `clean_categorical()` to use OHE on categorical variables.
 
 
 def dict_to_columns_df(col, key, val):
     """
-    This functions takes a dataframe column which is in the
+    This function takes a dataframe column which is in the
     form of list of dictionaries and creates a dataframe
     from the keys of the in the inner list of dictionaries 
     e.g. "[{'key': A, 'val': 1}, {'key': B, 'val': 2}]"
@@ -87,7 +81,7 @@ def biba_pp(full_data):
     """
     Performs the pre-processing of the columns for the biba data
     
-    Paramters
+    Parameters
     ---------------
     
     full_data : DataFrame, with no operations done on the biba columns
@@ -121,11 +115,11 @@ def biba_pp(full_data):
     
     biba_games_df = biba_games_df.drop(columns = numerical_cols_to_remove)
     
-    impute_biba_games_df =  biba_games_df.fillna(0)
+    impute_biba_games_df = biba_games_df.fillna(0)
     
     #removing the previous columns in the input data
-    cols_to_drop = list(df.loc[:, 'monthly_number_of_sessions': 'distance_to_nearest_bus_stop'].columns) +\
-                    list(df.loc[:, 'days_since_first_sess' : 'historic_snow'].columns)
+    cols_to_drop = list(full_data.loc[:, 'monthly_number_of_sessions': 'distance_to_nearest_bus_stop'].columns) +\ 
+    list(full_data.loc[:, 'days_since_first_sess' : 'historic_snow'].columns)
     
     full_data = full_data.drop(columns = cols_to_drop)
     
@@ -156,7 +150,7 @@ def preprocess_neighbour(input_data):
     num_missing = missing.sum().sort_values(ascending=False)
     
     # Calculate proportion of missing values for each column
-    prop_missing = num_missing / df.shape[0]
+    prop_missing = num_missing / input_data.shape[0]
     
     # Create a list of columns with >30% of values missing
     to_drop = prop_missing[prop_missing > 0.3].index.to_list()
