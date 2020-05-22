@@ -13,7 +13,7 @@ import pandas as pd
 
 def main():
     #Read the data and split between train and test set
-    data = pd.read_csv('data/playground_stats.zip')
+    data = pd.read_csv('data/playground_stats.csv')
     test_data = data[(data['year']==2019) & (data['month'] > 9)]
     train_data = data[~data.index.isin(test_data.index)]
     #Comment the following line to keep the January 2018 data
@@ -25,6 +25,8 @@ def main():
     compression_opts = dict(method='zip',archive_name='out.csv')  
     test_data.to_csv("data/test_data.zip", index = False, compression=compression_opts)
     train_data.to_csv("data/train_data.zip", index = False, compression=compression_opts)
+    data.to_csv("data/playground_stats.zip", index = False, compression=compression_opts)
+
     print('Split successful!')
 
     

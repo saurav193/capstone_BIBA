@@ -177,9 +177,7 @@ def preprocess_weather(input_data):
     """
     Given the original dataframe, preprocess the columns
     related to weather information (`Democrats_08_Votes` to
-    the end + `climate`). Impute NaN of `Number_of_holidays` 
-    by using the values the we have for the same month,
-    impute NaN of `Green_2016` by using values found online, or 0, 
+    the end + `climate`). Impute NaN of `Green_2016` by using values found online, or 0, 
     and replace remaining NaN values with 0.
     
     Parameters
@@ -198,12 +196,7 @@ def preprocess_weather(input_data):
     df_weather['external_id'] = input_data['external_id']
     df_weather['month'] = input_data['month']
     df_weather['year'] = input_data['year']
-    
-    
-    #fill up NaNs for `Number_of_holidays` column
-    #I sorted the values so that the values are ordered by time, and the NaNs are at the end of each time period
-    df_weather = df_weather.sort_values(['month', 'year', 'Number_of_holidays'])
-    df_weather['Number_of_holidays'] = df_weather['Number_of_holidays'].fillna(method='ffill')
+
     
     #fill up NaNs for the `Green_2016` column
     #I only found values for Alaska and North Carolina, so I just put 0 for the other states
@@ -216,9 +209,7 @@ def preprocess_weather(input_data):
              )
          )
     )
-    
-    df_weather['climate'] = df_weather['climate'].fillna(df_weather['climate'].mode()[0])
-    
+        
     #Substitute every remaining NaNs by 0
     df_weather = df_weather.fillna(value=0)
     
@@ -231,19 +222,7 @@ def preprocess_weather(input_data):
     #Check that there are no missing values in the `Number_of_holidays` column
     if not output_data['Number_of_holidays'].isnull().sum() == 0:
         raise Error('There should not be NaNs in the Number_of_holidays column')
-    
-    #Check that every month has only one value for the `Number_of_holiday` column
-    number_of_error = 0
-    for month in range(12):
-        for year in [2018, 2019]:
-            sub_df = output_data[(output_data['month'] == month+1) & (output_data['year'] == year)]
-            if len(sub_df['Number_of_holidays'].unique()) > 1:
-                number_of_error += 1 
-    if not number_of_error == 0:
-        raise Error('Every month should have the same value for Number_of_holidays')
-    
-    
-               
+
     return output_data
     
 def clean_categorical(input_data, to_drop=['income_class', 'density_class', 'climate']):
