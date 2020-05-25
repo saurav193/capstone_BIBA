@@ -11,6 +11,10 @@ altair = "*"
 numpy = "*"
 matplotlib = "*"
 scikit-learn = "*"
+ipykernel = "*"
+
+xgboost = "*"
+shap = "*"
 
 [requires]
 python_version = "3.7"
