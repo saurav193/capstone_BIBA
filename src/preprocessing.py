@@ -111,7 +111,8 @@ def biba_pp(full_data):
     #dropping historic hours with low fill rate
     numerical_cols_to_remove = ['historic_hour_0', 'historic_hour_23', 'historic_hour_22', 'historic_hour_21',
                                 'historic_hour_7','historic_hour_6','historic_hour_5','historic_hour_4', 
-                                'historic_hour_3','historic_hour_2','historic_hour_1', 'MonthYear']
+                                'historic_hour_3','historic_hour_2','historic_hour_1', 'MonthYear',
+                                'monthly_repeated_sessions', 'historic_repeat_sessions']
     
     biba_games_df = biba_games_df.drop(columns = numerical_cols_to_remove)
     
@@ -289,6 +290,7 @@ def preprocessing_na(input_data):
     output_data : pandas.core.frame.DataFrame
     
     """
+
     data_1 = biba_pp(input_data)
     data_2 = preprocess_neighbour(data_1)
     output_data = preprocess_weather(data_2)
