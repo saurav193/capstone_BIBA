@@ -60,8 +60,8 @@ def pca(input_df, var_per_rqd = 0.99, by_groups = False):
     
     Returns
     ---------------
-    DataFrame,
-        with the principal components
+    pd.DataFrame
+        data projected onto orthogonal axes with reduced dimensionality, if attainable
     """
 
     if by_groups:
