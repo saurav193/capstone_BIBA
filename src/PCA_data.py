@@ -50,12 +50,13 @@ def pca(input_df, var_per_rqd = 0.99, by_groups = False):
 
     Parameters
     ---------------
-    input_df : DataFrame, the entire dataframe with all the columns
-    var_per_rqd : int, the sum of explained variance ratio of principal
-        components required
-    by_groups : boolean, wheather to perform pca on whole input data taken together
-        or divide it into pre-defined categories - biba, weather, neighbourhood,
-        politics and census columns and PCA on each separately
+    input_df : pd.DataFrame
+       the entire dataframe with all the columns
+    var_per_rqd : int
+       percentage of variance explained by all the selected components (e.g. 0.95)
+    by_groups : bool
+       if True, divide the input data into pre-defined categories (e.g. Biba, weather, neighbourhood,
+       politics, census) and perform PCA separately. Otherwise, perform PCA on the entire dataset.
     
     Returns
     ---------------
