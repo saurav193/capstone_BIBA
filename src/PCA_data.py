@@ -18,7 +18,7 @@ def get_pca_trans_data(input_df, var_per_rqd):
     Parameters
     --------------
     input_df : pandas.DataFrame
-    var_per_rqd : int
+    var_per_rqd : float
         percentage of variance explained by all the selected components (e.g. 0.95)
 
     Returns
@@ -65,7 +65,7 @@ def pca_fit_transform(input_df, var_per_rqd = 0.99, by_groups = False):
     ---------------
     input_df : pandas.DataFrame
        the entire dataframe with all the columns that has been preprocessed using preprocessing.py
-    var_per_rqd : int
+    var_per_rqd : float
        percentage of variance explained by all the selected components (e.g. 0.95)
     by_groups : bool
        if True, divide the input data into pre-defined categories (e.g. Biba, weather, neighbourhood,
@@ -122,7 +122,7 @@ def pca_transform(input_df, var_per_rqd = 0.99, by_groups = False):
     ---------------
     input_df : pandas.DataFrame
        the dataframe with all the columns that has been preprocessed using preprocessing.py
-    var_per_rqd : int
+    var_per_rqd : float
        percentage of variance explained by all the selected components (e.g. 0.95)
     by_groups : bool
        if True, divide the input data into pre-defined categories (e.g. Biba, weather, neighbourhood,
@@ -150,7 +150,7 @@ def pca_transform(input_df, var_per_rqd = 0.99, by_groups = False):
         
         df_weather = input_df.drop(columns = cols_extracted)
 
-        # transfomring each group of data created above by matrix multiplication with pca components from train data
+        # transforming each group of data created above by matrix multiplication with pca components from train data
         # taking only the number of columns in train data for each group
         biba_trans_data = (df_biba.to_numpy() @ principal_components[0].T)[:, 0:num_components[0]]
         neighbour_trans_data = (df_neighbour.to_numpy() @ principal_components[1].T)[:, 0:num_components[1]]
