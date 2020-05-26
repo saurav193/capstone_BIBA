@@ -51,7 +51,7 @@ def pca(input_df, var_per_rqd = 0.99, by_groups = False):
     Parameters
     ---------------
     input_df : pandas.DataFrame
-       the entire dataframe with all the columns
+       the entire dataframe with all the columns that has been preprocessed using preprocessing.py
     var_per_rqd : int
        percentage of variance explained by all the selected components (e.g. 0.95)
     by_groups : bool
