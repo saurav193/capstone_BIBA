@@ -6,7 +6,7 @@ import numpy as np
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 
-def get_components(input_df, var_per_rqd):
+def get_pca_trans_data(input_df, var_per_rqd):
     """
     This function takes the input raw data and outputs the data
     projected onto a set of orthogonal axes (i.e. principal components)
@@ -14,14 +14,14 @@ def get_components(input_df, var_per_rqd):
 
     Parameters
     --------------
-    input_df : DataFrame,
-    var_per_rqd : int, the sum of explained variance ratio of principal
-        components required
+    input_df : pandas.DataFrame
+    var_per_rqd : int
+        percentage of variance explained by all the selected components (e.g. 0.95)
 
     Returns
     ---------------
-    DataFrame,
-        with the principal components
+    pandas.DataFrame,
+        data projected onto orthogonal axes with reduced dimensionality, if attainable
 
     """
     scaler = StandardScaler()
@@ -38,8 +38,8 @@ def get_components(input_df, var_per_rqd):
             break
         i+=1
     
-    principal_components = pca.transform(scaled_data)[:, 0:i]
-    return pd.DataFrame(principal_components)
+    pca_trans_data = pca.transform(scaled_data)[:, 0:i]
+    return pd.DataFrame(pca_trans_data)
     
 
 def pca(input_df, var_per_rqd = 0.99, by_groups = False):
@@ -50,7 +50,7 @@ def pca(input_df, var_per_rqd = 0.99, by_groups = False):
 
     Parameters
     ---------------
-    input_df : pd.DataFrame
+    input_df : pandas.DataFrame
        the entire dataframe with all the columns
     var_per_rqd : int
        percentage of variance explained by all the selected components (e.g. 0.95)
@@ -60,7 +60,7 @@ def pca(input_df, var_per_rqd = 0.99, by_groups = False):
     
     Returns
     ---------------
-    pd.DataFrame
+    pandas.DataFrame
         data projected onto orthogonal axes with reduced dimensionality, if attainable
     """
 
@@ -82,15 +82,15 @@ def pca(input_df, var_per_rqd = 0.99, by_groups = False):
 
         # running pca on each groups created above
         pcs_df = pd.DataFrame()
-        pcs_df = pd.concat([get_components(df_biba, var_per_rqd), 
-                            get_components(df_neighbour, var_per_rqd), 
-                            get_components(df_census, var_per_rqd), 
-                            get_components(df_politics, var_per_rqd),
-                            get_components(df_weather, var_per_rqd)], axis = 1)
+        pcs_df = pd.concat([get_pca_trans_data(df_biba, var_per_rqd), 
+                            get_pca_trans_data(df_neighbour, var_per_rqd), 
+                            get_pca_trans_data(df_census, var_per_rqd), 
+                            get_pca_trans_data(df_politics, var_per_rqd),
+                            get_pca_trans_data(df_weather, var_per_rqd)], axis = 1)
 
     else:
         pcs_df = pd.DataFrame()
-        pcs_df = get_components(input_df, var_per_rqd)
+        pcs_df = get_pca_trans_data(input_df, var_per_rqd)
 
     
     if input_df.shape[0] == pcs_df.shape[0]:
