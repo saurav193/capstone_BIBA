@@ -45,8 +45,8 @@ def get_components(input_df, var_per_rqd):
 def pca(input_df, var_per_rqd = 0.99, by_groups = False):
 
     """
-    This function takes the entire data and performs PCA either by groups
-    or on the whole dataframe.
+    This function takes the entire data and performs dimensionality reduction 
+    via PCA either in sections or on the entire dataframe.
 
     Parameters
     ---------------
