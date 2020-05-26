@@ -8,8 +8,9 @@ from sklearn.preprocessing import StandardScaler
 
 def get_components(input_df, var_per_rqd):
     """
-    This function takes the input raw data and outputs the principal components
-    for the given explained variance ratio required
+    This function takes the input raw data and outputs the data
+    projected onto a set of orthogonal axes (i.e. principal components)
+    for the provided explained variance ratio.
 
     Parameters
     --------------
@@ -95,4 +96,3 @@ def pca(input_df, var_per_rqd = 0.99, by_groups = False):
         return pcs_df
     else:
         print("The number of records don't match")
-
