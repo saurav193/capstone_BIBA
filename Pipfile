@@ -12,9 +12,8 @@ numpy = "*"
 matplotlib = "*"
 scikit-learn = "*"
 ipykernel = "*"
-
 xgboost = "*"
-shap = "*"
+lightgbm = "*"
 
 [requires]
 python_version = "3.7"
