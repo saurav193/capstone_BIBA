@@ -13,7 +13,6 @@ matplotlib = "*"
 scikit-learn = "*"
 ipykernel = "*"
 xgboost = "*"
-shap = "*"
 lightgbm = "*"
 
 [requires]
