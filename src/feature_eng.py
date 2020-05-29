@@ -40,6 +40,24 @@ def comb_cols(input_df):
         cols_to_drop = cols_to_drop + val # add old columns to a list of columns to drop
         
     
+    # group together 'monthly_hour_*'' between 10 pm and 7 am
+    monthly_hour_night = input_df.loc[:, 'monthly_hour_0':'monthly_hour_6'].columns.to_list() \
+                         + input_df.loc[:, ['monthly_hour_22','monthly_hour_23']].columns.to_list() 
+    
+    output_df['monthly_hour_night'] = np.sum(input_df.loc[:, monthly_hour_night], axis=1)
+    
+    # add old 'monthly_hour_*' columns to list to drop
+    cols_to_drop += monthly_hour_night
+    
+    # group together `historic_hour_*` between 10 pm and 7 am
+    historic_hour_night = input_df.loc[:, 'historic_hour_0':'historic_hour_6'].columns.to_list() \
+                         + input_df.loc[:, ['historic_hour_22','historic_hour_23']].columns.to_list() 
+    
+    output_df['historic_hour_night'] = np.sum(input_df.loc[:, historic_hour_night], axis=1)
+    
+    # add old 'historic_hour_*' columns to list to drop
+    cols_to_drop += historic_hour_night
+    
     # combining wind speed cols
     
     output_df['avg_wind_calm'] = input_df['avg_wind_0_1']
@@ -70,10 +88,9 @@ def comb_cols(input_df):
                                             'historic_ws_6_to_8','historic_ws_8_to_10','historic_ws_10_to_12','historic_ws_12_to_14',
                                             'historic_ws_14_to_16','historic_ws_above_16'])
     
-    # dropping old equipment columns that have been grouped together
+    # dropping other columns that's been grouped together
     
     output_df = output_df.drop(columns = cols_to_drop)                        
     
     
     return output_df
-    
