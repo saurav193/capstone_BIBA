@@ -1,4 +1,3 @@
-
 # importing libraries
 import pandas as pd
 import numpy as np
@@ -22,11 +21,11 @@ def comb_cols(input_df):
     """
     output_df = input_df.copy()
     
-    # combining the count of equipments
+    # creating list of equipments to group together
     
     equipments = ['slide', 'climb', 'tube', 'overhang', 'bridge', 'swing', 'obsta', 'crawls']
     
-    #creating list of columns to combine. 2(monthly and historic) for each type of equipment
+    # creating dictionary of lists of columns to combine. 2 (monthly and historic) lists for each type of equipment
     new_cols_list = {}
     cols_to_drop = []
     
@@ -38,7 +37,7 @@ def comb_cols(input_df):
             
     for key, val in new_cols_list.items():
         output_df[key+"_count_comb"] = np.sum(output_df.loc[:, val], axis = 1)
-        cols_to_drop = cols_to_drop + val # dropping the columns combined together
+        cols_to_drop = cols_to_drop + val # add old columns to a list of columns to drop
         
     
     # combining wind speed cols
@@ -60,11 +59,7 @@ def comb_cols(input_df):
     output_df['historic_ws_gentle_br'] = np.sum(input_df.loc[:, ['historic_ws_8_to_10','historic_ws_10_to_12']], axis = 1)
     output_df['historic_ws_moderate_br'] = np.sum(input_df.loc[:, ['historic_ws_12_to_14','historic_ws_14_to_16','historic_ws_above_16']], axis = 1)
     
-    ##### other columns to be added ####
-    
-
-    
-    # dropping already combined cols
+    # dropping wind speed cols
     
     output_df = output_df.drop(columns = ['avg_wind_0_1','avg_wind_1_2','avg_wind_2_3','avg_wind_3_4','avg_wind_4_5',
                                             'avg_wind_5_6','avg_wind_6_7','avg_wind_7_8','avg_wind_8_9',
@@ -73,8 +68,10 @@ def comb_cols(input_df):
                                             'monthly_ws_8_to_10','monthly_ws_10_to_12','monthly_ws_12_to_14','monthly_ws_14_to_16',
                                             'monthly_ws_above_16','historic_ws_below_2','historic_ws_2_to_4','historic_ws_4_to_6',
                                             'historic_ws_6_to_8','historic_ws_8_to_10','historic_ws_10_to_12','historic_ws_12_to_14',
-                                            'historic_ws_14_to_16','historic_ws_above_16']
-   
+                                            'historic_ws_14_to_16','historic_ws_above_16'])
+    
+    # dropping old equipment columns that have been grouped together
+    
     output_df = output_df.drop(columns = cols_to_drop)                        
     
     
