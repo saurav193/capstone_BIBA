@@ -133,6 +133,8 @@ def pca_transform(input_df, var_per_rqd = 0.99, by_groups = False):
     pandas.DataFrame
         data projected onto orthogonal axes with reduced dimensionality, if attainable
     """
+    global principal_components
+    global num_components
 
     if by_groups:
 
@@ -172,6 +174,8 @@ def pca_transform(input_df, var_per_rqd = 0.99, by_groups = False):
         pcs_df = pd.DataFrame(transformed_data)
 
     if input_df.shape[0] == pcs_df.shape[0]:
+        principal_components = []
+        num_components = []
         return pcs_df
     else:
         print("The number of records don't match")
