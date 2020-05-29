@@ -1,15 +1,25 @@
 # date: 2020-05-29
 #
-"""This script drops blabla
-This script takes two arguments : a path/filename pointing to the data to be read in
-and a path/filename pointing to where the cleaned data should live. 
-Usage: src/drop.py
-"""
+# The function that can be found on this script can be used as part of the data preprocessing process.
+# The function can be used to dop columns that we think are irrelevant for our analysis.
 
 #import dependencies
 import pandas as pd
 
 def drop(data):
+    """
+    Drops some columns that we think are irrelevant from the original dataframe.
+    
+    Parameters
+    ---------------
+    
+    data : pandas.core.frame.DataFrame
+    
+    Returns
+    ---------------
+    pandas.core.frame.DataFrame
+        
+    """
     data = data.drop(columns = ['external_id', 'monthly_count_of_holidays', 'B13016e2', 'B19113e1', 'name', 
                             'MonthYear', 'date', 'streets_per_node_counts_0', 'streets_per_node_counts_0_osid', 
                             'streets_per_node_counts_0_osdw', 'self_loop_proportion', 'self_loop_proportion_osid', 
