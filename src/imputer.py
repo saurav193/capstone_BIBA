@@ -154,16 +154,16 @@ def impute_data(X_train, X_valid):
     imputed_dfs = (imp_X_train, imp_X_valid)
     
     # Check that the number of rows is unchanged in `X_train`
-    assert result[0].shape[0] == X_train.shape[0]
+    assert imputed_dfs[0].shape[0] == X_train.shape[0]
     
     # Check that the first column of `X_train` is `external_id`
-    assert result[0].columns[0] == 'external_id'
+    assert imputed_dfs[0].columns[0] == 'external_id'
     
     # Check that the number of rows is unchanged in `X_valid`
-    assert result[1].shape[0] == X_valid.shape[0]
+    assert imputed_dfs[1].shape[0] == X_valid.shape[0]
     
     # Check that the first column of `X_valid` is `external_id`
-    assert result[1].columns[0] == 'external_id'
+    assert imputed_dfs[1].columns[0] == 'external_id'
     
     return imputed_dfs
     
