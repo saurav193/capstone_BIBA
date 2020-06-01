@@ -21,7 +21,7 @@ def add_lagged_target(df):
 
     Returns
     ----------------
-    DataFrame
+    pd.DataFrame
         With the new lagged session column, and deleted first occource of each playground, sorted by ["external_id","year","month"]
     """
     # subset and sort
