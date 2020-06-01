@@ -14,8 +14,9 @@ def add_lagged_target(df):
 
     Parameters
     ----------------
-    df : A dataframe containing the columns "external_id", "month", "year"
-        and "unacast_seassion_count".
+    df : pd.DataFrame
+       A dataframe containing the columns "external_id", "month", "year"
+       and "unacast_seassion_count"
 
 
     Returns
