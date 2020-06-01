@@ -28,7 +28,7 @@ def add_lagged_target(df):
     lagged = df.loc[:,["external_id","month","year","unacast_session_count"]].sort_values(by=["external_id","year","month"])
 
     # creat new column shifted by one (after sorting)
-    lagged["seassion_lagged_1"] = lagged['unacast_session_count'].shift(1)
+    lagged["session_lagged_1"] = lagged['unacast_session_count'].shift(1)
     
     # join the new column into the general dataframe
     out = pd.merge(df,lagged,how='left', left_on=['external_id','month','year',"unacast_session_count"], right_on =['external_id','month','year',"unacast_session_count"]).sort_values(by=["external_id","year","month"])
