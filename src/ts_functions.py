@@ -8,7 +8,7 @@ def add_lagged_target(df):
     """
     This function takes a dataframe with the columns 
     "external_id", "month", "year" as primary keys.
-    Adds a column of the "unacast_seassion_count" at lag of 1,
+    Adds a column of the "unacast_seassion_count" at lag of 1, as "session_lagged_1",
     and then deletes the first occurrence for each playground.
 
 
