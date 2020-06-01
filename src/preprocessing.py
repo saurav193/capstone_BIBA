@@ -127,6 +127,9 @@ def biba_pp(full_data):
     #adding processed columns
     full_data = pd.concat([full_data, impute_biba_games_df], axis = 1)
     
+    #checking that `historic_hour_*` with low fill rate has been removed
+    assert 'historic_hour_0' not in full_data.columns.to_list()
+    
     return full_data
     
 def preprocess_neighbour(input_data):
@@ -171,6 +174,12 @@ def preprocess_neighbour(input_data):
     to_impute.remove('county')
     output_data[to_impute] = output_data[to_impute].fillna(0)
     output_data['climate'] = input_data['climate']
+    
+    # Check that the number of rows is unchanged
+    assert input_data.shape[0] == output_data.shape[0]
+    
+    # Check that `city` column is not in `output_data`
+    assert 'city' not in output_data.columns.to_list()
 
     return output_data
     
@@ -253,6 +262,12 @@ def clean_categorical(input_data, to_drop=['income_class', 'density_class', 'cli
     #Drop the columns for which we used OHE
     output_data.drop(columns = to_drop, inplace=True)
     
+    #Check that the number of rows is unchanged
+    assert input_data.shape[0] == output_data.shape[0]
+    
+    #Check that `income_class` column is not in `output_data`
+    assert 'income_class' not in output_data.columns.to_list()
+    
     return output_data
 
 def preprocessing_na(input_data):
@@ -273,5 +288,9 @@ def preprocessing_na(input_data):
     data_1 = biba_pp(input_data)
     data_2 = preprocess_neighbour(data_1)
     output_data = preprocess_weather(data_2)
+    
+    #Check that the number of rows is unchanged
+    assert input_data.shape[0] == output_data.shape[0]
+    
     return output_data
 
