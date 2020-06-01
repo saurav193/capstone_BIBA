@@ -9,7 +9,7 @@ def add_lagged_target(df):
     This function takes a dataframe with the columns 
     "external_id", "month", "year" as primary keys.
     Adds a column of the "unacast_seassion_count" at lag of 1,
-    and then deletes the first occource for each playground.
+    and then deletes the first occurrence for each playground.
 
 
     Parameters
@@ -22,7 +22,7 @@ def add_lagged_target(df):
     Returns
     ----------------
     pd.DataFrame
-        With the new lagged session column, and deleted first occource of each playground, sorted by ["external_id","year","month"]
+        With the new lagged session column, and deleted first occurrence of each playground, sorted by ["external_id","year","month"]
     """
     # subset and sort
     lagged = df.loc[:,["external_id","month","year","unacast_session_count"]].sort_values(by=["external_id","year","month"])
