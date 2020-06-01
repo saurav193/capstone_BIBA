@@ -135,9 +135,11 @@ def preprocess_neighbour(input_data):
     related to locale information (`city` to
     `houses_per_sq_km`). Drop columns with >30%
     NaN values and replace remaining NaN values with 0.
+    
     Parameters
     ----------
     input_data : pandas.core.frame.DataFrame
+    
     Returns
     -------
     output_data : pandas.core.frame.DataFrame
