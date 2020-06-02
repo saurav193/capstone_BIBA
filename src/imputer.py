@@ -151,6 +151,12 @@ def impute_data(X_train, X_valid):
     imp_X_train = pd.DataFrame(imp_X_train, columns=cols).reindex(columns=old_cols)
     imp_X_valid = pd.DataFrame(imp_X_valid, columns=cols).reindex(columns=old_cols)
     
+    # Cast each pandas object to its previous dtype
+    types = X_train.dtypes.to_dict()
+    
+    imp_X_train = imp_X_train.astype(types)
+    imp_X_valid = imp_X_valid.astype(types)
+    
     imputed_dfs = (imp_X_train, imp_X_valid)
     
     # Check that the number of rows is unchanged in `X_train`
