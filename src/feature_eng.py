@@ -96,7 +96,7 @@ def comb_cols(input_df):
                                             'monthly_ws_8_to_10','monthly_ws_10_to_12','monthly_ws_12_to_14','monthly_ws_14_to_16',
                                             'monthly_ws_above_16','historic_ws_below_2','historic_ws_2_to_4','historic_ws_4_to_6',
                                             'historic_ws_6_to_8','historic_ws_8_to_10','historic_ws_10_to_12','historic_ws_12_to_14',
-                                            'historic_ws_14_to_16','historic_ws_above_16']
+                                            'historic_ws_14_to_16','historic_ws_above_16'])
                                
     
     # dropping other columns that's been grouped together
