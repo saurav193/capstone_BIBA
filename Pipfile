@@ -14,6 +14,7 @@ scikit-learn = "*"
 ipykernel = "*"
 xgboost = "*"
 lightgbm = "*"
+catboost = "*"
 
 [requires]
 python_version = "3.7"
