@@ -97,6 +97,12 @@ def create_imputer(X_train):
         remainder='passthrough'
     )
     
+    # Check that unspecified columns are passed through
+    assert imputer.remainder == 'passthrough'
+        
+    # Check that the output is comprised of 9 transformers
+    assert len(imputer.transformers) == 9
+    
     return imputer
 
 def impute_data(X_train, X_valid):
@@ -145,7 +151,25 @@ def impute_data(X_train, X_valid):
     imp_X_train = pd.DataFrame(imp_X_train, columns=cols).reindex(columns=old_cols)
     imp_X_valid = pd.DataFrame(imp_X_valid, columns=cols).reindex(columns=old_cols)
     
+    # Cast each pandas object to its previous dtype
+    types = X_train.dtypes.to_dict()
+    
+    imp_X_train = imp_X_train.astype(types)
+    imp_X_valid = imp_X_valid.astype(types)
+    
     imputed_dfs = (imp_X_train, imp_X_valid)
+    
+    # Check that the number of rows is unchanged in `X_train`
+    assert imputed_dfs[0].shape[0] == X_train.shape[0]
+    
+    # Check that the first column of `X_train` is `external_id`
+    assert imputed_dfs[0].columns[0] == 'external_id'
+    
+    # Check that the number of rows is unchanged in `X_valid`
+    assert imputed_dfs[1].shape[0] == X_valid.shape[0]
+    
+    # Check that the first column of `X_valid` is `external_id`
+    assert imputed_dfs[1].columns[0] == 'external_id'
     
     return imputed_dfs
     
