@@ -38,10 +38,11 @@ def comb_cols(input_df):
             
     for key, val in new_cols_list.items():
         output_df[key+"_count_comb"] = np.sum(output_df.loc[:, val], axis = 1)
-        cols_to_drop = cols_to_drop + val # add old columns to a list of columns to drop
+        cols_to_drop += val # add old columns to a list of columns to drop
         cols_added+=1 
-        
     
+    print(len(input_df.columns) + cols_added - len(output_df.columns))
+   
     # group together 'monthly_hour_*'' between 10 pm and 7 am
     monthly_hour_night = input_df.loc[:, 'monthly_hour_0':'monthly_hour_6'].columns.to_list() \
                          + input_df.loc[:, ['monthly_hour_22','monthly_hour_23']].columns.to_list() 
@@ -51,7 +52,7 @@ def comb_cols(input_df):
     
     # add old 'monthly_hour_*' columns to list to drop
     cols_to_drop += monthly_hour_night
-    
+        
     # group together `historic_hour_*` between 10 pm and 7 am
     historic_hour_night = input_df.loc[:, 'historic_hour_0':'historic_hour_6'].columns.to_list() \
                          + input_df.loc[:, ['historic_hour_22','historic_hour_23']].columns.to_list() 
@@ -59,9 +60,11 @@ def comb_cols(input_df):
     output_df['historic_hour_night'] = np.sum(input_df.loc[:, historic_hour_night], axis=1)
     cols_added+=1
     
+    print(len(input_df.columns) + cols_added - len(output_df.columns))
+ 
     # add old 'historic_hour_*' columns to list to drop
     cols_to_drop += historic_hour_night
-    
+       
     # combining wind speed cols
     
     output_df['avg_wind_calm'] = input_df['avg_wind_0_1']
@@ -83,30 +86,37 @@ def comb_cols(input_df):
     output_df['historic_ws_moderate_br'] = np.sum(input_df.loc[:, ['historic_ws_12_to_14','historic_ws_14_to_16','historic_ws_above_16']], axis = 1)
     cols_added+=5
     
-    ##### other columns to be added ####
+    # dropping wind speed cols
+    cols_to_drop = cols_to_drop + ['avg_wind_0_1','avg_wind_1_2','avg_wind_2_3','avg_wind_3_4','avg_wind_4_5',
+                                    'avg_wind_5_6','avg_wind_6_7','avg_wind_7_8','avg_wind_8_9',
+                                    'avg_wind_9_10','avg_wind_10_11','avg_wind_11_12','avg_wind_12_above',
+                                    'monthly_ws_below_2','monthly_ws_2_to_4','monthly_ws_4_to_6','monthly_ws_6_to_8',
+                                    'monthly_ws_8_to_10','monthly_ws_10_to_12','monthly_ws_12_to_14','monthly_ws_14_to_16',
+                                    'monthly_ws_above_16','historic_ws_below_2','historic_ws_2_to_4','historic_ws_4_to_6',
+                                    'historic_ws_6_to_8','historic_ws_8_to_10','historic_ws_10_to_12','historic_ws_12_to_14',
+                                    'historic_ws_14_to_16','historic_ws_above_16']
     
+    print(len(input_df.columns) + cols_added - len(output_df.columns))
+  
     # averaging fertility
     output_df['avg_fertility_rate'] = np.mean(input_df.loc[:, 'fertility_rate_2003':'fertility_rate_2018'], axis=1)
     cols_to_drop += input_df.loc[:, 'fertility_rate_2003':'fertility_rate_2018'].columns.to_list()
     cols_added+=1
     
-    # dropping already combined cols
-
-    # dropping wind speed cols
-    cols_to_drop = cols_to_drop + ['avg_wind_0_1','avg_wind_1_2','avg_wind_2_3','avg_wind_3_4','avg_wind_4_5',
-                                            'avg_wind_5_6','avg_wind_6_7','avg_wind_7_8','avg_wind_8_9',
-                                            'avg_wind_9_10','avg_wind_10_11','avg_wind_11_12','avg_wind_12_above',
-                                            'monthly_ws_below_2','monthly_ws_2_to_4','monthly_ws_4_to_6','monthly_ws_6_to_8',
-                                            'monthly_ws_8_to_10','monthly_ws_10_to_12','monthly_ws_12_to_14','monthly_ws_14_to_16',
-                                            'monthly_ws_above_16','historic_ws_below_2','historic_ws_2_to_4','historic_ws_4_to_6',
-                                            'historic_ws_6_to_8','historic_ws_8_to_10','historic_ws_10_to_12','historic_ws_12_to_14',
-                                            'historic_ws_14_to_16','historic_ws_above_16']
-    
+ 
     # dropping other columns that's been grouped together
     output_df = output_df.drop(columns = cols_to_drop)   
 
+ 
+    print(cols_added)
+    print(len(cols_to_drop))
+    print(len(input_df.columns))
+    print(len(output_df.columns))
+
+    print(len(input_df.columns) + cols_added - len(cols_to_drop) - len(output_df.columns)) # should be 0
+ 
     # cols added and removed should sum up
-    assert len(output_df.columns) + cols_added - len(cols_to_drop) == len(input_df.columns)             
+    assert len(input_df.columns) + cols_added - len(cols_to_drop) == len(output_df.columns)             
     
     # number of rows should be same
     assert input_df.shape[0] == output_df.shape[0]
