@@ -90,3 +90,24 @@ def test_drop(input_data, data):
     assert 'temp_min_35_45' not in list(data.columns)
     assert input_data.shape[1] > data.shape[1]
 
+def drop_missing_unacast(raw_data):
+    """
+    Given the raw input data, return a dataframe where
+    rows missing the target variable have been removed.
+
+    Parameters
+    ----------
+    raw_data: pd.DataFrame
+        Raw input data
+
+    Returns
+    -------
+    pd.DataFrame
+
+    """
+    output_data = raw_data.dropna(axis=0, subset=['unacast_session_count'])
+
+    # check that the number of columns is unchanged
+    assert raw_data.shape[1] == output_data.shape[1]
+
+    return output_data
