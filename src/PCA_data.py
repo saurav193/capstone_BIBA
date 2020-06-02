@@ -29,10 +29,20 @@ def get_pca_trans_data(input_df, var_per_rqd):
     """
     global principal_components
     global num_components
-
-    scaler = StandardScaler()
-    scaled_data = scaler.fit_transform(input_df)
     
+    #get rid of the categorical features    
+    categorical_features = X_train.loc[:, clean_data.dtypes == "object"].columns
+    data = input_df.copy()
+    numerical_data = data.drop(columns=categorical_features)
+    
+    if len(list(data.columns)) != len(list(numerical_data.columns)):
+        print('There are still some categorical features in the dataframe')
+    
+    #Scale the data
+    scaler = StandardScaler()
+    scaled_data = scaler.fit_transform(numerical_data)
+    
+    #Run PCA
     pca = PCA()
     pca.fit(scaled_data)
 
@@ -51,8 +61,13 @@ def get_pca_trans_data(input_df, var_per_rqd):
 
     #storing the # components for given percentage explained variance
     num_components.append(i)
+    test_get_pca_trans_data()
+    
+    pca_df = pd.DataFrame(pca_trans_data)
+    
+    output_data = pd.concat([pca_df, data.loc[:,categorical_features]], axis=1)
 
-    return pd.DataFrame(pca_trans_data)
+    return output_data
     
 
 def pca_fit_transform(input_df, var_per_rqd = 0.99, by_groups = False):
@@ -179,3 +194,9 @@ def pca_transform(input_df, var_per_rqd = 0.99, by_groups = False):
         return pcs_df
     else:
         print("The number of records don't match")
+        
+
+
+
+def test_get_pca_trans_data():
+    print(var_ratio)
