@@ -18,6 +18,10 @@ def main():
     train_data = data[~data.index.isin(test_data.index)]
     #Comment the following line to keep the January 2018 data
     train_data = train_data.query("month != 1 | year != 2018")
+    # Comment the following line if the playground 'CA00070678' has been removed
+    train_data = train_data.query("external_id != 'CA00070678'")
+    test_data = test_data.query("external_id != 'CA00070678'")
+
     
     test_split(data, train_data, test_data)
 
