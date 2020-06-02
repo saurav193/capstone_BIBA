@@ -31,8 +31,10 @@ def comb_cols(input_df):
     cols_added = 0 # counting added cols by combining other cols
     
     for equipment in equipments:
-        new_cols_list["monthly_"+equipment] = [i for i in input_df.columns if re.match('monthly_.*'+equipment+'.*', i)]
-        new_cols_list["historic_"+equipment] = [i for i in input_df.columns if re.match('historic_.*'+equipment+'.*', i)]
+        new_cols_list["monthly_"+equipment] = [i for i in input_df.columns if re.match('monthly_.*'+equipment+'.*', i) and 
+                                                                                not (re.match('monthly_.*'+equipment+'.*tube', i))]
+        new_cols_list["historic_"+equipment] = [i for i in input_df.columns if re.match('historic_.*'+equipment+'.*', i) and 
+                                                                                not (re.match('historic_.*'+equipment+'.*tube', i))]
         if new_cols_list["monthly_"+equipment]==[]:
             new_cols_list.pop("monthly_"+equipment)
             
@@ -40,9 +42,7 @@ def comb_cols(input_df):
         output_df[key+"_count_comb"] = np.sum(output_df.loc[:, val], axis = 1)
         cols_to_drop += val # add old columns to a list of columns to drop
         cols_added+=1 
-    
-    print(len(input_df.columns) + cols_added - len(output_df.columns))
-   
+      
     # group together 'monthly_hour_*'' between 10 pm and 7 am
     monthly_hour_night = input_df.loc[:, 'monthly_hour_0':'monthly_hour_6'].columns.to_list() \
                          + input_df.loc[:, ['monthly_hour_22','monthly_hour_23']].columns.to_list() 
@@ -60,11 +60,9 @@ def comb_cols(input_df):
     output_df['historic_hour_night'] = np.sum(input_df.loc[:, historic_hour_night], axis=1)
     cols_added+=1
     
-    print(len(input_df.columns) + cols_added - len(output_df.columns))
- 
     # add old 'historic_hour_*' columns to list to drop
     cols_to_drop += historic_hour_night
-       
+
     # combining wind speed cols
     
     output_df['avg_wind_calm'] = input_df['avg_wind_0_1']
@@ -96,25 +94,16 @@ def comb_cols(input_df):
                                     'historic_ws_6_to_8','historic_ws_8_to_10','historic_ws_10_to_12','historic_ws_12_to_14',
                                     'historic_ws_14_to_16','historic_ws_above_16']
     
-    print(len(input_df.columns) + cols_added - len(output_df.columns))
-  
+ 
     # averaging fertility
     output_df['avg_fertility_rate'] = np.mean(input_df.loc[:, 'fertility_rate_2003':'fertility_rate_2018'], axis=1)
     cols_to_drop += input_df.loc[:, 'fertility_rate_2003':'fertility_rate_2018'].columns.to_list()
     cols_added+=1
     
- 
+
     # dropping other columns that's been grouped together
     output_df = output_df.drop(columns = cols_to_drop)   
 
- 
-    print(cols_added)
-    print(len(cols_to_drop))
-    print(len(input_df.columns))
-    print(len(output_df.columns))
-
-    print(len(input_df.columns) + cols_added - len(cols_to_drop) - len(output_df.columns)) # should be 0
- 
     # cols added and removed should sum up
     assert len(input_df.columns) + cols_added - len(cols_to_drop) == len(output_df.columns)             
     
