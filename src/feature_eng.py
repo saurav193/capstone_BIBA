@@ -87,7 +87,7 @@ def comb_cols(input_df):
     cols_added+=5
     
     # dropping wind speed cols
-    cols_to_drop = cols_to_drop + ['avg_wind_0_1','avg_wind_1_2','avg_wind_2_3','avg_wind_3_4','avg_wind_4_5',
+    cols_to_drop += ['avg_wind_0_1','avg_wind_1_2','avg_wind_2_3','avg_wind_3_4','avg_wind_4_5',
                                     'avg_wind_5_6','avg_wind_6_7','avg_wind_7_8','avg_wind_8_9',
                                     'avg_wind_9_10','avg_wind_10_11','avg_wind_11_12','avg_wind_12_above',
                                     'monthly_ws_below_2','monthly_ws_2_to_4','monthly_ws_4_to_6','monthly_ws_6_to_8',
