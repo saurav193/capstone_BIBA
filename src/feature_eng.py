@@ -77,7 +77,17 @@ def comb_cols(input_df):
     output_df['historic_ws_gentle_br'] = np.sum(input_df.loc[:, ['historic_ws_8_to_10','historic_ws_10_to_12']], axis = 1)
     output_df['historic_ws_moderate_br'] = np.sum(input_df.loc[:, ['historic_ws_12_to_14','historic_ws_14_to_16','historic_ws_above_16']], axis = 1)
     
+    ##### other columns to be added ####
+    
+    # averaging fertility
+    output_df['avg_fertility_rate'] = np.mean(input_df.loc[:, 'fertility_rate_2003':'fertility_rate_2018'], axis=1)
+    cols_to_drop += input_df.loc[:, 'fertility_rate_2003':'fertility_rate_2018'].columns.to_list()
+
+    
+    # dropping already combined cols
+
     # dropping wind speed cols
+
     
     output_df = output_df.drop(columns = ['avg_wind_0_1','avg_wind_1_2','avg_wind_2_3','avg_wind_3_4','avg_wind_4_5',
                                             'avg_wind_5_6','avg_wind_6_7','avg_wind_7_8','avg_wind_8_9',
@@ -86,10 +96,12 @@ def comb_cols(input_df):
                                             'monthly_ws_8_to_10','monthly_ws_10_to_12','monthly_ws_12_to_14','monthly_ws_14_to_16',
                                             'monthly_ws_above_16','historic_ws_below_2','historic_ws_2_to_4','historic_ws_4_to_6',
                                             'historic_ws_6_to_8','historic_ws_8_to_10','historic_ws_10_to_12','historic_ws_12_to_14',
-                                            'historic_ws_14_to_16','historic_ws_above_16'])
+                                            'historic_ws_14_to_16','historic_ws_above_16']
+                               
     
     # dropping other columns that's been grouped together
     
+
     output_df = output_df.drop(columns = cols_to_drop)                        
     
     
