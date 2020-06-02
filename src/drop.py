@@ -5,21 +5,23 @@
 
 #import dependencies
 import pandas as pd
+import re
 
-def drop(data):
+def drop_columns(input_data):
     """
     Drops some columns that we think are irrelevant from the original dataframe.
     
     Parameters
     ---------------
     
-    data : pandas.core.frame.DataFrame
+    input_data : pandas.core.frame.DataFrame
     
     Returns
     ---------------
     pandas.core.frame.DataFrame
         
     """
+    data = input_data.copy()
     data = data.drop(columns = ['external_id', 'monthly_count_of_holidays', 'B13016e2', 'B19113e1', 'name', 
                             'MonthYear', 'date', 'streets_per_node_counts_0', 'streets_per_node_counts_0_osid', 
                             'streets_per_node_counts_0_osdw', 'self_loop_proportion', 'self_loop_proportion_osid', 
@@ -46,5 +48,28 @@ def drop(data):
                        list(data.loc[:, 'B01001e27': 'B01001e6'].columns)
 
     data = data.drop(columns = cols_to_drop)
+    test_drop(input_data, data)
     return data
+
+def test_drop(input_data, data):
+    """
+    Test for the drop_columns() function 
+    
+    Parameters
+    ---------------
+    
+    input_data : pandas.core.frame.DataFrame
+        The input dataframe of the drop_columns() function
+    data : pandas.core.frame.DataFrame
+        The output dataframe of the drop_columns() function
+    
+    
+    Returns
+    ---------------
+    Error if the drop_columns() function doesn't work the expected way
+        
+    """
+    assert input_data.shape[0] == data.shape[0]
+    assert 'temp_min_35_45' not in list(data.columns)
+    assert input_data.shape[1] > data.shape[1]
 
