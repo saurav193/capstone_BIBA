@@ -43,3 +43,8 @@ def add_lagged_target(df):
 # test for correct number of rows deleted
 # test for only one added column
 # test randomly for correct values?
+test_id =[1,1,1,2,2,2,3,3,4]
+test_year = [2018,2018,2019,2018,2018,2019,2018,2019,2019]
+test_month = [11,12,1,10,12,1,11,1,1]
+test_sess = [20,25,24,60.68,52,77,78,16]
+test_df = pd.DataFrame(data={'external_id':test_id,'year':test_year,'month':test_month,'unacast_session_count':test_sess})
