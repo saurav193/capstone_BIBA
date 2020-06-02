@@ -62,6 +62,8 @@ def comb_cols(input_df):
     
     ##### other columns to be added ####
     
+    # averaging fertility
+    output_df['avg_fertility_rate'] = np.mean(input_df.loc[:, 'fertility_rate_2003':'fertility_rate_2018'], axis=1)
 
     
     # dropping already combined cols
@@ -74,6 +76,10 @@ def comb_cols(input_df):
                                             'monthly_ws_above_16','historic_ws_below_2','historic_ws_2_to_4','historic_ws_4_to_6',
                                             'historic_ws_6_to_8','historic_ws_8_to_10','historic_ws_10_to_12','historic_ws_12_to_14',
                                             'historic_ws_14_to_16','historic_ws_above_16']
+    output_df = output_df.drop(columns = ['fertility_rate_2003','fertility_rate_2004','fertility_rate_2005','fertility_rate_2006',
+                                          'fertility_rate_2007','fertility_rate_2008','fertility_rate_2009','fertility_rate_2010',
+                                          'fertility_rate_2011','fertility_rate_2012','fertility_rate_2013','fertility_rate_2014',
+                                          'fertility_rate_2015','fertility_rate_2016','fertility_rate_2017','fertility_rate_2018',]
    
     output_df = output_df.drop(columns = cols_to_drop)                        
     
