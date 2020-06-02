@@ -39,7 +39,11 @@ def drop_columns(input_data):
                             'streets_per_node_proportion_6_osid', 'streets_per_node_counts_6_osid', 
                             'streets_per_node_proportion_6', 'streets_per_node_counts_6', 'streets_per_node_counts_6_osdw', 
                             'streets_per_node_proportion_6_osdw', 'transit_score', 'closest_place_category', 
-                            'closest_place_distance'])
+                            'closest_place_distance', 'monthly_weekday_counts', 'monthly_survey', 'historic_weekday_0',
+                            'historic_weekday_1', 'historic_weekday_2', 'historic_weekday_3', 'historic_weekday_4', 
+                            'historic_weekday_5', 'historic_weekday_6', 'historic_accessible', 'historic_allages',
+                            'historic_cleanliness', 'historic_condition', 'historic_regular', 'historic_revisit', 
+                            'historic_safety', 'historic_travel', 'historic_variety', 'city', 'state', 'county', 'country'])
     temp_list = [i for i in data.columns if re.match('temp_min_*', i)]
     street_list = [i for i in data.columns if re.match('streets_per_node_proportion_*', i)]
     data = data.drop(columns=temp_list)
