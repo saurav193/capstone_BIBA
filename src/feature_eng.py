@@ -59,7 +59,7 @@ def comb_cols(input_df):
                          + input_df.loc[:, ['historic_hour_22','historic_hour_23']].columns.to_list() 
     
     output_df['historic_hour_night'] = np.sum(input_df.loc[:, historic_hour_night], axis=1)
-    cols_added+=1
+    cols_added += 1
     
     # add old 'historic_hour_*' columns to list to drop
     cols_to_drop += historic_hour_night
