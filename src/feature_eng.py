@@ -71,7 +71,7 @@ def comb_cols(input_df):
     output_df['avg_wind_light_br'] = np.sum(input_df.loc[:, ['avg_wind_4_5','avg_wind_5_6','avg_wind_6_7','avg_wind_7_8']], axis = 1)
     output_df['avg_wind_gentle_br'] = np.sum(input_df.loc[:, ['avg_wind_8_9','avg_wind_9_10','avg_wind_10_11','avg_wind_11_12']], axis = 1)
     output_df['avg_wind_moderate_br'] = input_df['avg_wind_12_above']
-    cols_added+=5
+    cols_added += 5
     output_df['monthly_ws_calm'] = input_df['monthly_ws_below_2']
     output_df['monthly_ws_light_air'] = input_df['monthly_ws_2_to_4']
     output_df['monthly_ws_light_br'] = np.sum(input_df.loc[:, ['monthly_ws_4_to_6','monthly_ws_6_to_8']], axis = 1)
