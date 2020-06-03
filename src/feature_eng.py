@@ -42,7 +42,7 @@ def comb_cols(input_df):
     for key, val in new_cols_list.items():
         output_df[key+"_count_comb"] = np.sum(output_df.loc[:, val], axis = 1)
         cols_to_drop += val # add old columns to a list of columns to drop
-        cols_added+=1 
+        cols_added += 1 
       
     # group together 'monthly_hour_*'' between 10 pm and 7 am
     monthly_hour_night = input_df.loc[:, 'monthly_hour_0':'monthly_hour_6'].columns.to_list() \
