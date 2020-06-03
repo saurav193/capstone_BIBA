@@ -18,6 +18,10 @@ def main():
     train_data = data[~data.index.isin(test_data.index)]
     #Comment the following line to keep the January 2018 data
     train_data = train_data.query("month != 1 | year != 2018")
+    # Comment the following line if the playground 'CA00070678' has been removed
+    train_data = train_data.query("external_id != 'CA00070678'")
+    test_data = test_data.query("external_id != 'CA00070678'")
+
     
     test_split(data, train_data, test_data)
 
@@ -32,7 +36,7 @@ def main():
     
 def test_split(data, train_data, test_data):
     #Delete the `+ data.query("month == 1 & year == 2018").shape[0]` for the sum if you want to keep the January 2018 data 
-    assert train_data.shape[0] + test_data.shape[0] + data.query("month == 1 & year == 2018").shape[0] == data.shape[0], "The split is wrong"
+    assert train_data.shape[0] + test_data.shape[0] + data.query("month == 1 & year == 2018").shape[0] + data.query("external_id == 'CA00070678'").shape[0] - 1 == data.shape[0], "The split is wrong"
     
 
 if __name__ == "__main__":

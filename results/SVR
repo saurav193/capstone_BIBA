@@ -1,0 +1,5 @@
+,model,error_type,score
+0,SVR initial train,RMSE,282.8158458700564
+1,SVR initial train,MAE,101.12818867522044
+2,SVR initial validation,RMSE,249.5760160659859
+3,SVR initial validation,MAE,94.39872033842657
