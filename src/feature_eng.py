@@ -99,7 +99,7 @@ def comb_cols(input_df):
     # averaging fertility
     output_df['avg_fertility_rate'] = np.mean(input_df.loc[:, 'fertility_rate_2003':'fertility_rate_2018'], axis=1)
     cols_to_drop += input_df.loc[:, 'fertility_rate_2003':'fertility_rate_2018'].columns.to_list()
-    cols_added+=1
+    cols_added += 1
     
 
     # dropping other columns that's been grouped together
