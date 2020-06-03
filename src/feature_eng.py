@@ -112,3 +112,39 @@ def comb_cols(input_df):
 
     
     return output_df
+
+    
+def clean_categorical(input_data, to_drop=['income_class', 'density_class', 'climate']):
+    """
+    Given the original dataframe, uses One-Hot-Encoding to encode the categorical variables
+    
+    
+    Parameters
+    ----------
+    input_data : pandas.core.frame.DataFrame
+    to_drop : list
+        The list of the categorical variables on which we want to apply OHE
+    
+    Returns
+    -------
+    output_data : pandas.core.frame.DataFrame
+    
+    """
+    
+    output_data = input_data.copy()
+
+    #Apply One-Hot-Encoding to each one of the categorical variable
+    for col in to_drop:
+        ohe = OneHotEncoder(sparse=False, dtype=int)
+        sub_df = pd.DataFrame(ohe.fit_transform(input_data[[col]]), columns=ohe.categories_[0])
+        output_data = pd.concat((output_data, sub_df), axis=1)
+    #Drop the columns for which we used OHE
+    output_data.drop(columns = to_drop, inplace=True)
+    
+    #Check that the number of rows is unchanged
+    assert input_data.shape[0] == output_data.shape[0]
+    
+    #Check that `income_class` column is not in `output_data`
+    assert 'income_class' not in output_data.columns.to_list()
+    
+    return output_data
