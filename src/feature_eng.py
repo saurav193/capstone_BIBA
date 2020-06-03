@@ -2,6 +2,7 @@
 import pandas as pd
 import numpy as np
 import re
+from sklearn.preprocessing import OneHotEncoder
 
 def comb_cols(input_df):
 
