@@ -115,37 +115,47 @@ def comb_cols(input_df):
     return output_df
 
     
-def clean_categorical(input_data, to_drop=['income_class', 'density_class', 'climate']):
+def clean_categorical(X_train, X_valid, to_encode=['income_class', 'density_class', 'climate']):
     """
-    Given the original dataframe, uses One-Hot-Encoding to encode the categorical variables
-    
+    Fits One-Hot-Encoding to encode the categorical variables using X_train, and transform X_train and X_valid
     
     Parameters
     ----------
-    input_data : pandas.core.frame.DataFrame
-    to_drop : list
-        The list of the categorical variables on which we want to apply OHE
+    X_train : pandas.core.frame.DataFrame
+    X_valid : pandas.core.frame.DataFrame
+    to_encode : list
+        The list of the categorical variables we want to encode
     
     Returns
     -------
-    output_data : pandas.core.frame.DataFrame
+    (X_train_output, X_valid_output) : tuple of pandas.core.frame.DataFrame
     
     """
     
-    output_data = input_data.copy()
+    X_train_output = X_train.copy()
+    X_valid_output = X_valid.copy()
+
 
     #Apply One-Hot-Encoding to each one of the categorical variable
-    for col in to_drop:
+    for col in to_encode:
         ohe = OneHotEncoder(sparse=False, dtype=int)
-        sub_df = pd.DataFrame(ohe.fit_transform(input_data[[col]]), columns=ohe.categories_[0])
-        output_data = pd.concat((output_data, sub_df), axis=1)
+        sub_df_train = pd.DataFrame(ohe.fit_transform(X_train_output[[col]]), columns=ohe.categories_[0])
+        sub_df_valid = pd.DataFrame(ohe.transform(X_valid_output[[col]]), columns=ohe.categories_[0])
+        X_train_output = pd.concat((X_train_output, sub_df_train), axis=1)
+        X_valid_output = pd.concat((X_valid_output, sub_df_valid), axis=1)
+
+        
     #Drop the columns for which we used OHE
-    output_data.drop(columns = to_drop, inplace=True)
-    
+    X_train_output = X_train_output.drop(columns = to_encode)
+    X_valid_output = X_valid_output.drop(columns = to_encode)
+
     #Check that the number of rows is unchanged
-    assert input_data.shape[0] == output_data.shape[0]
-    
+
+    assert X_train.shape[0] == X_train_output.shape[0]
+    assert X_valid.shape[0] == X_valid_output.shape[0]
+
     #Check that `income_class` column is not in `output_data`
-    assert 'income_class' not in output_data.columns.to_list()
-    
-    return output_data
+    assert 'income_class' not in X_train_output.columns.to_list()
+    assert 'income_class' not in X_valid_output.columns.to_list()
+
+    return (X_train_output, X_valid_output)
