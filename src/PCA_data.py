@@ -1,4 +1,3 @@
-
 #importing libraries
 
 import pandas as pd
@@ -11,7 +10,7 @@ num_components = []
 
 def get_pca_trans_data(input_df, var_per_rqd):
     """
-    This function takes the input raw data and outputs the data
+    This function takes the input data with no NaNs and outputs the data
     projected onto a set of orthogonal axes (i.e. principal components)
     for the provided explained variance ratio.
 
@@ -29,10 +28,20 @@ def get_pca_trans_data(input_df, var_per_rqd):
     """
     global principal_components
     global num_components
-
-    scaler = StandardScaler()
-    scaled_data = scaler.fit_transform(input_df)
     
+    #get rid of the categorical features    
+    categorical_features = list(input_df.loc[:, input_df.dtypes == "object"].columns)
+    data = input_df.copy()
+    numerical_data = data.drop(columns=categorical_features)
+    
+    if len(list(data.columns)) != len(list(numerical_data.columns)):
+        print('There are still some categorical features in the dataframe')
+    
+    #Scale the data
+    scaler = StandardScaler()
+    scaled_data = scaler.fit_transform(numerical_data)
+    
+    #Run PCA
     pca = PCA()
     pca.fit(scaled_data)
 
@@ -51,8 +60,14 @@ def get_pca_trans_data(input_df, var_per_rqd):
 
     #storing the # components for given percentage explained variance
     num_components.append(i)
+    
+    pca_df = pd.DataFrame(pca_trans_data)
+    
+    output_data = pd.concat([pca_df, data.loc[:,categorical_features]], axis=1)
 
-    return pd.DataFrame(pca_trans_data)
+    test_get_pca_trans_data(var_ratio, var_per_rqd, output_data, input_df)
+
+    return output_data
     
 
 def pca_fit_transform(input_df, var_per_rqd = 0.99, by_groups = False):
@@ -76,6 +91,9 @@ def pca_fit_transform(input_df, var_per_rqd = 0.99, by_groups = False):
     pandas.DataFrame
         data projected onto orthogonal axes with reduced dimensionality, if attainable
     """
+    input_data = input_df.copy()
+    categorical_features = list(input_df.loc[:, input_df.dtypes == "object"].columns)
+    input_df = input_df.drop(columns=categorical_features)
 
     if by_groups:
 
@@ -105,9 +123,11 @@ def pca_fit_transform(input_df, var_per_rqd = 0.99, by_groups = False):
         pcs_df = pd.DataFrame()
         pcs_df = get_pca_trans_data(input_df, var_per_rqd)
 
+    test_pca_fit_transform(pcs_df, input_data)
     
     if input_df.shape[0] == pcs_df.shape[0]:
-        return pcs_df
+        output_data = pd.concat([pcs_df, input_data.loc[:,categorical_features]], axis=1)
+        return output_data
     else:
         print("The number of records don't match")
 
@@ -135,7 +155,12 @@ def pca_transform(input_df, var_per_rqd = 0.99, by_groups = False):
     """
     global principal_components
     global num_components
-
+    
+    input_data = input_df.copy()
+    categorical_features = list(input_df.loc[:, input_df.dtypes == "object"].columns)
+    input_df = input_df.drop(columns=categorical_features)
+    
+    
     if by_groups:
 
         # creating categories from entire data
@@ -170,12 +195,67 @@ def pca_transform(input_df, var_per_rqd = 0.99, by_groups = False):
     else:
         # transfomring the entire data by matrix multiplication with pca components from train data
         # taking only the number of columns in train data for each group
+        print(input_df.to_numpy().shape)
+        print(principal_components[0].shape)
         transformed_data = (input_df.to_numpy() @ principal_components[0].T)[:, 0:num_components[0]]
         pcs_df = pd.DataFrame(transformed_data)
+        
+    test_pca_transform(pcs_df, input_data)
 
     if input_df.shape[0] == pcs_df.shape[0]:
         principal_components = []
         num_components = []
-        return pcs_df
+        output_data = pd.concat([pcs_df, input_data.loc[:,categorical_features]], axis=1)
+        return output_data
     else:
         print("The number of records don't match")
+        
+
+
+
+def test_get_pca_trans_data(var_ratio, var_per_rqd, output_data, input_df):
+    """
+    Tests for the `get_pca_trans_data` function
+
+    Parameters
+    ---------------
+    var_ratio : list
+        the list containing the proportion of variance explained by each feature and sorted
+    var_per_rqd : float
+       percentage of variance explained by all the selected components used as an input in the `get_pca_trans_data` function
+    output_data : pandas.DataFrame
+       the ouptput of the `get_pca_trans_data` function
+    input_df : pandas.DataFrame
+       the dataframe used as an input in the `get_pca_trans_data` function
+    """
+    assert sum(var_ratio) > var_per_rqd
+    assert output_data.shape[0] == input_df.shape[0]
+    assert output_data.shape[1] < input_df.shape[1]
+    
+def test_pca_fit_transform(output_data, input_df):
+    """
+    Tests for the `pca_fit_transform` function
+
+    Parameters
+    ---------------
+    output_data : pandas.DataFrame
+       the ouptput of the `pca_fit_transform` function
+    input_df : pandas.DataFrame
+       the dataframe used as an input in the `pca_fit_transform` function
+    """
+    assert output_data.shape[0] == input_df.shape[0]
+    assert output_data.shape[1] < input_df.shape[1]
+    
+def test_pca_transform(output_data, input_df):
+    """
+    Tests for the `pca_transform` function
+
+    Parameters
+    ---------------
+    output_data : pandas.DataFrame
+       the ouptput of the `pca_transform` function
+    input_df : pandas.DataFrame
+       the dataframe used as an input in the `pca_transform` function
+    """
+    assert output_data.shape[0] == input_df.shape[0]
+    assert output_data.shape[1] < input_df.shape[1]
