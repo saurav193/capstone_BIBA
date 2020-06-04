@@ -265,13 +265,13 @@ def clean_categorical(X_train, X_valid, to_encode=['income_class', 'density_clas
         X_train_output = pd.concat((X_train_output, sub_df_train), axis=1)
         X_valid_output = pd.concat((X_valid_output, sub_df_valid), axis=1)
 
+
         
     #Drop the columns for which we used OHE
     X_train_output = X_train_output.drop(columns = to_encode)
     X_valid_output = X_valid_output.drop(columns = to_encode)
 
     #Check that the number of rows is unchanged
-
     assert X_train.shape[0] == X_train_output.shape[0]
     assert X_valid.shape[0] == X_valid_output.shape[0]
 

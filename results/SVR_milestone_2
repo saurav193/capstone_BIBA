@@ -1,0 +1,13 @@
+,Unnamed: 0,model,error_type,score
+0,0.0,SVR preprocessed train,RMSE,278.6726219728049
+1,1.0,SVR preprocessed train,MAE,100.6107346214153
+2,2.0,SVR preprocessed validation,RMSE,274.4847653875946
+3,3.0,SVR preprocessed validation,MAE,99.31935905709184
+4,,catboost preprocessed train,RMSE,37.583964092111806
+5,,catboost preprocessed train,MAE,28.965350625464993
+6,,catboost preprocessed validation,RMSE,105.14414932123618
+7,,catboost preprocessed validation,RMSE,105.14414932123618
+8,,catboost preprocessed tuned train,RMSE,39.16138879609356
+9,,catboost preprocessed tuned train,MAE,30.60980854921523
+10,,catboost preprocessed tuned validation,RMSE,101.22886847723292
+11,,catboost preprocessed tuned validation,MAE,45.33389033213189
