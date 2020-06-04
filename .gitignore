@@ -1,2 +1,4 @@
 .ipynb_checkpoints
 *.csv
+src/catboost_info
+src/__pycache__
