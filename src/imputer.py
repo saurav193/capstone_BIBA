@@ -18,12 +18,8 @@ def create_imputer(X_train):
     sklearn.compose._column_transformer.ColumnTransformer
     
     """
-    
-    #======================================
-    # IMPORT DATA FRAME
-    #======================================
 
-    df = pd.read_csv('../data/train_data.zip')
+    df = X_train
 
     #======================================
     # IDENTIFY COLUMNS TO IMPUTE
