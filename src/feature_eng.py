@@ -117,7 +117,8 @@ def comb_cols(input_df):
     
 def clean_categorical(X_train, X_valid, to_encode=['income_class', 'density_class', 'climate']):
     """
-    Fits One-Hot-Encoding to encode the categorical variables using X_train, and transform X_train and X_valid
+    Fits one-hot encoder on categorical variables using X_train, 
+    and transform X_train and X_valid
     
     Parameters
     ----------
@@ -131,23 +132,30 @@ def clean_categorical(X_train, X_valid, to_encode=['income_class', 'density_clas
     (X_train_output, X_valid_output) : tuple of pandas.core.frame.DataFrame
     
     """
-    
     X_train_output = X_train.copy()
     X_valid_output = X_valid.copy()
 
+    # apply One-Hot-Encoding to each one of the categorical variable
+    
+    ohe = OneHotEncoder(sparse=False, dtype=int)
+    
+    sub_X_train = ohe.fit_transform(X_train_output.loc[:, to_encode])
+    sub_X_valid = ohe.transform(X_valid_output.loc[:, to_encode])
+    
+    # get names of encoded columns
+    ohe_cols = np.concatenate(ohe.categories_).ravel()
+    
+    # create data frames containing encoded columns (preserve old row indices)
+    sub_df_train = pd.DataFrame(sub_X_train, index=X_train.index, columns=ohe_cols)
+    sub_df_valid = pd.DataFrame(sub_X_valid, index=X_valid.index, columns=ohe_cols)
+    
+    # concatenate with existing data frame
+    X_train_output = pd.concat((X_train_output, sub_df_train), axis=1)
+    X_valid_output = pd.concat((X_valid_output, sub_df_valid), axis=1)
 
-    #Apply One-Hot-Encoding to each one of the categorical variable
-    for col in to_encode:
-        ohe = OneHotEncoder(sparse=False, dtype=int)
-        sub_df_train = pd.DataFrame(ohe.fit_transform(X_train_output[[col]]), columns=ohe.categories_[0])
-        sub_df_valid = pd.DataFrame(ohe.transform(X_valid_output[[col]]), columns=ohe.categories_[0])
-        X_train_output = pd.concat((X_train_output, sub_df_train), axis=1)
-        X_valid_output = pd.concat((X_valid_output, sub_df_valid), axis=1)
-
-        
-    #Drop the columns for which we used OHE
-    X_train_output = X_train_output.drop(columns = to_encode)
-    X_valid_output = X_valid_output.drop(columns = to_encode)
+    # drop the columns for which we used OHE
+    X_train_output = X_train_output.drop(columns=to_encode)
+    X_valid_output = X_valid_output.drop(columns=to_encode)
 
     #Check that the number of rows is unchanged
 
