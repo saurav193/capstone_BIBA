@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
+from sklearn.preprocessing import OneHotEncoder
 
 def create_imputer(X_train):
 
@@ -18,12 +19,8 @@ def create_imputer(X_train):
     sklearn.compose._column_transformer.ColumnTransformer
     
     """
-    
-    #======================================
-    # IMPORT DATA FRAME
-    #======================================
 
-    df = pd.read_csv('../data/train_data.zip')
+    df = X_train
 
     #======================================
     # IDENTIFY COLUMNS TO IMPUTE
@@ -46,6 +43,7 @@ def create_imputer(X_train):
     mean_misc = ['walk_score', 'bike_score', 'Poor_physical_health_days', 'Poor_mental_health_days', 'Adult_smoking']
 
     mean_imp_features = weather + mean_misc
+    
 
     #======================================
     # CREATE TRANSFORMERS
@@ -77,7 +75,7 @@ def create_imputer(X_train):
 
     # Create transformer for `Libertarians_2016`
     lib_2016_transformer = SimpleImputer(strategy='constant', fill_value=18725)
-
+    
     #======================================
     # PUTTING IT ALL TOGETHER
     #======================================
@@ -148,8 +146,8 @@ def impute_data(X_train, X_valid):
     
     # Create new dataframes
     # Reshuffle column order of new dataframes to match old one
-    imp_X_train = pd.DataFrame(imp_X_train, columns=cols).reindex(columns=old_cols)
-    imp_X_valid = pd.DataFrame(imp_X_valid, columns=cols).reindex(columns=old_cols)
+    imp_X_train = pd.DataFrame(imp_X_train, index=X_train.index, columns=cols).reindex(columns=old_cols)
+    imp_X_valid = pd.DataFrame(imp_X_valid, index=X_valid.index, columns=cols).reindex(columns=old_cols)
     
     # Cast each pandas object to its previous dtype
     types = X_train.dtypes.to_dict()
