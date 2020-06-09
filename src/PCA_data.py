@@ -98,9 +98,9 @@ def pca_fit_transform(input_df, var_per_rqd = 0.99, by_groups = False):
     if by_groups:
 
         # creating categories from entire data
-        df_biba = input_df.loc[:, 'monthly_number_of_sessions':'monthly_Sunday']
+        df_biba = input_df.loc[:, 'monthly_number_of_sessions':'monthly_hour_23']
         
-        df_neighbour = input_df.loc[:, 'longitude':'streets_per_node_proportion_4_osid']
+        df_neighbour = input_df.loc[:, 'longitude':'streets_per_node_counts_5_osid']
 
         df_census = input_df.loc[:, 'B20004e10':'fertility_rate_2018']
 
@@ -164,9 +164,9 @@ def pca_transform(input_df, var_per_rqd = 0.99, by_groups = False):
     if by_groups:
 
         # creating categories from entire data
-        df_biba = input_df.loc[:, 'monthly_number_of_sessions':'monthly_Sunday']
+        df_biba = input_df.loc[:, 'monthly_number_of_sessions':'monthly_hour_23']
         
-        df_neighbour = input_df.loc[:, 'longitude':'streets_per_node_proportion_4_osid']
+        df_neighbour = input_df.loc[:, 'longitude':'streets_per_node_counts_5_osid']
 
         df_census = input_df.loc[:, 'B20004e10':'fertility_rate_2018']
 
