@@ -1,5 +1,13 @@
-,model,error_type,score
-0,SVR initial train,RMSE,282.8158458700564
-1,SVR initial train,MAE,101.12818867522044
-2,SVR initial validation,RMSE,249.5760160659859
-3,SVR initial validation,MAE,94.39872033842657
+,Unnamed: 0,Unnamed: 0.1,Unnamed: 0.1.1,model,error_type,score
+0,0.0,0.0,0.0,SVR initial train,RMSE,282.81584587005636
+1,1.0,1.0,1.0,SVR initial train,MAE,101.12818867522043
+2,2.0,2.0,2.0,SVR initial validation,RMSE,249.5760160659859
+3,3.0,3.0,3.0,SVR initial validation,MAE,94.39872033842657
+4,4.0,4.0,,catboost init train,RMSE,41.20343552572412
+5,5.0,5.0,,catboost init train,MAE,29.603768057075115
+6,6.0,6.0,,catboost init validation,RMSE,100.39445965777591
+7,7.0,7.0,,catboost init validation,MAE,56.05092169285923
+8,,,,catboost tuned train,RMSE,45.64080314640973
+9,,,,catboost tuned train,MAE,48.45825537409538
+10,,,,catboost tuned validation,RMSE,92.4975505990738
+11,,,,catboost tuned validation,MAE,51.48222526443185

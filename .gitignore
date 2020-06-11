@@ -1,2 +1,5 @@
 .ipynb_checkpoints
-*.csv
+data/missing_unacast_count.csv
+src/catboost_info
+src/__pycache__*
+
