@@ -15,8 +15,6 @@ ipykernel = "*"
 xgboost = "*"
 lightgbm = "*"
 catboost = "*"
-statsmodels = "*"
-hyperopt = "*"
 
 [requires]
 python_version = "3.7"
