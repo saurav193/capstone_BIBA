@@ -16,10 +16,7 @@ xgboost = "*"
 lightgbm = "*"
 catboost = "*"
 statsmodels = "*"
-<<<<<<< HEAD
-=======
 hyperopt = "*"
->>>>>>> 287ccfa39ca281886a0efa05d77de93099828042
 
 [requires]
 python_version = "3.7"
