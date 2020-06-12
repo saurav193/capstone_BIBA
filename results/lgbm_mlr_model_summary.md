@@ -42,6 +42,8 @@
 | LMER model with Density Class as random effect | 108.63 | 199.70 |
 | LMER model with Income Class as random effect | 108.69 | 199.75 |
 | LMER model with Climate as random effect | 109.57 | 200.43 |
+| LMER model with Kmeans-2-clusters as random effect | 108.92 | 199.81 |
+| LMER model with Kmeans-4-clusters as random effect | 109.02 | 199.73 |
 
 **Verdict**
 
