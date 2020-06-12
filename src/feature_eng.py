@@ -162,8 +162,4 @@ def clean_categorical(X_train, X_valid, to_encode=['income_class', 'density_clas
     assert X_train.shape[0] == X_train_output.shape[0]
     assert X_valid.shape[0] == X_valid_output.shape[0]
 
-    #Check that `income_class` column is not in `output_data`
-    assert 'income_class' not in X_train_output.columns.to_list()
-    assert 'income_class' not in X_valid_output.columns.to_list()
-
     return (X_train_output, X_valid_output)
