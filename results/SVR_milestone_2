@@ -1,20 +1,25 @@
-,Unnamed: 0,Unnamed: 0.1,model,error_type,score
-0,0.0,0.0,SVR preprocessed train,RMSE,278.6726219728049
-1,1.0,1.0,SVR preprocessed train,MAE,100.61073462141529
-2,2.0,2.0,SVR preprocessed validation,RMSE,274.4847653875946
-3,3.0,3.0,SVR preprocessed validation,MAE,99.31935905709184
-4,4.0,,catboost preprocessed train,RMSE,37.58396409211181
-5,5.0,,catboost preprocessed train,MAE,28.965350625464996
-6,6.0,,catboost preprocessed validation,RMSE,105.14414932123618
-8,8.0,,catboost preprocessed tuned train,RMSE,39.16138879609356
-9,9.0,,catboost preprocessed tuned train,MAE,30.60980854921523
-10,10.0,,catboost preprocessed tuned validation,RMSE,101.22886847723291
-11,11.0,,catboost preprocessed tuned validation,MAE,45.333890332131894
-12,,,catboost pca train,RMSE,42.16822078758682
-13,,,catboost pca train,MAE,39.045197421343026
-14,,,catboost pca validation,RMSE,385.0706414400777
-15,,,catboost pca validation,MAE,310.25081079363355
-16,,,catboost grouped PCA train,RMSE,38.15788227066586
-17,,,catboost grouped PCA train,MAE,34.75919496561219
-18,,,catboost grouped PCA validation,RMSE,624.7827432329105
-19,,,catboost grouped PCA validation,MAE,395.2167765359392
+,Unnamed: 0,Unnamed: 0.1,Unnamed: 0.1.1,Unnamed: 0.1.1.1,model,error_type,score
+0,0.0,0.0,0.0,0.0,SVR preprocessed train,RMSE,278.6726219728049
+1,1.0,1.0,1.0,1.0,SVR preprocessed train,MAE,100.61073462141528
+2,2.0,2.0,2.0,2.0,SVR preprocessed validation,RMSE,274.4847653875946
+3,3.0,3.0,3.0,3.0,SVR preprocessed validation,MAE,99.31935905709184
+4,4.0,4.0,4.0,,catboost preprocessed train,RMSE,39.67468516340541
+5,5.0,5.0,5.0,,catboost preprocessed train,MAE,28.965350625465003
+6,6.0,6.0,6.0,,catboost preprocessed validation,RMSE,120.60530371795936
+7,7.0,6.0,6.0,,catboost preprocessed validation,MAE,53.29014840715885
+8,8.0,8.0,8.0,,catboost preprocessed tuned train,RMSE,39.16138879609356
+9,9.0,9.0,9.0,,catboost preprocessed tuned train,MAE,30.60980854921523
+10,10.0,10.0,10.0,,catboost preprocessed tuned validation,RMSE,101.22886847723291
+11,11.0,11.0,11.0,,catboost preprocessed tuned validation,MAE,45.333890332131894
+12,12.0,12.0,,,catboost pca train,RMSE,42.168220787586826
+13,13.0,13.0,,,catboost pca train,MAE,39.04519742134303
+14,14.0,14.0,,,catboost pca validation,RMSE,385.0706414400777
+15,15.0,15.0,,,catboost pca validation,MAE,310.25081079363355
+16,16.0,16.0,,,catboost grouped PCA train,RMSE,38.15788227066586
+17,17.0,17.0,,,catboost grouped PCA train,MAE,34.759194965612195
+18,18.0,18.0,,,catboost grouped PCA validation,RMSE,624.7827432329105
+19,19.0,19.0,,,catboost grouped PCA validation,MAE,395.2167765359392
+20,,,,,catboost preprocessed tuned train,RMSE,38.967418633468064
+21,,,,,catboost preprocessed tuned train,MAE,30.369593016606476
+22,,,,,catboost preprocessed tuned validation,RMSE,100.81632391377073
+23,,,,,catboost preprocessed tuned validation,MAE,43.566765844093716
