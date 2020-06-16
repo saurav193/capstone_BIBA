@@ -1,11 +1,7 @@
 {
     "_meta": {
         "hash": {
-<<<<<<< HEAD
             "sha256": "e67a14137c4e22705adbdb9e91eda5a3a2b51b5c0416dd21de45898122d1bff9"
-=======
-            "sha256": "c62e64a180c82e9dc63bfbd0967f20908e51b2f377a6b14434849501ae44e29a"
->>>>>>> a331d2c35d295495f3dc0b1815d8cce3c6932fa9
         },
         "pipfile-spec": 6,
         "requires": {
@@ -62,23 +58,6 @@
             ],
             "index": "pypi",
             "version": "==0.23.2"
-        },
-<<<<<<< HEAD
-        "colorama": {
-            "hashes": [
-                "sha256:7d73d2a99753107a36ac6b455ee49046802e59d9d076ef8e47b61499fa29afff",
-                "sha256:e96da0d330793e2cb9485e9ddfd918d456036c7149416295932478192f4436a1"
-            ],
-            "markers": "sys_platform == 'win32'",
-            "version": "==0.4.3"
-=======
-        "cloudpickle": {
-            "hashes": [
-                "sha256:0b6258a20a143603d53b037a20983016d4e978f554ec4f36b3d0895b947099ae",
-                "sha256:ff31298eca781315e097bc1f222d8045208c14063a0102cc89bd5899adb4abef"
-            ],
-            "version": "==1.4.1"
->>>>>>> a331d2c35d295495f3dc0b1815d8cce3c6932fa9
         },
         "cycler": {
             "hashes": [
@@ -324,13 +303,6 @@
                 "sha256:908e9fae2144a076d72ae4e25539143d40b8e3eafbaeae03c1bfe226f4cdf12c"
             ],
             "version": "==0.7.0"
-        },
-        "patsy": {
-            "hashes": [
-                "sha256:5465be1c0e670c3a965355ec09e9a502bf2c4cbe4875e8528b0221190a8a5d40",
-                "sha256:f115cec4201e1465cd58b9866b0b0e7b941caafec129869057405bfe5b5e3991"
-            ],
-            "version": "==0.5.1"
         },
         "pexpect": {
             "hashes": [
