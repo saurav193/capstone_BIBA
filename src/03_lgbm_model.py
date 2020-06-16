@@ -1,7 +1,7 @@
 
 """This script runs lgbm and stores the fitted model and output the MAE scores into a csv.
 
-Usage: src/lgbm_model.py --train=<train> --test=<test> [--out_path=<out_path>]
+Usage: src/03_lgbm_model.py --train=<train> --test=<test> [--out_path=<out_path>]
 
 Options:
 --train=<train>            The location(including filename) of the train dataset file in zip/csv format relative to the root 
