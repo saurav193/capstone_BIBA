@@ -1,10 +1,10 @@
 
 """This script predicts the model output from the new data given and fitted model in training pipeline.
 
-Usage: src/07_prediction.py --pred=<pred> [--model_path=<model_path>] [--out_path=<out_path>]
+Usage: src/07_prediction.py --new_data=<new_data> [--model_path=<model_path>] [--out_path=<out_path>]
 
 Options:
---pred=<pred>               The location(including filename) of the new data file in zip/csv format relative to the root 
+--new_data=<new_data>               The location(including filename) of the new data file in zip/csv format relative to the root 
 [--model_path=<model_path>] Path(folder_name) ending with "/" of the folder where fitted models are located
 [--out_path=<out_path>]     Path(folder_name) ending with "/" relative to root where to write the zip/csv with new_data and predicted target values from all 3 models named predicted_data.zip
 """
@@ -17,11 +17,11 @@ from joblib import dump, load
 
 opt = docopt(__doc__)
 
-def main(pred, model_path="src/joblib/", out_path="results/"):
+def main(new_data, model_path="src/joblib/", out_path="results/"):
     
  
     #create datasets
-    predict_data = pd.read_csv(pred)
+    predict_data = pd.read_csv(new_data)
     #checking if prediction data already contains target
     assert "unacast_session_count" not in set(predict_data.columns), "prediction data has target column"
     
@@ -84,4 +84,4 @@ def test_fun():
 
 if __name__ == "__main__":
     test_fun()
-    main(opt["--pred"], opt["--model_path"], opt["--out_path"])
+    main(opt["--new_data"], opt["--model_path"], opt["--out_path"])
