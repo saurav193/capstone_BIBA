@@ -1,5 +1,5 @@
 
-"""This script predicts the model output from the new data given and fitted model in training pipeline.
+"""This script generates predictions given new, preprocessed data and pre-fitted model.
 
 Usage: src/07_prediction.py --pred=<pred> [--model_path=<model_path>] [--out_path=<out_path>]
 
