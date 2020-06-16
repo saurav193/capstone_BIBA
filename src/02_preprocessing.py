@@ -2,16 +2,16 @@
 # Date: 2020-06-15
 
 """
-This script preprocesses and saves the train and test sets. It can also
+This script preprocesses and saves the train and test sets as zip files. It can also
 preprocess new data using the imputer and one-hot encoder that were
 previously fitted to the training data. It also saves dummy train and test
-sets that can be used to test functions.
+sets as zip files that can be used to test functions.
 
 Usage: src/02_preprocessing.py --test=<test> [--train=<train>] 
 
 Options:
---test=<test>       The location (including filename) of the test data in zip/csv format relative to the root
-[--train=<train>]    The location (including filename) of the training data in zip/csv format relative to the root
+--test=<test>       The location (including filename) of the test data in zip format relative to the root
+[--train=<train>]    The location (including filename) of the training data in zip format relative to the root
 """
 from docopt import docopt
 import os
@@ -27,6 +27,8 @@ from feature_eng import comb_cols
 from create_apply_ohe import create_ohe, apply_ohe
 
 def main(test, train=None):
+    
+    compression_opts = dict(method='zip', archive_name='out.csv')  
 
     #===================================
     # PREPROCESS X_TRAIN_VALID
@@ -67,10 +69,10 @@ def main(test, train=None):
         X_train['unacast_session_count'] = y_train
 
         # save preprocessed data
-        X_train.to_csv('data/processed_train.csv', index=False)
+        X_train.to_csv('data/processed_train.zip', index=False, compression=compression_opts)
 
         # save preprocessed dummy data (first 100 rows)
-        X_train.head(100).to_csv('data/dummy/dummy_train.csv', index=False)
+        X_train.head(100).to_csv('data/dummy/dummy_train_data.zip', index=False, compression=compression_opts)
 
         print('Saving preprocessed X_train successful!')
 
@@ -103,18 +105,18 @@ def main(test, train=None):
     X_test['unacast_session_count'] = y_test
 
     # save processed data
-    X_test.to_csv('data/processed_test.csv', index=False)
+    X_test.to_csv('data/processed_test.zip', index=False, compression=compression_opts)
 
     # save preprocessed dummy data (first 20 rows)
-    X_test.head(20).to_csv('data/dummy/dummy_test.csv', index=False)
+    X_test.head(20).to_csv('data/dummy/dummy_test_data.zip', index=False, compression=compression_opts)
 
     print('Saving preprocessed X_test successful!')
 
     return
 
 def test_main():
-    assert os.path.exists('data/processed_test.csv'), 'Processed test set not found in designated location'
-    assert os.path.exists('data/dummy/dummy_test.csv'), 'Processed dummy test set not found in designated location'
+    assert os.path.exists('data/processed_test.zip'), 'Processed test set not found in designated location'
+    assert os.path.exists('data/dummy/dummy_test_data.zip'), 'Processed dummy test set not found in designated location'
 
 opt = docopt(__doc__)
 
