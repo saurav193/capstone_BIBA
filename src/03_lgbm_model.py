@@ -4,10 +4,10 @@
 Usage: src/03_lgbm_model.py --train=<train> --test=<test> [--model_path=<model_path>] [--out_path=<out_path>]
 
 Options:
---train=<train>             The location(including filename) of the train dataset file in zip/csv format relative to the root 
---test=<test>               The location(including filename) of the test dataset file in zip/csv format relative to the root
-[--model_path=<model_path>] Path(folder_name) ending with "/" relative to root where to write the fitted model
-[--out_path=<out_path>]     Path(folder_name) ending with "/" relative to root where to write results in csv 
+--train=<train>             The path (including filename) of the train dataset file in zip/csv format relative to the root 
+--test=<test>               The path (including filename) of the test dataset file in zip/csv format relative to the root
+[--model_path=<model_path>] The directory name ending with "/" relative to the root to write the fitted model
+[--out_path=<out_path>]     The directory name ending with "/" relative to the root to write the results as a CSV file 
 """
 
 from docopt import docopt
