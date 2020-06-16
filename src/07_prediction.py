@@ -4,9 +4,9 @@
 Usage: src/07_prediction.py --new_data=<new_data> [--model_path=<model_path>] [--out_path=<out_path>]
 
 Options:
---new_data=<new_data>               The location(including filename) of the new data file in zip/csv format relative to the root 
-[--model_path=<model_path>] Path(folder_name) ending with "/" of the folder where fitted models are located
-[--out_path=<out_path>]     Path(folder_name) ending with "/" relative to root where to write the zip/csv with new_data and predicted target values from all 3 models named predicted_data.zip
+--new_data=<new_data>       The path (including filename) of the new data file in zip/csv format relative to the root 
+[--model_path=<model_path>] The directory name ending with "/" of the folder where fitted models are located
+[--out_path=<out_path>]     The directory name ending with "/" relative to root where to write the zip/csv with new_data and predicted target values from all 3 models named predicted_data.zip
 """
 
 from docopt import docopt
@@ -78,7 +78,7 @@ def test_fun():
     This functions checks if the main function is able to predict from a stored model and put the results in zip/csv file.
 
     """
-    pred_data_loc = "src/dummy_pred_data.zip"
+    pred_data_loc = "src/dummy/dummy_pred_data.zip"
     main(pred_data_loc)
     assert os.path.exists("results/predicted_data.zip"), "Predicted file not found in location"
 
