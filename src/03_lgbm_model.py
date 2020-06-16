@@ -1,5 +1,5 @@
 
-"""This script runs lgbm and stores the fitted model and output the MAE scores into a csv.
+"""This script fits a model using LightGBM, saves the fitted model, and outputs the MAE values as a CSV file.
 
 Usage: src/03_lgbm_model.py --train=<train> --test=<test> [--model_path=<model_path>] [--out_path=<out_path>]
 
