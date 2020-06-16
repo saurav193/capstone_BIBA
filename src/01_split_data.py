@@ -26,7 +26,7 @@ def main(in_path, out_path):
     test_data = test_data.query("external_id != 'CA00070678'")
 
     
-    test_split(data, train_data, test_data)
+    test_split(data, train_data, test_data, out_path)
 
     #Save the files
     compression_opts = dict(method='zip',archive_name='out.csv')  
