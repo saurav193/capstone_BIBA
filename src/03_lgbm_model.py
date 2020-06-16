@@ -1,12 +1,13 @@
 
 """This script runs lgbm and stores the fitted model and output the MAE scores into a csv.
 
-Usage: src/03_lgbm_model.py --train=<train> --test=<test> [--out_path=<out_path>]
+Usage: src/03_lgbm_model.py --train=<train> --test=<test> [--model_path=<model_path>] [--out_path=<out_path>]
 
 Options:
---train=<train>            The location(including filename) of the train dataset file in zip/csv format relative to the root 
---test=<test>              The location(including filename) of the test dataset file in zip/csv format relative to the root
-[--out_path=<out_path>]    Path(folder_name) ending with "/" relative to root where to write the fitted model
+--train=<train>             The location(including filename) of the train dataset file in zip/csv format relative to the root 
+--test=<test>               The location(including filename) of the test dataset file in zip/csv format relative to the root
+[--model_path=<model_path>] Path(folder_name) ending with "/" relative to root where to write the fitted model
+[--out_path=<out_path>]     Path(folder_name) ending with "/" relative to root where to write results in csv 
 """
 
 from docopt import docopt
@@ -20,7 +21,7 @@ import csv
 
 opt = docopt(__doc__)
 
-def main(train, test, out_path="src/joblib/"):
+def main(train, test, model_path="src/joblib/", out_path="results/"):
     
  
     #create datasets
@@ -49,20 +50,23 @@ def main(train, test, out_path="src/joblib/"):
     
     test_mae = mean_absolute_error(y_test, y_preds_test)
    
-    if out_path is None:
+    if model_path is None:
         model_path = "src/joblib/lgbm_model.joblib"
     else:
-        model_path = out_path+"lgbm_model.joblib"
+        model_path = model_path+"lgbm_model.joblib"
     
     # save the trained model
     dump(lgbm, model_path)
 
     # File to save results
-    out_file = 'results/lgbm_train_result.csv'
+    if out_path is None:
+        out_file = "results/lgbm_train_result.csv"
+    else:
+        out_file = out_path+"lgbm_train_result.csv"
 
     #removing existing file
-    if os.path.exists("results/lgbm_train_result.csv"):
-        os.remove('results/lgbm_train_result.csv')
+    if os.path.exists(out_file):
+        os.remove(out_file)
 
     with open(out_file, 'w', newline='') as f: #creating file by truncating previous one
         writer = csv.writer(f)
@@ -85,4 +89,4 @@ def test_fun():
 
 if __name__ == "__main__":
     test_fun()
-    main(opt["--train"], opt["--test"], opt["--out_path"])
+    main(opt["--train"], opt["--test"], opt["--model_path"], opt["--out_path"])
