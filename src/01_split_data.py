@@ -2,10 +2,10 @@
 # date: 2020-05-07
 #
 """This script splits the data given as an input into training and test data.
-It saves the two sets in two separate csv files, in the file that is given as an input.
+It saves the two sets in two separate zip files, in the folder that is given as an input.
 This script takes two arguments : a path/filename pointing to the data to be read in
-and a path/filename pointing to where the cleaned data should live. 
-Usage: src/split_data.py --input_file=<input_file> --output_folder=<output_folder>
+and a path pointing to where the cleaned data should live. 
+Usage: src/split_data.py --in_path=<in_path> --out_path=<out_path>
 """
 
 #import dependencies
@@ -14,9 +14,9 @@ from docopt import docopt
 
 opt = docopt(__doc__)
 
-def main(input_file, output_folder):
+def main(in_path, out_path):
     #Read the data and split between train and test set
-    data = pd.read_csv(input_file)
+    data = pd.read_csv(in_path)
     test_data = data[(data['year']==2019) & (data['month'] > 9)]
     train_data = data[~data.index.isin(test_data.index)]
     #Comment the following line to keep the January 2018 data
@@ -30,9 +30,9 @@ def main(input_file, output_folder):
 
     #Save the files
     compression_opts = dict(method='zip',archive_name='out.csv')  
-    test_data.to_csv(output_folder + "/test_data.zip", index = False, compression=compression_opts)
-    train_data.to_csv(output_folder + "/train_data.zip", index = False, compression=compression_opts)
-    data.to_csv(output_folder + "/playground_stats.zip", index = False, compression=compression_opts)
+    test_data.to_csv(out_path + "/test_data.zip", index = False, compression=compression_opts)
+    train_data.to_csv(out_path + "/train_data.zip", index = False, compression=compression_opts)
+    data.to_csv(out_path + "/playground_stats.zip", index = False, compression=compression_opts)
 
     print('Split successful!')
 
@@ -44,4 +44,4 @@ def test_split(data, train_data, test_data):
     assert data['external_id'].unique().shape[0] == train_data['external_id'].unique().shape[0] + 1, "The numbers of unique playground in the train set and the original set are different"
 
 if __name__ == "__main__":
-    main(opt["--input_file"], opt["--output_folder"])
+    main(opt["--in_path"], opt["--out_path"])
