@@ -1,4 +1,4 @@
-"""This script runs lgbm and stores the fitted model and output the MAE scores into a csv.
+"""This script fits a model using CatBoost, saves the model, and outputs the MAE values as a CSV file.
 Usage: src/lgbm_model.py --train=<train> --test=<test> [--out_path=<out_path>]
 Options:
 --train=<train>            The location(including filename) of the train dataset file in zip/csv format relative to the root 
