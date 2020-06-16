@@ -117,7 +117,7 @@ def create_imputer(X_train, filename='imputer.joblib'):
 
     # Save the imputer
     # pickled = pickle.dumps(imputer)
-    pickled_imputer = dump(imputer, filename)
+    dump(imputer, filename)
     
     return None
 
