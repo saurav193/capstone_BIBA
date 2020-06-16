@@ -20,7 +20,7 @@ import csv
 
 opt = docopt(__doc__)
 
-def main(train, test, out_path=""):
+def main(train, test, out_path="src/joblib/"):
     
  
     #create datasets
@@ -50,7 +50,7 @@ def main(train, test, out_path=""):
     test_mae = mean_absolute_error(y_test, y_preds_test)
    
     if out_path is None:
-        model_path = "src/lgbm_model.joblib"
+        model_path = "src/joblib/lgbm_model.joblib"
     else:
         model_path = out_path+"lgbm_model.joblib"
     
@@ -79,7 +79,7 @@ def test_fun():
     train_data_loc = "src/dummy_train_data.zip"
     test_data_loc = "src/dummy_test_data.zip"
     main(train_data_loc, test_data_loc)
-    assert os.path.exists("src/lgbm_model.joblib"), "Model dump not found in location"
+    assert os.path.exists("src/joblib/lgbm_model.joblib"), "Model dump not found in location"
     assert os.path.exists("results/lgbm_train_result.csv"), "Results file not found in location"
 
 
