@@ -110,13 +110,14 @@ def main(test, train=None):
 
     print('Saving preprocessed X_test successful!')
 
-    return 
+    return
 
 def test_main():
-
+    assert os.path.exists('data/processed_test.csv'), 'Processed test set not found in designated location'
+    assert os.path.exists('data/dummy/dummy_test.csv'), 'Processed dummy test set not found in designated location'
 
 opt = docopt(__doc__)
 
 if __name__ == "__main__":
-    #test_main()
     main(opt['--test'], opt['--train'])
+    test_main()
