@@ -1,9 +1,9 @@
 """This script fits a model using CatBoost, saves the model, and outputs the MAE values as a CSV file.
 Usage: src/lgbm_model.py --train=<train> --test=<test> [--out_path=<out_path>]
 Options:
---train=<train>            The location(including filename) of the train dataset file in zip/csv format relative to the root 
---test=<test>              The location(including filename) of the test dataset file in zip/csv format relative to the root
-[--out_path=<out_path>]    Path(folder_name) ending with "/" relative to root where to write the fitted model
+--train=<train>            The path (including filename) of the train dataset file in zip/csv format relative to the root 
+--test=<test>              The path (including filename) of the test dataset file in zip/csv format relative to the root
+[--out_path=<out_path>]    The directory name ending with "/" relative to the root to write the fitted model
 """
 
 from docopt import docopt
