@@ -78,7 +78,7 @@ def test_fun():
     This functions checks if the main function is able to predict from a stored model and put the results in zip/csv file.
 
     """
-    pred_data_loc = "src/dummy/dummy_pred_data.zip"
+    pred_data_loc = "data/dummy/dummy_pred_data.zip"
     main(pred_data_loc)
     assert os.path.exists("results/predicted_data.zip"), "Predicted file not found in location"
 

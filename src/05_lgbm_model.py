@@ -80,8 +80,8 @@ def test_fun():
     This functions checks if the main function is able to fit a model and store the results in csv file.
 
     """
-    train_data_loc = "src/dummy/dummy_train_data.zip"
-    test_data_loc = "src/dummy/dummy_test_data.zip"
+    train_data_loc = "data/dummy/dummy_train_data.zip"
+    test_data_loc = "data/dummy/dummy_test_data.zip"
     main(train_data_loc, test_data_loc)
     assert os.path.exists("src/joblib/lgbm_model.joblib"), "Model dump not found in location"
     assert os.path.exists("results/lgbm_train_result.csv"), "Results file not found in location"
