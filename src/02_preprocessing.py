@@ -2,9 +2,10 @@
 # Date: 2020-06-15
 
 """
-This script preprocesses the training and test sets. It can also be used to
+This script preprocesses and saves the train and test sets. It can also
 preprocess new data using the imputer and one-hot encoder that were
-previously fitted to the training data.
+previously fitted to the training data. It also saves dummy train and test
+sets that can be used to test functions.
 
 Usage: src/02_preprocessing.py --test=<test> [--train=<train>] 
 
@@ -65,8 +66,11 @@ def main(test, train=None):
         # attach y
         X_train['unacast_session_count'] = y_train
 
-        # save processed data
+        # save preprocessed data
         X_train.to_csv('data/processed_train.csv', index=False)
+
+        # save preprocessed dummy data (first 100 rows)
+        X_train.head(100).to_csv('data/dummy/dummy_train.csv', index=False)
 
         print('Saving preprocessed X_train successful!')
 
@@ -101,19 +105,15 @@ def main(test, train=None):
     # save processed data
     X_test.to_csv('data/processed_test.csv', index=False)
 
+    # save preprocessed dummy data (first 20 rows)
+    X_test.head(20).to_csv('data/dummy/dummy_test.csv', index=False)
+
     print('Saving preprocessed X_test successful!')
 
     return 
 
 def test_main():
 
-    dummy_test_loc = 'data/dummy/dummy_test.csv'
-    dummy_train_loc = 'data/dummy/dummy_train.csv'
-
-    main(dummy_test_loc, dummy_train_loc)
-
-    assert os.path.exists('data/preprocessed_train.csv'), 'Preprocessed training data not found in designated location'
-    assert os.path.exists('data/preprocessed_test.csv'), 'Preprocessed test data not found in designated location'
 
 opt = docopt(__doc__)
 
