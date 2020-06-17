@@ -17,6 +17,7 @@ lightgbm = "*"
 catboost = "*"
 statsmodels = "*"
 hyperopt = "*"
+docopt = "*"
 
 [requires]
 python_version = "3.7"
