@@ -11,6 +11,7 @@ Usage: src/split_data.py --in_path=<in_path> --out_path=<out_path>
 #import dependencies
 import pandas as pd
 from docopt import docopt
+import os
 
 opt = docopt(__doc__)
 
@@ -34,7 +35,7 @@ def main(in_path, out_path):
     train_data.to_csv(out_path + "/train_data.zip", index = False, compression=compression_opts)
     data.to_csv(out_path + "/playground_stats.zip", index = False, compression=compression_opts)
 
-    test_split(data, train_data, test_data, oupt_path)
+    test_split(data, train_data, test_data, out_path)
 
     print('Split successful!')
 
@@ -49,9 +50,6 @@ def test_split(data, train_data, test_data, out_path):
     assert train_data['external_id'].unique().shape[0] == test_data['external_id'].unique().shape[0], "The numbers of unique playground in the train set and the test set are different"
     assert data['external_id'].unique().shape[0] == train_data['external_id'].unique().shape[0] + 1, "The numbers of unique playground in the train set and the original set are different"
 
-    #Check that the zip files were created
-    assert os.path.exists(out_path + "/test_data.zip"), "Train data not found in location"
-    assert os.path.exists(out_path + "/train_data.zip"), "Test data not found in location"
 
 if __name__ == "__main__":
     main(opt["--in_path"], opt["--out_path"])
