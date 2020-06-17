@@ -35,7 +35,7 @@ def main(train, test, model_path="src/joblib/", out_path="results/"):
     
     #fitting with best params from hyperparameter optimization
 
-    lgbm = LGBMRegressor(learning_rate = 0.19981387712135354 , max_depth = 105, num_leaves = 300, random_state = 2020) 
+    lgbm = LGBMRegressor(objective = 'mae', learning_rate = 0.19981387712135354 , max_depth = 105, num_leaves = 300, random_state = 2020) 
 
     lgbm.fit(X_train, y_train)
     
