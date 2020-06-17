@@ -8,12 +8,12 @@ from sklearn.preprocessing import OneHotEncoder
 def create_ohe(X_train, to_encode=['income_class', 'density_class', 'climate'], filename='ohe.joblib'):
     
     """
-    Return an one-hot-encoder fitted using `X_train`
-    as a pickle file.
+    Return an one-hot encoder fitted using `X_train`
+    as a joblib file.
     
     Parameters
     ----------
-    X_train: pd.DataFrame
+    X_train: pandas.core.frame.DataFrame
         Training set
         
     to_encode: list 
@@ -22,30 +22,30 @@ def create_ohe(X_train, to_encode=['income_class', 'density_class', 'climate'], 
     filename: str
         Filename to use to save encoder
     
-    Returns
-    -------
-    bytes
     """
     ohe = OneHotEncoder(sparse=False, dtype=int)
     
     ohe.fit(X_train.loc[:, to_encode])
     
+    # check number of columns to encode
+    assert len(ohe.categories_) == len(to_encode)
+
     # Save the OHE
-    # pickled_ohe = pickle.dumps(ohe)
-    pickled_ohe = dump(ohe, filename)
+    dump(ohe, filename)
     
-    return None
+    return 
 
 def apply_ohe(X, to_encode=['income_class', 'density_class', 'climate'], filename='ohe.joblib'):
     """
-    Given an one-hot-encoder fit on `X_train` and
-    a list of columns to encode, return a data frame.
+    Given an one-hot encoder fit on `X_train` and
+    a list of columns to encode, return a data frame
+    with the one-hot encoder applied.
     
-    WARNING: `to_encode` must match list passed to create `ohe`
+    WARNING: `to_encode` must match list passed to create the encoder
 
     Parameters
     ----------
-    X: pd.DataFrame
+    X: pandas.core.frame.DataFrame
         `X_train`, `X_valid` or `X_test`
     
     to_encode: list
@@ -56,7 +56,7 @@ def apply_ohe(X, to_encode=['income_class', 'density_class', 'climate'], filenam
     
     Returns
     -------
-    pd.DataFrame
+    pandas.core.frame.DataFrame
     
     """
     X_output = X.copy()
@@ -73,13 +73,13 @@ def apply_ohe(X, to_encode=['income_class', 'density_class', 'climate'], filenam
     # concatenate with existing data frame
     full_X_output = pd.concat((X_output, sub_X_output), axis=1)
 
-    # drop the columns for which we used OHE
+    # drop the columns to which the encoder was applied
     full_X_output = full_X_output.drop(columns=to_encode)
 
-    #Check that the number of rows is unchanged
+    # check that the number of rows is unchanged
     assert full_X_output.shape[0] == X_output.shape[0]
 
-    #Check that `income_class` column is not in `output_data`
-    assert 'income_class' not in full_X_output.columns.to_list()
+    # check that first column in `to_encode` is not in `output_data`
+    assert to_encode[0] not in full_X_output.columns.to_list()
 
     return full_X_output

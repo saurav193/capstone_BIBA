@@ -11,11 +11,11 @@ def create_imputer(X_train, filename='imputer.joblib'):
 
     """
     Fit a transformer on `X_train` and save it in
-    .joblib format
+    .joblib format.
     
     Parameters
     ----------
-    X_train: pd.DataFrame
+    X_train: pandas.core.frame.DataFrame
         Training set
         
     filename: str
@@ -48,7 +48,7 @@ def create_imputer(X_train, filename='imputer.joblib'):
 
     # Impute with mean
     weather = df.loc[:, 'weather_clear':'avg_wind_12_above'].columns.to_list()
-    mean_misc = ['walk_score', 'bike_score', 'Poor_physical_health_days', 'Poor_mental_health_days', 'Adult_smoking']
+    mean_misc = ['walk_score', 'bike_score', 'Poor_physical_health_days','Poor_mental_health_days', 'Adult_smoking']
 
     mean_imp_features = weather + mean_misc
 
@@ -116,7 +116,6 @@ def create_imputer(X_train, filename='imputer.joblib'):
     imputer = imputer.fit(X_train)
 
     # Save the imputer
-    # pickled = pickle.dumps(imputer)
     dump(imputer, filename)
     
     return None
@@ -129,7 +128,7 @@ def apply_imputer(X, filename='imputer.joblib'):
 
     Parameters
     ----------
-    X: pd.DataFrame
+    X: pandas.core.frame.DataFrame
         `X_train`, `X_valid` or `X_test`
     
     filename: str
@@ -137,11 +136,11 @@ def apply_imputer(X, filename='imputer.joblib'):
     
     Returns
     -------
-    pd.DataFrame
+    pandas.core.frame.DataFrame
     
     """
     
-    # load in transformer that's fit on `X_train`
+    # Load in transformer that's fit on `X_train`
     imputer = load(filename)
     
     # Transform data frame accordingly
@@ -159,7 +158,7 @@ def apply_imputer(X, filename='imputer.joblib'):
     # Grab old order of columns
     old_cols = X.columns.to_list()
     
-    # Reshuffle column order of new dataframes to match old one
+    # Reshuffle column order of new dataframe to match old one
     imputed_X = pd.DataFrame(imputed_X, index=X.index, columns=cols).reindex(columns=old_cols)
     
     # Cast each pandas object to its previous dtype

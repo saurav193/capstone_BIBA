@@ -121,7 +121,7 @@ ggplot(hi_train, aes(y_train_hi, res)) +
   geom_point()
 ```
 
-![](logistic_regression_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+![](training_tiered_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
 
 Print RMSE for training data:
 
@@ -154,7 +154,7 @@ ggplot(hi_valid, aes(y_valid_hi, res)) +
   geom_point()
 ```
 
-![](logistic_regression_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+![](training_tiered_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
 
 Print RMSE for validation data:
 
@@ -288,7 +288,7 @@ ggplot(lo_train, aes(y_train_lo, res)) +
   geom_point()
 ```
 
-![](logistic_regression_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
+![](training_tiered_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
 
 Print RMSE for training data:
 
@@ -320,7 +320,7 @@ ggplot(lo_valid, aes(y_valid_lo, res)) +
   geom_point()
 ```
 
-![](logistic_regression_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
+![](training_tiered_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
 
 Print RMSE for validation data:
 
