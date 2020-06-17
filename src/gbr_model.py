@@ -1,5 +1,5 @@
-"""This script fits a model using SKlearn's Gradi, saves the fitted model, and outputs the MAE values as a CSV file.
-Usage: src/05_lgbm_model.py --train=<train> --test=<test> [--model_path=<model_path>] [--out_path=<out_path>]
+"""This script fits a model using sklearn's GradientBoostingRegressor, saves the fitted model, and outputs the MAE values as a CSV file.
+Usage: src/03_gbr_model.py --train=<train> --test=<test> [--model_path=<model_path>] [--out_path=<out_path>]
 Options:
 --train=<train>             The path (including filename) of the train dataset file in zip/csv format relative to the root 
 --test=<test>               The path (including filename) of the test dataset file in zip/csv format relative to the root
