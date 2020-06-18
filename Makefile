@@ -31,7 +31,7 @@ results/catboost_train_result.csv src/joblib/catboost_model.joblib : src/04_catb
 # LightGBM
 # 
 # This script fits a model using LightGBM, saves the fitted model, and outputs the MAE values as a CSV file.
-results/lgbm_train_result.csv src/joblib/lgbm_model.joblib : src/04_lgbm_model.py data/processed_train.zip data/processed_test.zip data/dummy/dummy_test_data.zip data/dummy/dummy_train_data.zip
+results/lgbm_train_result.csv src/joblib/lgbm_model.joblib : src/05_lgbm_model.py data/processed_train.zip data/processed_test.zip data/dummy/dummy_test_data.zip data/dummy/dummy_train_data.zip
 	python src/05_lgbm_model.py --train=data/processed_train.zip --test=data/processed_test.zip --model_path=src/joblib/ --out_path=results/
 	
 	
