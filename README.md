@@ -1,21 +1,24 @@
-CAPSTONE Machine Learning
-====
-# Executive Summary
-We will work with data collected through gameplay and from third-party sources to create models that infer the number of play sessions at a particular playground in a given month. We hope that our model will provide reliable information to playground owners and managers and guide them through the decision-making process surrounding community play spaces.
+# Using Machine Learning to Predict Playground Usage Across the U.S.
 
-Read the full proposal [here](https://github.com/Z2hMedia/capstone_machine_learning/blob/mds/proposal/report/proposal.pdf)
+A capstone project for the UBC Master of Data Science program
 
-# Branching Strategy
+Authors: Saurav Chowdhury, Sirine Chahma, Reiko Okamoto, Tani Barasch
 
-A branch has been created for each student. These branches should be treated as
-the 'master' branch for that student.
+## About
 
-# Usage
+## Report
+- Link to proposal
+- Link to final report
 
-To split the data between train and test set
+## Usage
+- How to manage pipenv virtual environment
+- How to use Makefile 1 (analysis pipeline)
+- How to render the RMarkdown file
+- How to use Makefile 2 (prediction pipeline)
 
-```
-python src/split_data.py
-```
+## Dependencies
+- Python 3.7 and packages
+- R and packages
 
+## References
 
