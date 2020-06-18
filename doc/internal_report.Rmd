@@ -1,0 +1,96 @@
+---
+title: "Internal report"
+author: "Saurav Chowdhury, Sirine Chahma, Reiko Okamoto, Tani Barasch"
+date: "17/06/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+- Point reader to the Jupyter notebook that contains the relevant information
+
+# Introduction
+
+- Include background information on the UBC MDS program and what the capstone project is about --> provide context as to how we (and our work) were positioned in the existing data science team
+- Aim of the report
+  - Summarizes our findings
+    - Patterns in the dataset
+    - Model performance
+  - Outlines the data product
+  - Provides recommendations for improvement
+- (How this project can add value to their company)
+
+# Description of the dataset and relevant findings
+
+- No need to go into details because they know their data
+- Notable observations in each part of the dataset - impacted modeling
+  - Distribution of the target variable! 
+  - Many features with 0
+    - Histogram
+  - Many features with missing value
+    - Histogram
+  - Some sort of visualization(s) that illustrate the presence of missing values in the `unacast_session_count`
+    - Include the plot that shows the distribution of missing values across the months (this will justify why we dropped January 2018 from our analysis)
+    - Include plot that has x: number of missing values, y: frequency (shows how many playgrounds are missing no observations, 1 observation, 2 observations, etc.)
+- Noticing linear transformations - theoretical duplication of information 
+  - Census columns
+    - Income by demographic characteristic 1, income by demographic characteristic 2
+    - Fertility rate
+    - One column that represents the total and a set of columns that add up to that column
+  - OSMnx columns: proportion versus count data - one is just a normalized version of the other
+
+# Choice of model output (provide rationale)
+
+- Outputs that were considered
+  - Why didn't we pursue certain outputs?
+  - We considered building a model that outputs confidence interval or probability distribution - since the distribution of the target variable is skewed, we thought that these estimates would be more robust than providing a single value 
+- Ultimate choice: Given the needs of Biba (and their clientel)...
+  - However, we realize that ultimately, this data will be used by playground owners and managers - they're more comfortable working with the mean as opposed to interpreting a probability distribution. We respect that it's most convenient to work with a single value. 
+  - Which error metrics were used to evaluate the performance of the models?
+  - Since the models predict the mean or median, their fit to the data was evalulated using RMSE and MAE, respectively
+
+# Choice of data split (provide rationale)
+- Why did we split the data this way?
+- We initially received a dataset which included 24 monthly observations for 2506 playgrounds. We decided allocate the observations in the first 21 months for training and the last 3 months for testing. This split allowed us to pursue building a time-dependent model and preventing data leakage. We actually ended up pursuing this time-dependent model - scroll down to read more about it.
+- It's worth mentioning that observations from January 2018 were excluded from model training - most playgrounds are missing values for this month
+
+# First round: modeling and results
+- Main takeaway from first iteration
+  - Why did we pursue these models?
+  - Error values?
+
+# Second round: modeling and results
+- Main takeaway from second iteration
+
+- LightGBM
+- XGBoost
+- CatBoost
+- Random forest
+- Tiered model
+- Mixed effects model
+- Time dependent model
+
+- Show the residual plot - upward trend was observed in almost every model
+
+# Report/analysis pipeline
+
+- How does it work?
+- What is included?
+  - Preprocessing script
+  - Scripts that fit and save models that predict the median
+    - Trained with optimized hyperparameters
+
+# Prediction pipeline 
+
+- How does it work?
+- What is included?
+  - Preprocessing script
+  - Script that loads the saved model and makes predictions
+
+# Areas of improvement
+
+- High-count observations
+- Missing target variables
+- Explanatory variables

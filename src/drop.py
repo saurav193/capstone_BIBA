@@ -55,7 +55,7 @@ def drop_columns(input_data):
     news_radius_list = data.loc[:, 'total_events_500_meters':'material_conflict_events_2000_meters'].columns.to_list()
     
     # Gather other irrelevant census columns
-    sex_age_list = data.loc[:, 'B01001e27':'B01001e6'].columns.to_list()
+    sex_age_list = ['B01001e27', 'B01001e28', 'B01001e29', 'B01001e3', 'B01001e30', 'B01001e4', 'B01001e5', 'B01001e6']
     
     # Gather all Biba survey columns
     monthly_survey_list = data.loc[:, ['monthly_weekday_counts', 'monthly_survey']].columns.to_list()
@@ -113,7 +113,7 @@ def drop_missing_unacast(raw_data):
     output_data = raw_data.dropna(axis=0, subset=['unacast_session_count'])
 
     # check that there are no NaN values in the target
-    assert output_data['unacast_session_count'].insa().sum() == 0
+    assert output_data['unacast_session_count'].isna().sum() == 0
 
     # check that the number of columns is unchanged
     assert raw_data.shape[1] == output_data.shape[1]
