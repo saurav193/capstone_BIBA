@@ -82,6 +82,7 @@ def main(test, train=None):
 
     # drop observations missing `unacast_session_count`
     test_data = pd.read_csv(test)
+    test_data = drop_missing_unacast(test_data)
 
     # create X and y
     X_test = test_data.drop('unacast_session_count', axis=1)
