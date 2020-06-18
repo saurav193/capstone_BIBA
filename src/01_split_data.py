@@ -9,8 +9,8 @@ and a path pointing to where the cleaned data should live.
 Usage: src/split_data.py --in_path=<in_path> --out_path=<out_path>
 
 Options:
---in_path=<in_path>             The path (including filename) of the original dataset file in zip/csv format relative to the root 
---out_path=<out_path>               The path (without a '/' at the end) of the folder where you want to set thetrain/test sets, relative to the root
+--in_path=<in_path>             The path (including filename) of the original dataset file in zip/csv format, relative to the root 
+--out_path=<out_path>               The path (without a '/' at the end) of the folder where you want to set the train/test sets, relative to the root
 """
 
 #import dependencies
