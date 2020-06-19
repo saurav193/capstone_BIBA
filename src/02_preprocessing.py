@@ -111,10 +111,16 @@ def main(test, train=None):
         X_test['unacast_session_count'] = y_test
 
     # save processed data
-    X_test.to_csv('data/processed_test.zip', index=False, compression=compression_opts)
+    if train is not None: 
+        X_test.to_csv('data/processed_test.zip', index=False, compression=compression_opts)
+        # save preprocessed dummy data (first 20 rows)
+        X_test.head(20).to_csv('data/dummy/dummy_test_data.zip', index=False, compression=compression_opts)
+    else:
+        X_test.to_csv('data/processed_pred.zip', index=False, compression=compression_opts)
+        # save preprocessed dummy data (first 20 rows)
+        X_test.head(20).to_csv('data/dummy/dummy_pred_data.zip', index=False, compression=compression_opts)
 
-    # save preprocessed dummy data (first 20 rows)
-    X_test.head(20).to_csv('data/dummy/dummy_test_data.zip', index=False, compression=compression_opts)
+    
 
     print('Saving preprocessed X_test successful!')
 
