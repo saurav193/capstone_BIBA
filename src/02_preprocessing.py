@@ -104,7 +104,10 @@ def main(test, train=None):
     # transfrom data using saved one-hot encoder
     X_test = apply_ohe(X_test, to_encode=['income_class', 'density_class', 'climate'], filename='src/joblib/ohe.joblib')
 
-    print('Preprocessing X_test successful!')
+    if train is not None: 
+        print('Preprocessing X_test successful!')
+    else:
+        print('Preprocessing X_pred successful!')
 
     # attach y
     if 'unacast_session_count' in list(test_data.columns):

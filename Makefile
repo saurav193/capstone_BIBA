@@ -4,6 +4,7 @@
 report : results/lgbm_train_result.csv results/catboost_train_result.csv results/gbr_train_result.csv
 predict : results/predicted_data.csv
 
+
 # Split the data
 # 
 #This script splits the data into train and test sets. The test set correspond to the data callected between October and December 2019
