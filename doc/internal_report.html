@@ -425,27 +425,95 @@ summary {
 <ul>
 <li>Describe what kinds of outputs were considered
 <ul>
-<li>We considered building a model that outputs either a confidence interval or probability distribution because we though</li>
+<li>We considered building a model that outputs either a confidence interval or probability distribution</li>
+<li>Since the distribution of the target variable is skewed, we thought that these kinds of estimates would be more robust than a single-value prediction</li>
+</ul></li>
+<li>Explain the ultimate decision
+<ul>
+<li>We respected the fact that playground owners and managers are more comfortable working with single-value predictions</li>
+<li>We built models that predicted either the mean or median session count
+<ul>
+<li>Quantile regression was pursued because the median is less sensitive to extreme values than the mean</li>
+</ul></li>
+<li>Their performance was evaluated using the root mean square error (RMSE) and mean absolute error (MAE), respectively</li>
 </ul></li>
 </ul>
 </div>
 <div id="rationale-behind-the-data-split" class="section level2">
 <h2>Rationale behind the data split</h2>
+<ul>
+<li>We initially received a dataset which included 24 monthly observations for 2506 Biba-enabled playgrounds in the U.S.</li>
+<li>Dates ranged from January 2018 to December 2019</li>
+<li>Observations, with the exception of those from the last three months, were used for model training</li>
+<li>The latter observations were set aside and used as the test set
+<ul>
+<li>Explain why observations from January 2018 were excluded from our analysis (point to visualization in previous section)
+<ul>
+<li>Most playgrounds are missing the target value for this month</li>
+</ul></li>
+<li>The training set consisted of observations from February 2018 through June 2019</li>
+<li>The validation set included observations from July 2019 through September 2019</li>
+</ul></li>
+<li>This split allowed us to avoid data leakage when pursuing a time-dependent model</li>
+</ul>
 </div>
 <div id="analysis-with-old-dataset" class="section level2">
 <h2>Analysis with old dataset</h2>
 <ul>
-<li>Data</li>
-<li>Preprocessing</li>
-<li>Modeling</li>
+<li>Data (point to the .csv file in the GitHub repository and Google Drive)</li>
+<li>Preprocessing
+<ul>
+<li>Drop rows missing the target value; impute other missing values with zeros</li>
+<li>Point to the .py file that contains the relevant functions</li>
+</ul></li>
+<li>Modeling
+<ul>
+<li>Linear regression, Ridge, Lasso; SVM; random forest; different flavours of gradient boosting</li>
+<li>Computation time</li>
+<li>Fitting a model to data in which the dimensionality was reduced via PCA</li>
+<li>Fitting a model to data in which the “super playgrounds” were removed</li>
+<li>Point to the .ipynb files that contain the relevant work</li>
+</ul></li>
 </ul>
 </div>
 <div id="analysis-with-new-dataset" class="section level2">
 <h2>Analysis with new dataset</h2>
 <ul>
-<li>Data</li>
-<li>Preprocessing</li>
-<li>Modeling</li>
+<li>Data (point to the .csv file in the GitHub repository and Google Drive)
+<ul>
+<li>Describe the difference between the new and old dataset
+<ul>
+<li>Explain as to how and why the target variable was capped at 4,000</li>
+</ul></li>
+</ul></li>
+<li>Preprocessing
+<ul>
+<li>Describe the difference between the new and old techniques
+<ul>
+<li>Imputation
+<ul>
+<li>For some features, missing values were in fact synonymous with zeros</li>
+<li>For others, it made more sense to replace missing values with the mean or a specific value (i.e. featured related to election results in Alaska)</li>
+</ul></li>
+<li>Feature engineering and selection to reduce model complexity
+<ul>
+<li>Drop columns in which the proportion of missing values was high</li>
+<li>Remove correlated features</li>
+<li>Combine columns using domain knowledge</li>
+</ul></li>
+</ul></li>
+<li>Point to the .py files that contain the relevant functions</li>
+</ul></li>
+<li>Modeling
+<ul>
+<li>Mention that models were trained and optimized on Amazon EC2</li>
+<li>Tree-based models: random forest, XGBoost, LightGBM, CatBoost</li>
+<li>Time series approach</li>
+<li>Mixed model</li>
+<li>Tiered model</li>
+<li>Point to the .ipynb files that contain the relevant work</li>
+<li>Highlight the odd trend in our residuals (include residual plots of different models)</li>
+</ul></li>
 </ul>
 </div>
 <div id="final-product" class="section level2">
@@ -456,17 +524,31 @@ summary {
 <li>Rationale behind why models that predict the median session counts were included</li>
 </ul>
 </div>
-<div id="potential-improvements" class="section level2">
-<h2>Potential improvements</h2>
+<div id="limitations-and-suggestions" class="section level2">
+<h2>Limitations and suggestions</h2>
+<ul>
+<li>Suggest how to work around high-count target values</li>
+<li>Suggest how to impute missing values</li>
+<li>Recommend revisiting columns that were dropped</li>
+<li>Discuss the potential benefits of performing further feature engineering and selection</li>
+<li>Discuss the limitations of our data product</li>
+</ul>
 </div>
 <div id="conclusion" class="section level2">
 <h2>Conclusion</h2>
 <ul>
 <li>Reexplain how these findings add value to the organization</li>
+<li>Highlight key areas for improvement</li>
+<li>Mention how the ongoing pandemic affects our project</li>
 </ul>
 </div>
 <div id="acknowledgements" class="section level2">
 <h2>Acknowledgements</h2>
+<ul>
+<li>We would like to thank Biba Ventures Inc. for sharing their resources and expertise providing unparalleled support over the course of this project</li>
+<li>Our mentor, Vincenzo Coia</li>
+<li>The UBC MDS program</li>
+</ul>
 </div>
 
 

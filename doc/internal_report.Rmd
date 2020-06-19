@@ -38,22 +38,60 @@ knitr::opts_chunk$set(echo = TRUE)
 - Describe what kinds of outputs were considered
   - We considered building a model that outputs either a confidence interval or probability distribution
   - Since the distribution of the target variable is skewed, we thought that these kinds of estimates would be more robust than a single-value prediction
-- Explain we choice we ultimately made
-
+- Explain the ultimate decision
+  - We respected the fact that playground owners and managers are more comfortable working with single-value predictions
+  - We built models that predicted either the mean or median session count
+    - Quantile regression was pursued because the median is less sensitive to extreme values than the mean
+  - Their performance was evaluated using the root mean square error (RMSE) and mean absolute error (MAE), respectively
 
 ## Rationale behind the data split
 
+- We initially received a dataset which included 24 monthly observations for 2506 Biba-enabled playgrounds in the U.S.
+- Dates ranged from January 2018 to December 2019
+- Observations, with the exception of those from the last three months, were used for model training
+- The latter observations were set aside and used as the test set
+  - Explain why observations from January 2018 were excluded from our analysis (point to visualization in previous section)
+    - Most playgrounds are missing the target value for this month
+  - The training set consisted of observations from February 2018 through June 2019 
+  - The validation set included observations from July 2019 through September 2019
+- This split allowed us to avoid data leakage when pursuing a time-dependent model 
+
 ## Analysis with old dataset
 
-- Data
+- Data (point to the .csv file in the GitHub repository and Google Drive)
 - Preprocessing
+  - Drop rows missing the target value; impute other missing values with zeros
+  - Point to the .py file that contains the relevant functions
 - Modeling
+  - Linear regression, Ridge, Lasso; SVM; random forest; different flavours of gradient boosting
+  - Computation time
+  - Fitting a model to data in which the dimensionality was reduced via PCA
+  - Fitting a model to data in which the "super playgrounds" were removed 
+  - Point to the .ipynb files that contain the relevant work
 
 ## Analysis with new dataset
 
-- Data 
+- Data (point to the .csv file in the GitHub repository and Google Drive)
+  - Describe the difference between the new and old dataset
+    - Explain as to how and why the target variable was capped at 4,000
 - Preprocessing
+  - Describe the difference between the new and old techniques
+    - Imputation
+      - For some features, missing values were in fact synonymous with zeros
+      - For others, it made more sense to replace missing values with the mean or a specific value (i.e. featured related to election results in Alaska)
+    - Feature engineering and selection to reduce model complexity
+      - Drop columns in which the proportion of missing values was high
+      - Remove correlated features
+      - Combine columns using domain knowledge
+  - Point to the .py files that contain the relevant functions
 - Modeling 
+  - Mention that models were trained and optimized on Amazon EC2
+  - Tree-based models: random forest, XGBoost, LightGBM, CatBoost
+  - Time series approach
+  - Mixed model
+  - Tiered model
+  - Point to the .ipynb files that contain the relevant work
+  - Highlight the odd trend in our residuals (include residual plots of different models)
 
 ## Final product
 
@@ -74,10 +112,22 @@ If you want to predict the `unacast_session_count` for a new dataset, this is po
 The preprocessing realized on the data and the models that we use are the same as in the report pipeline. The difference with the pipeline described previously is that instead of generating a report, the output of this pipeline is going to be a csv file, save in the `results` folder. This csv will contain all the information that are in the dataset as an input, and extra columns containing the predicted values for each one of the models (LGBM, Catboost and XGBoost) will be added. This csv file is created in the script `07_prediction`. 
 
 
-## Potential improvements
+## Limitations and suggestions
+
+- Suggest how to work around high-count target values
+- Suggest how to impute missing values
+- Recommend revisiting columns that were dropped
+- Discuss the potential benefits of performing further feature engineering and selection
+- Discuss the limitations of our data product
 
 ## Conclusion
 
 - Reexplain how these findings add value to the organization
+- Highlight key areas for improvement
+- Mention how the ongoing pandemic affects our project
 
 ## Acknowledgements
+
+- We would like to thank Biba Ventures Inc. for sharing their resources and expertise providing unparalleled support over the course of this project
+- Our mentor, Vincenzo Coia
+- The UBC MDS program
