@@ -82,11 +82,15 @@ def main(test, train=None):
 
     # drop observations missing `unacast_session_count`
     test_data = pd.read_csv(test)
-    test_data = drop_missing_unacast(test_data)
+    if 'unacast_session_count' in list(test_data.columns):
+        test_data = drop_missing_unacast(test_data)
 
     # create X and y
-    X_test = test_data.drop('unacast_session_count', axis=1)
-    y_test = test_data.loc[:, 'unacast_session_count']
+    if 'unacast_session_count' in list(test_data.columns):
+        X_test = test_data.drop('unacast_session_count', axis=1)
+        y_test = test_data.loc[:, 'unacast_session_count']
+    else:
+        X_test = test_data
 
     # transform data using saved imputer
     X_test = apply_imputer(X_test, filename='src/joblib/imputer.joblib')
@@ -103,7 +107,8 @@ def main(test, train=None):
     print('Preprocessing X_test successful!')
 
     # attach y
-    X_test['unacast_session_count'] = y_test
+    if 'unacast_session_count' in list(test_data.columns):
+        X_test['unacast_session_count'] = y_test
 
     # save processed data
     X_test.to_csv('data/processed_test.zip', index=False, compression=compression_opts)
