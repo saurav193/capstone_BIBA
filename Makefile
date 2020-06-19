@@ -46,7 +46,7 @@ data/processed_pred.zip data/dummy/dummy_pred_data.zip : src/02_preprocessing.py
 
 # Predictions
 # 
-# This scripts predicts the unicast_session_count for the file named 'X_pred'
+# This scripts predicts the unacast_session_count for the file named 'X_pred'
 results/predicted_data.csv : src/07_prediction.py src/joblib/lgbm_model.joblib src/joblib/catboost_model.joblib src/joblib/gbr_model.joblib data/processed_pred.zip
 	python src/07_prediction.py --new_data=data/processed_pred.zip
 
