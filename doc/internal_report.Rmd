@@ -9,11 +9,37 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Purpose
+## Introduction and purpose
+
+- Describe the UBC MDS program and the capstone project
+- Explain the project objective and how it aligns with the needs of the organization
+- Describe the aim of the report: help individuals navigate our GitHub repository, summarize our findings, report performance of selected models, provide suggestions on how to move forward 
 
 ## Description of the data
 
+- _Should these visualizations be made using the old dataset or the new one?_
+- Discuss notable findings that influenced modeling decisions
+- Describe the distribution of the target variable (include plot)
+- Demonstrate the data sparsity (include plot)
+  - Which columns contain mostly zeros?
+- Illustrate the prevalence of missing values in the explanatory variables (include plot)
+- Visualize the presence of missing values in the target variable (include plot)
+  - Across the playgrounds
+  - Across the months (this will justify why we excluded January 2018 from our analysis)
+    - Other seasonal patterns worth mentioning
+- Mention duplication of information sources
+  - "Sex by Marital Status", "Sex by Age", "Sex by School Enrollment"
+  - Column A is the sum of columns B, C and D
+- Exemplify that some columns are in fact linear transformations of other columns
+  - OSMnx columns: proportions versus counts - one is just a normalized version of the other 
+
 ## Rationale behind the output
+
+- Describe what kinds of outputs were considered
+  - We considered building a model that outputs either a confidence interval or probability distribution
+  - Since the distribution of the target variable is skewed, we thought that these kinds of estimates would be more robust than a single-value prediction
+- Explain we choice we ultimately made
+
 
 ## Rationale behind the data split
 
@@ -39,4 +65,6 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Conclusion
 
-## Aknowledgements
+- Reexplain how these findings add value to the organization
+
+## Acknowledgements
