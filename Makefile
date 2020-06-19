@@ -6,7 +6,7 @@ predict : results/predicted_data.csv
 
 # Split the data
 # 
-#This script splits the data into train and test sets. The test set correspond to the data callected between October and December 2019
+#This script splits the data into train and test sets. The test set corresponds to the data collected between October and December 2019
 data/test_data.zip data/train_data.zip data/playground_stats.zip : src/01_split_data.py data/playground_stats.csv
 	python src/01_split_data.py --in_path=data/playground_stats.csv --out_path=data
 	
