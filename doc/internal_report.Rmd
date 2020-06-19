@@ -61,6 +61,19 @@ knitr::opts_chunk$set(echo = TRUE)
 - Description of selected models (hyperparameters)
 - Rationale behind why models that predict the median session counts were included
 
+Created several scripts to allow you to reproduce our analysis. 
+If you want to generate the report from scratch, with all the MAE computed ‘in real life’, using just the raw data as an input, you can just run the command `make report` in the command line from the root of the repo (look at the instructions [here]()). This will run several scripts under the hood. 
+The first script `01_split_data.py` is going to take the raw data called `playground_stats` that you will have to place in the `data` folder. It will then split the data between the train and test set as explained before. 
+Then, the second script `02_preprocessing.py` will fit a preprocessor on the train data, save it as a `.joblib` files (`imputer.joblib` and `ohe.joblib`), and transform the train and the test sets, and save those 2 preprocessed files (`processed_train` and `processed_test` in the `data` folder). It will also generate 2 dummy preprocessed train sets and test sets, that are smaller versions of the actual train set and test set, that we will use to test our scripts. 
+The preprocess script that we decided to use is exactly the same as the one we used on the second dataset we got (see above for more details). 
+Regarding the models to run in our pipeline, we selected 3 models : LightGBM, Catboost and XGBoost. The hyperparameters are hard encoded in our scripts, and we performed hyperparameter tuning for LightGBM, Catboost and XGBoost in the corresponding Jupyter Notebook files. We chose those models because they are able to minimise the MAE, they are pretty fast, and they correspond to the best results we got. 3 scripts, one to fit and predict one model.  
+Note about Catboost : when you run the pipeline, you’ll see that ‘catboost model has been trained!’ is printed twice, the first time corresponds to the test of the `main` function, while the second one actually correspond to when catboost has been fitted. You can understand that the first time it is printed corresponds roughly to the beginning of the fitting of the catboost model, while the second corresponds to when the model is fitted. 
+The last script of this pipeline is the one that generates this report, where all the values of the MAE have not been hard encoded. 
+
+If you want to predict the `unacast_session_count` for a new dataset, this is possible. We created a second pipeline to allow you to do so (see the instruction to run it in the README).
+The preprocessing realized on the data and the models that we use are the same as in the report pipeline. The difference with the pipeline described previously is that instead of generating a report, the output of this pipeline is going to be a csv file, save in the `results` folder. This csv will contain all the information that are in the dataset as an input, and extra columns containing the predicted values for each one of the models (LGBM, Catboost and XGBoost) will be added. This csv file is created in the script `07_prediction`. 
+
+
 ## Potential improvements
 
 ## Conclusion
