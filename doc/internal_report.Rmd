@@ -89,6 +89,18 @@ knitr::opts_chunk$set(echo = TRUE)
   - Tree-based models: random forest, XGBoost, LightGBM, CatBoost
   - Time series approach
   - Mixed model
+  
+  
+  As not all the playgrounds seemed to behave the same we (for example a playground in South of the US may have more visits in December than in summer because winter is not very cold, while summer is very hot), but there where not enough data per playground and to many playgrounds to run a different model for each playground, we decided to implement mixed linear models. The way we did it is that we clustered the playgrounds using some similarities (explained latter) and then the model used fit a regression hyperplan on the whole data. Once we have this hyperplan, for each different hyperplan, the model adds a constant to it, so that there is one regression hyperplan per cluster. By doing it this way, the regression plan of one cluster depends on the regression plan of another cluster, but each cluster still have it's own equation, so the model is less geenric, more specific to a given playground.
+  
+  We tried to do it in both R (using `lmer` function) and Python (`smf` function from the `statsmodels.formula.api` library)
+  
+  In R,we tried to cluster the data using the `state`, the `climate`, the `density_class` and the `income_class`. No improvement compared to before, validation RMSE around 200 and validation MAE around 100. We also tried to run K-means with 2 clusters and 4 clusters, and use those clusters when we ran the mixed effects model. In this case, we have to highlight that a same playground may have values in different months. We decided to use K-means just to see if the results were significantly better, and digg more into this problem if this was the case. Unfortunately, this didn't improve neither our RMSE (200) nor our MAE (100), so we didn't digg more into this.
+  
+  Python : https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/training_mixed_effects_Python.ipynb 
+  Runing Mixed effects model on Python was more of a trouble, because in contrary to R, the function in Python doesn't have an arugment that allows you to drop the columns that make the algorithm not converging. First thing we had to do was to write a function that drops all those columns (see chunk of code starting by #Find the columns that make the fit function fail). Then, we fitted mixed effects models using different clusters (as we did in R). The different clusters that we used were defined by the `climate`, the `density_class` and the `income_class` features (all separated in different models). We got no improvement here either. We got validation RMSE around 200 and validation MAE around 100. We then tried to capped the values at 0, so that we won't have any predicted value that would be negative (as it would make no sense). However, this didn't have much of an impact on the RMSE not on the MAE.
+  
+  
   - Tiered model
   - Point to the .ipynb files that contain the relevant work
   - Highlight the odd trend in our residuals (include residual plots of different models)
