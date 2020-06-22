@@ -70,3 +70,4 @@ clean :
 	rm -rf data/test_data.zip
 	rm -rf data/train_data.zip
 	rm -rf data/playground_stats.zip
+	rm -rf data/dummy/dummy_pred_data.zip
