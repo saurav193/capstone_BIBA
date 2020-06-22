@@ -9,98 +9,82 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Introduction and purpose
+## Purpose
 
-- Describe the UBC MDS program and the capstone project
-- Explain the project objective and how it aligns with the needs of the organization
-- Describe the aim of the report: help individuals navigate our GitHub repository, summarize our findings, report performance of selected models, provide suggestions on how to move forward 
+This report serves four purposes: (1) help individuals navigate our GitHub repository; (2) discuss our analysis and findings; (3) report the performances of selected models: and (4) provide recommendations on how to move forward.
 
 ## Description of the data
 
-- _Should these visualizations be made using the old dataset or the new one?_
-- Discuss notable findings that influenced modeling decisions
-- Describe the distribution of the target variable (include plot)
-- Demonstrate the data sparsity (include plot)
-  - Which columns contain mostly zeros?
-- Illustrate the prevalence of missing values in the explanatory variables (include plot)
-- Visualize the presence of missing values in the target variable (include plot)
-  - Across the playgrounds
-  - Across the months (this will justify why we excluded January 2018 from our analysis)
-    - Other seasonal patterns worth mentioning
-- Mention duplication of information sources
-  - "Sex by Marital Status", "Sex by Age", "Sex by School Enrollment"
-  - Column A is the sum of columns B, C and D
-- Exemplify that some columns are in fact linear transformations of other columns
-  - OSMnx columns: proportions versus counts - one is just a normalized version of the other 
+Exploratory data analysis was performed at the beginning of the project. The code for the exploratory data analysis can be found in the [`/eda`](https://github.com/Z2hMedia/capstone_machine_learning/tree/master/eda) directory.
 
+The key observations are as follows. First, the marginal distribution of the `unacast_session_count` has a positive skew (Figure 1). Second, Figure 2 shows the sparsity of the data. Many of the features derived from data collected through the app are sparse. Third, missing values were present in both the explanatory and response variables. The presence of missing values across the explanatory variables is summarized in Figure 3. The next two histograms illustrate the distribution of missing `unacast_session_count`. As shown in Figure 4, there are a handful of playgrounds that are missing the target value for over half of the months. Figure 5 suggests that there is a temporal pattern in the distribution of missing target values. `unacast_session_count` is more likely to be missing in the winter months; notably, the target value for January 2018 is missing for many playgrounds.
+
+``` {r Figure 1}
+```
+
+``` {r Figure 2}
+```
+
+``` {r Figure 3}
+```
+
+``` {r Figure 4}
+```
+
+``` {r Figure 5}
+```
+
+Exploratory data analysis also revealed the possible duplication of information in the dataset. For example, among the features derived from the U.S. Census, information related to sex is encoded in several places (i.e. “Sex by Age”, “Sex by Marital Status”, “Sex by School Enrollment”). Upon closer inspection of the dataset, we also discovered that some columns are merely the sum of others. The pattern can be observed among the U.S. Census-related features; for example, `B13016e2`(“Women Who Had a Birth by Age: Total”) is the sum of `B13016e3` through `B13016e9`. On a similar note, we also noticed that some columns can be obtained by linear transformations of other columns. `streets_per_node_counts_*` and `streets_per_node_proportion_*` are a great example of this because one is just a normalized version of the other.
+ 
 ## Rationale behind the output
 
-- Describe what kinds of outputs were considered
-  - We considered building a model that outputs either a confidence interval or probability distribution
-  - Since the distribution of the target variable is skewed, we thought that these kinds of estimates would be more robust than a single-value prediction
-- Explain the ultimate decision
-  - We respected the fact that playground owners and managers are more comfortable working with single-value predictions
-  - We built models that predicted either the mean or median session count
-    - Quantile regression was pursued because the median is less sensitive to extreme values than the mean
-  - Their performance was evaluated using the root mean square error (RMSE) and mean absolute error (MAE), respectively
+At first, we considered creating regression models that output either a confidence interval or probability distribution. Since the marginal distribution of `unacast_session_count` is skewed, we thought that these kinds of estimates would be more robust to outliers than a single-value prediction. However, given that the end users (i.e. playground owners and managers) are more comfortable working with single-value predictions than estimates that incorporate uncertainty, we chose to build models that predict either the mean or median `unacast_session_count`. The performance of these models were evaluated using the root mean squared error (RMSE) and mean absolute error (MAE), respectively. Quantile regression was also pursued here because the mean is less sensitive to extreme values than the mean.
 
 ## Rationale behind the data split
 
-- We initially received a dataset which included 24 monthly observations for 2506 Biba-enabled playgrounds in the U.S.
-- Dates ranged from January 2018 to December 2019
-- Observations, with the exception of those from the last three months, were used for model training
-- The latter observations were set aside and used as the test set
-  - Explain why observations from January 2018 were excluded from our analysis (point to visualization in previous section)
-    - Most playgrounds are missing the target value for this month
-  - The training set consisted of observations from February 2018 through June 2019 
-  - The validation set included observations from July 2019 through September 2019
-- This split allowed us to avoid data leakage when pursuing a time-dependent model 
+The dataset consists of 24 monthly observations for 2506 Biba-enabled playgrounds in the United States. The dates ranged from January 2018 to December 2019. Data from January 2018 were excluded from our analysis because many observations are missing the target value for this month, as shown in Figure 5. Therefore, our training set consisted of observations from February 2018 through June 2019 and our validation set included observations from July 2019 through September 2019. The observations from the last three months were aside for model testing. This strategy enabled us to avoid data leakage when pursuing a time series approach.
 
 ## Analysis with old dataset
 
-- Data (point to the .csv file in the GitHub repository and Google Drive)
-- Preprocessing
-  - Drop rows missing the target value; impute other missing values with zeros
-  - Point to the .py file that contains the relevant functions
-- Modeling
-  - Linear regression, Ridge, Lasso; SVM; random forest; different flavours of gradient boosting
-  - Computation time
-  - Fitting a model to data in which the dimensionality was reduced via PCA
-  - Fitting a model to data in which the "super playgrounds" were removed 
-  - Point to the .ipynb files that contain the relevant work
+The data used in this iteration of modeling can be found [here](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/data/old_train_data.zip). On Google Drive, it is saved as `playground_stats.csv`. Since the focus of this iteration was not on preprocessing, rows missing the target value were dropped and missing values in the explanatory variables were imputed with zeros. [`preprocessing_old.py`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/preprocessing_old.py) contains the functions that were used to clean the data prior to modeling.
+
+Nine algorithms
+
+The list below shows which Jupyter Notebook contains work on which algorithm. 
+
+- Linear regression, Ridge, Lasso; SVM; random forest; different flavours of gradient boosting
+
+With respect to the computation time, SVM was too slow to train and the linear regression models were the fastest. Generally speaking, these models performed horribly. The validation RMSE was in the range of 300 to 600. 
+
+In addition to fitting these off-the-shelf regressors, we also fit a model to data in which the dimensionality was reduced via PCA. The function used to perform the PCA can be found here. The list below shows which Jupyter Notebook contains work on which algorithm. Dimensionality was reduced in two ways: (1) performing PCA on the entire dataset and (2) performing PCA on groups of related columns. 
+
+Since we noticed a skewness in the target value distribution, out of curiousity, we tried fitting a model to data in which the "super playgrounds" (i.e. playgrounds with a historic session count of over 70,000 were removed). This generally improved the fit of the model (decreased both the training and validation RMSE values substantially). The work can be found in [these Jupyter Notebook] files.
 
 ## Analysis with new dataset
 
-- Data (point to the .csv file in the GitHub repository and Google Drive)
-  - Describe the difference between the new and old dataset
-    - Explain as to how and why the target variable was capped at 4,000
-- Preprocessing
-  - Describe the difference between the new and old techniques
-    - Imputation
-      - For some features, missing values were in fact synonymous with zeros
-      - For others, it made more sense to replace missing values with the mean or a specific value (i.e. featured related to election results in Alaska)
-    - Feature engineering and selection to reduce model complexity
-      - Drop columns in which the proportion of missing values was high
-      - Remove correlated features
-      - Combine columns using domain knowledge
-  - Point to the .py files that contain the relevant functions
-- Modeling 
-  - Mention that models were trained and optimized on Amazon EC2
-  - Tree-based models: random forest, XGBoost, LightGBM, CatBoost
-  - Time series approach
-  - Mixed model
-  - Tiered model
-  - Point to the .ipynb files that contain the relevant work
-  - Highlight the odd trend in our residuals (include residual plots of different models)
+The second iteration of modeling was performed using [this data] (point to the .csv file in the GitHub repository and Google Drive). The major difference between the new and old dataset is the range of the target variable. `unacast_session_counts` over 3000 were normalized to fall between 3000 and 4000. This was done because in the previous iteration, we saw that removing observations from the super playgrounds (i.e. the outliers), the model fit improved dramatically. 
+
+More preprocessing was considered during this iteration. Imputation techniques were reconsidered. For some features, missing values were in fact synonymous with zeros. For others, it made more sense to replace missing values with the mean or a specific value (i.e. featured related to election results in Alaska). Further feature engineering and selection were performed to reduce model complexity. We dropped columns in which the proportion of missing values was high (provide examples), removed correlated features (provide examples), and combined columns using domain knowledge (provide examples). Here are the .py files that contain the relevant functions.
+
+About 5 different models were pursued during this iteration. The list below shows which Jupyter Notebook contains work on which algorithm. 
+
+- SVM; random forest; different flavours of gradient boosting
+
+It should be noted that, to speed up computation, these notebooks were run on Amazon EC2. 
+
+In addition to these off-the-shelf regressors, a time-dependent model was built where the lagged target variable was included as an explanatory variable. We assumed that session counts would be similar across consecutive months for a given playground so that these lagged values could serve as useful input signals. [Click here to jump to the Notebook]
+
+Two other models were built to address the skewness in the target variable. A mixed effects model was also pursued. The playgrounds were placed in groups based on a value of a categorical variable or clustering algorithms such as k-means. The intention was to fit a different regression surface for each group of playgrounds, instead of trying to fit a single hyperplane to the data. [Click here to jump to the notebook]
+
+We also considered a tiered approach. This model consisted of a classifier which would predict an observation to be either low count or high count. Based on that decision, a prediction would be made using a regressor that was trained on low-count or high-count data. [Click here to jump to the notebook].
+
+However, none of these models outperformed the boosting models mentioned earlier.
+
+One that might be worth mentioning is a trend that we observed in many of the residual plots(include residual plots of different models).
 
 ## Final product
-
-- Link to README with usage instructions
-- Description of selected models (hyperparameters)
-- Rationale behind why models that predict the median session counts were included
-
 Created several scripts to allow you to reproduce our analysis. 
-If you want to generate the report from scratch, with all the MAE computed ‘in real life’, using just the raw data as an input, you can just run the command `make report` in the command line from the root of the repo (look at the instructions [here]()). This will run several scripts under the hood. 
+If you want to generate the report from scratch, with all the MAE computed ‘in real life’, using just the raw data as an input, you can just run the command `make report` in the command line from the root of the repo (look at the instructions [here](link to the README with usage instructions)). This will run several scripts under the hood. 
 The first script `01_split_data.py` is going to take the raw data called `playground_stats` that you will have to place in the `data` folder. It will then split the data between the train and test set as explained before. 
 Then, the second script `02_preprocessing.py` will fit a preprocessor on the train data, save it as a `.joblib` files (`imputer.joblib` and `ohe.joblib`), and transform the train and the test sets, and save those 2 preprocessed files (`processed_train` and `processed_test` in the `data` folder). It will also generate 2 dummy preprocessed train sets and test sets, that are smaller versions of the actual train set and test set, that we will use to test our scripts. 
 The preprocess script that we decided to use is exactly the same as the one we used on the second dataset we got (see above for more details). 
@@ -112,22 +96,20 @@ If you want to predict the `unacast_session_count` for a new dataset, this is po
 The preprocessing realized on the data and the models that we use are the same as in the report pipeline. The difference with the pipeline described previously is that instead of generating a report, the output of this pipeline is going to be a csv file, save in the `results` folder. This csv will contain all the information that are in the dataset as an input, and extra columns containing the predicted values for each one of the models (LGBM, Catboost and XGBoost) will be added. This csv file is created in the script `07_prediction`. 
 
 
-## Limitations and suggestions
+## Recommendations
 
-- Suggest how to work around high-count target values
-- Suggest how to impute missing values
-- Recommend revisiting columns that were dropped
-- Discuss the potential benefits of performing further feature engineering and selection
-- Discuss the limitations of our data product
+The first suggestion deals with the outliers in the target variable. Here, we propose a few strategies to deal with absurdly high session counts. Other statistical or machine learning models that are more robust to skewness could be considered. The strategy of fitting multiple hyperplanes to the data could also be further pursued. Most importantly, the way that the target value is calculated in the backend using cell phone location data could be reevaluated. Perhaps the polygon that is drawn around each playground is too large or poorly shaped, giving the impression that more playground visits took place than there actually were.
+
+The second suggestion deals with missing target values. In both iterations, we simply dropped observations missing target values. However, these missing values could be imputed more elegantly. A missing value could be imputed with zero if evidence suggests that the playground was not yet in operation during that month. In comparison, if evidence suggests that a playground sees visitors year round, but is located in an area with spotty cell phone reception, missing values could be filled using multiple imputation to take into consideration the uncertainty around the true value. These issues highlight the difficulty with this imputation process and illustrate that there is no one-size-fits-all approach.
+
+Third, we dropped a handful of columns with a high proportion of missing values (e.g. transit_score). However, these features may have been important predictors of playground usage. It may be worth consulting additional external resources to fill in these missing values.
+
+Our final suggestion involves additional feature engineering and selection. Although it is unclear as to whether this will improve the fit of the models, it will reduce their complexity. Perhaps this will allow for other algorithms, which were initially not used for reasons related to time complexity, to be considered. It should also be mentioned that this is a time-consuming procedure since there are over 600 columns left to be reexamined.
 
 ## Conclusion
 
-- Reexplain how these findings add value to the organization
-- Highlight key areas for improvement
-- Mention how the ongoing pandemic affects our project
+Although the models are in need of improvement, we hope that our work has at least brought the organization closer to attaining a reliable predictor that can be used to inform the decision-making process around community play spaces. It should also be mentioned that these models were fit to data collected before the pandemic. Although people are returning to playgrounds as restrictions ease, these models may only be reflective of pre-pandemic behaviour. Further model tuning may be required to incorporate the behavioural changes that took place and are continuing to take place in society. 
 
 ## Acknowledgements
 
-- We would like to thank Biba Ventures Inc. for sharing their resources and expertise providing unparalleled support over the course of this project
-- Our mentor, Vincenzo Coia
-- The UBC MDS program
+We would like to thank Biba Ventures Inc. for sharing their resources and providing unparalleled support over the course of this project. We extend our gratitude to our mentor, Vincenzo Coia, and the UBC MDS program for making this experience possible. 
