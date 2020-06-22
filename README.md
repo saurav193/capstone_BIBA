@@ -42,7 +42,7 @@ To generate the report using the Makefile :
 - run `make report` in your command line from the root of the repository.
 - The report will be generated in the `doc` folder.
 
-To predict the target variable from the models we selected, using the makefile
+To predict the target variable from the models we selected, using the Makefile
 - make sure that you put the data you want to use to generate the report in the data folder, under the name `playground_stats.csv`
 - make sure that you saved the data for which you want to predict the target variable, in the data folder, under the name `X_pred.zip`. This file can or can not contain the target variable as one of its features.
 - run `make predict` in your command line from the root of the repository.
