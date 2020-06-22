@@ -28,7 +28,12 @@ from create_apply_ohe import create_ohe, apply_ohe
 
 def main(test, train=None):
     
+
     compression_opts = dict(method='zip', archive_name='out.csv')  
+
+    #import name of the columns for the data we worked on
+    former_data = pd.read_csv('../data/columns_name.csv')
+    former_columns = list(former_data.columns)
 
     #===================================
     # PREPROCESS X_TRAIN_VALID
@@ -37,6 +42,10 @@ def main(test, train=None):
     if train is not None:
 
         train_data = pd.read_csv(train)
+
+        # check if the columns are the same as in the data we work with
+        if former_columns != list(train_data.columns):
+            print('The data you are using is not similar to the one we used to train our models, the pipeline may throw an error at some point')
 
         # drop observations missing `unacast_session_count`
         train_data = drop_missing_unacast(train_data)
@@ -84,6 +93,10 @@ def main(test, train=None):
     test_data = pd.read_csv(test)
     if 'unacast_session_count' in list(test_data.columns):
         test_data = drop_missing_unacast(test_data)
+
+    if list(former_data.drop(columns=['unacast_session_count']).columns) != list(test_data.columns):
+        print('The data you are using is not similar to the one we used to train our models, the pipeline may throw an error at some point')
+
 
     # create X and y
     if 'unacast_session_count' in list(test_data.columns):
