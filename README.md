@@ -16,22 +16,24 @@ Authors: Saurav Chowdhury, Sirine Chahma, Reiko Okamoto, Tani Barasch
 - How to render the RMarkdown file
 - How to use Makefile 2 (prediction pipeline)
 - Run each script independently
-### Split the data
+
+### Run the scripts independently 
+#### Split the data
 `python src/01_split_data.py --in_path=data/playground_stats.csv --out_path=data`
 
-### Preprocessing
+#### Preprocessing
 `python src/02_preprocessing.py --test=data/test_data.zip --train=data/train_data.zip`
 
-### GBR
+#### GBR
 `python src/03_gbr_model.py --train=data/processed_train.zip --test=data/processed_test.zip --model_path=src/joblib/ --out_path=results/`
 
-### Catboost
+#### Catboost
 `python src/04_catboost_model.py --train=data/processed_train.zip --test=data/processed_test.zip --model_path=src/joblib --out_path=results/`
 
-### LGBM
+#### LGBM
 `python src/05_lgbm_model.py --train=data/processed_train.zip --test=data/processed_test.zip --model_path=src/joblib/ --out_path=results/`
 
-## Make file
+### Makefile
 
 **Caution** : If the data set that you use doesn't have the same stucture/features in the same order, as the one we trained our models on, this may throw an error. When running the makefile with your data, you will be warned if this is the case. 
 
