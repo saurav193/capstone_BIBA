@@ -72,39 +72,49 @@ Table 2.
 |   |   |
 |   |   |
 
-Out of curiousity, we also tried fitting models to data in which the playgrounds with historic session counts greater than 70,000 were removed. This dramatically improved the fit of the model, decreasing the error in both the training and validation set. [`/src/training_gradient_boost_01.ipynb`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/training_gradient_boost_01.ipynb) illustrates the improvement in model performance.
+Out of curiousity, we also tried fitting models to data in which the playgrounds with historic session counts greater than 70000 were removed. This dramatically improved the fit of the model, decreasing the error in both the training and validation set. [`/src/training_gradient_boost_01.ipynb`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/training_gradient_boost_01.ipynb) illustrates the improvement in model performance.
 
 ## Analysis with the new dataset
 
-The second iteration of modeling was performed using [this data] (point to the .csv file in the GitHub repository and Google Drive). The major difference between the new and old dataset is the range of the target variable. `unacast_session_counts` over 3000 were normalized to fall between 3000 and 4000. This was done because in the previous iteration, we saw that removing observations from the super playgrounds (i.e. the outliers), the model fit improved dramatically.
+The data used in this iteration of modeling can be found [here](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/data/train_data.zip). On Google Drive, it is saved as `playground_stats_capped.csv`. The major difference between the new and old dataset is the range of the target variable. `unacast_session_count` values over 3000 were normalized to fall between 3000 and 4000.
 
-About 5 different models were pursued during this iteration. The list below shows which Jupyter Notebook contains work on which algorithm. 
+Preprocessing techniques were reconsidered. As for imputation, we began by taking a closer look at each feature. In some features, missing values were in fact synonymous with zeros. In others, it made more sense to replace missing values with the mean or a specific value. For example, missing values related to presidential election results in Alaska were filled in manually. Feature engineering and selection were also performed to reduce dimensionality. This involved dropping columns with low fill rates, removing correlated features, and combining columns using domain knowledge. The discussion surrounding feature engineering and selection is documented [here](https://github.com/Z2hMedia/capstone_machine_learning/issues/95). [`/src/imputer.py`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/imputer.py), [`/src/feature_eng.py`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/feature_eng.py), and [`/src/drop.py`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/drop.py) contain the functions that were used to preprocess the input data.
 
-- SVM; random forest; different flavours of gradient boosting
+Ten different kinds of models were pursued during this iteration. Table 3 shows where the work for each model can be located. It should be mentioned that Jupyter notebooks were run on Amazon EC2 to reduce computation time.
 
-It should be noted that, to speed up computation, these notebooks were run on Amazon EC2. 
+Table 3.
 
-In addition to these off-the-shelf regressors, a time-dependent model was built where the lagged target variable was included as an explanatory variable. We assumed that session counts would be similar across consecutive months for a given playground so that these lagged values could serve as useful input signals. [Click here to jump to the Notebook]
+| Filename  | Model  |
+|--:|---|
+| [`training_SVR_CatBoost_02.ipynb`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/training_SVR_CatBoost_02.ipynb)  |   |
+| [`training_LGBM_02.ipynb`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/training_LGBM_02.ipynb)  |   |
+| [`training_random_forest_02.ipynb`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/training_random_forest_02.ipynb)  |   |
+| [`training_gradient_boost_02.ipynb`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/training_gradient_boost_02.ipynb)  |   |
+| [`training_time_dependent.ipynb`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/training_time_dependent.ipynb)  |   |
+| [`training_mixed_effects_Python.ipynb`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/training_mixed_effects_Python.ipynb)  |   |
+| [`training_mixed_effects_R.ipynb`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/training_mixed_effects_R.ipynb)  |   |
+| [`training_tiered.ipynb`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/training_tiered.ipynb)  |   |
 
-Two other models were built to address the skewness in the target variable. A mixed effects model was also pursued. The playgrounds were placed in groups based on a value of a categorical variable or clustering algorithms such as k-means. The intention was to fit a different regression surface for each group of playgrounds, instead of trying to fit a single hyperplane to the data. [Click here to jump to the notebook]
+#### Time-series approach
 
-We also considered a tiered approach. This model consisted of a classifier which would predict an observation to be either low count or high count. Based on that decision, a prediction would be made using a regressor that was trained on low-count or high-count data. [Click here to jump to the notebook].
+A time-series approach was pursued in which the lagged target variable was included as an explanatory variable. We assumed that session counts would be similar across consecutive months for a given playground and would therefore serve as useful input signals. It is worth mentioning that, when training this model, ordinary _k_-fold cross validation could not be used since the random partition of the data could result in data leakage. Moreover, we could not use an off-the-shelf time-series cross-validator because the number of observations for each month was inconsistent. As a result, we had to create our own implementation of nested cross-validation.
 
-However, none of these models outperformed the boosting models mentioned earlier.
+#### Mixed effects
 
-One that might be worth mentioning is a trend that we observed in many of the residual plots(include residual plots of different models).
-
-  As not all the playgrounds seemed to behave the same we (for example a playground in South of the US may have more visits in December than in summer because winter is not very cold, while summer is very hot), but there where not enough data per playground and to many playgrounds to run a different model for each playground, we decided to implement mixed linear models. The way we did it is that we clustered the playgrounds using some similarities (explained latter) and then the model used fit a regression hyperplan on the whole data. Once we have this hyperplan, for each different hyperplan, the model adds a constant to it, so that there is one regression hyperplan per cluster. By doing it this way, the regression plan of one cluster depends on the regression plan of another cluster, but each cluster still have it's own equation, so the model is less geenric, more specific to a given playground.
+Since not all the playgrounds appeared to behave the same (for example a playground in South of the US may have more visits in December than in summer because winter is not very cold, while summer is very hot), but there where not enough observations per playground and too many playgrounds to run a different model for each playground, we decided to implement mixed linear models. The way we did it is that we clustered the playgrounds using some similarities and then the model used fit a regression hyperplane on the whole data. Once we have this hyperplane, for each different hyperplan, the model adds a constant to it, so that there is one regression hyperplan per cluster. Through this, the regression plan of one cluster depends on the regression plan of another cluster, but each cluster still have it's own equation, so the model is less geenric, more specific to a given playground.
   
-  We tried to do it in both R (using `lmer` function) and Python (`smf` function from the `statsmodels.formula.api` library)
+We build mixed effects models using both R (using `lmer` function) and Python (`smf` function from the `statsmodels.formula.api` library).
   
-  In R,we tried to cluster the data using the `state`, the `climate`, the `density_class` and the `income_class`. No improvement compared to before, validation RMSE around 200 and validation MAE around 100. We also tried to run K-means with 2 clusters and 4 clusters, and use those clusters when we ran the mixed effects model. In this case, we have to highlight that a same playground may have values in different months. We decided to use K-means just to see if the results were significantly better, and digg more into this problem if this was the case. Unfortunately, this didn't improve neither our RMSE (200) nor our MAE (100), so we didn't digg more into this.
+In R, we tried to cluster the data using the `state`, the `climate`, the `density_class` and the `income_class`. No improvement compared to before, validation RMSE around 200 and validation MAE around 100. We also tried to run K-means with 2 then 4 clusters, and use those clusters to run the mixed effects model. In this case, we have to highlight that a same playground may have values in different months. We decided to use K-means just to see if the results were significantly better, and digg more into this problem if this was the case. Unfortunately, this didn't improve neither our RMSE (200) nor our MAE (100).
   
-  Python : https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/training_mixed_effects_Python.ipynb 
-  Runing Mixed effects model on Python was more of a trouble, because in contrary to R, the function in Python doesn't have an arugment that allows you to drop the columns that make the algorithm not converging. First thing we had to do was to write a function that drops all those columns (see chunk of code starting by #Find the columns that make the fit function fail). Then, we fitted mixed effects models using different clusters (as we did in R). The different clusters that we used were defined by the `climate`, the `density_class` and the `income_class` features (all separated in different models). We got no improvement here either. We got validation RMSE around 200 and validation MAE around 100. We then tried to capped the values at 0, so that we won't have any predicted value that would be negative (as it would make no sense). However, this didn't have much of an impact on the RMSE not on the MAE.
-  
-More preprocessing was considered during this iteration. Imputation techniques were reconsidered. For some features, missing values were in fact synonymous with zeros. For others, it made more sense to replace missing values with the mean or a specific value (i.e. featured related to election results in Alaska). Further feature engineering and selection were performed to reduce model complexity. We dropped columns in which the proportion of missing values was high (provide examples), removed correlated features (provide examples), and combined columns using domain knowledge (provide examples). Here are the .py files that contain the relevant functions.
+Runing Mixed effects model on Python was more of a trouble, because in contrary to R, the function in Python doesn't have an arugment that allows you to drop the columns that make the algorithm not converging. First thing we had to do was to write a function that drops all those columns (see chunk of code starting by #Find the columns that make the fit function fail). Then, we fitted mixed effects models using different clusters (as we did in R). The different clusters that we used were defined by the `climate`, the `density_class` and the `income_class` features (all separated in different models). We got no improvement here either. We got validation RMSE around 200 and validation MAE around 100. We then tried to capped the values at 0, so that we won't have any predicted value that would be negative (as it would make no sense). However, this didn't have much of an impact on the RMSE not on the MAE.
 
+#### Tiered approach
+
+We also considered a tiered approach. This model consisted of a classifier which would predict an observation to be either low count or high count. Based on that decision, a prediction would be made using a regressor that was trained on low-count or high-count data.
+
+``` {r Residual plots}
+```
 
 ## Data product
 
