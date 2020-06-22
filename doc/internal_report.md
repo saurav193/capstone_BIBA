@@ -32,6 +32,68 @@ pattern in the distribution of missing target values.
 months; notably, the target value for January 2018 is missing for many
 playgrounds.
 
+<div class="figure">
+
+<img src="../results/report_figures/figure_1.png" alt="Figure 1. Marginal distribution of the target variable." width="464" />
+
+<p class="caption">
+
+Figure 1. Marginal distribution of the target variable.
+
+</p>
+
+</div>
+
+<div class="figure">
+
+<img src="../results/report_figures/figure_2.png" alt="Figure 2. Counts of features with a certain proportion of zeros." width="450" />
+
+<p class="caption">
+
+Figure 2. Counts of features with a certain proportion of zeros.
+
+</p>
+
+</div>
+
+<div class="figure">
+
+<img src="../results/report_figures/figure_3.png" alt="Figure 3. Counts of features with a certain proportion of missing values" width="450" />
+
+<p class="caption">
+
+Figure 3. Counts of features with a certain proportion of missing values
+
+</p>
+
+</div>
+
+<div class="figure">
+
+<img src="../results/report_figures/figure_4.png" alt="Figure 4. Counts of playgrounds with a certain number of missing target values. Playgrounds missing less than two observations are excluded from this plot." width="450" />
+
+<p class="caption">
+
+Figure 4. Counts of playgrounds with a certain number of missing target
+values. Playgrounds missing less than two observations are excluded from
+this plot.
+
+</p>
+
+</div>
+
+<div class="figure">
+
+<img src="../results/report_figures/figure_5.png" alt="Figure 5. Distribution of missing target values across months." width="458" />
+
+<p class="caption">
+
+Figure 5. Distribution of missing target values across months.
+
+</p>
+
+</div>
+
 Exploratory data analysis also revealed the possible duplication of
 information in the dataset. For example, among the features derived from
 the U.S. Census, information related to sex is encoded in several places
@@ -86,17 +148,18 @@ imputed with zeros.
 contains the functions that were used to clean the data prior to
 modeling.
 
-Nine algorithms were used. Table 1 shows where the .ipynb file for each
+Ten algorithms were used. Table 1 shows where the .ipynb file for each
 algorithm can be found.
 
-Table 1.
+Table 1. Locations of .ipynb files containing modeling work using the
+old dataset.
 
-|                                                                                                                                          Filename | Algorithms |
-| ------------------------------------------------------------------------------------------------------------------------------------------------: | ---------- |
-|                     [`/src/training_LGBM_01.ipynb`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/training_LGBM_01.ipynb) |            |
-|   [`/src/training_random_forest_01.ipynb`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/training_random_forest_01.ipynb) |            |
-| [`/src/training_gradient_boost_01.ipynb`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/training_gradient_boost_01.ipynb) |            |
-|     [`/src/training_SVR_CatBoost_01.ipynb`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/training_SVR_CatBoost_01.ipynb) |            |
+|                                                                                                                                          Filename | Algorithms                                                          |
+| ------------------------------------------------------------------------------------------------------------------------------------------------: | ------------------------------------------------------------------- |
+|                     [`/src/training_LGBM_01.ipynb`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/training_LGBM_01.ipynb) | `LinearRegression`, `Ridge`, `Lasso`, `ElasticNet`, `LGBMRegressor` |
+|   [`/src/training_random_forest_01.ipynb`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/training_random_forest_01.ipynb) | `RandomForestRegressor`                                             |
+| [`/src/training_gradient_boost_01.ipynb`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/training_gradient_boost_01.ipynb) | `GradientBoostingRegressor`, `XGBRegressor`                         |
+|     [`/src/training_SVR_CatBoost_01.ipynb`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/training_SVR_CatBoost_01.ipynb) | `SVR`, `CatBoostRegressor`                                          |
 
 Across the board, these rudimentary models performed poorly. The
 validation RMSE values were in the range of 300 to 600.
@@ -108,14 +171,14 @@ on groups of related columns.
 contains the functions used to perform PCA. Table 2 describes where the
 work can be found.
 
-Table 2.
+Table 2. Locations of .ipynb files containing modeling work on data in
+which PCA was applied.
 
-| Filename | Algorithms |
-| -------: | ---------- |
-|          |            |
-|          |            |
-|          |            |
-|          |            |
+|                                                                                                                                          Filename | Algorithms                  |
+| ------------------------------------------------------------------------------------------------------------------------------------------------: | --------------------------- |
+|     [`/src/training_SVR_CatBoost_02.ipynb`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/training_SVR_CatBoost_02.ipynb) | `CatBoostRegressor`         |
+| [`/src/training_gradient_boost_01.ipynb`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/training_gradient_boost_01.ipynb) | `GradientBoostingRegressor` |
+|                     [`/src/training_LGBM_01.ipynb`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/training_LGBM_01.ipynb) | `Ridge`, `LGBMRegressor`    |
 
 Out of curiousity, we also tried fitting models to data in which the
 playgrounds with historic session counts greater than 70000 were
@@ -153,20 +216,36 @@ contain the functions that were used to preprocess the input data.
 Ten different kinds of models were pursued during this iteration. Table
 3 shows where the work for each model can be located. It should be
 mentioned that Jupyter notebooks were run on Amazon EC2 to reduce
-computation time.
+computation time. An `XGBClassifier` was created and its F1 score for
+the low-count class was 0.99 and that of the high-count class was 0.85.
+Given the skewness in the data, poisson regression was used to predict
+`unacast_session_count` for the high-count data. However, its validation
+RMSE was 1.22287e+73. Other generalized linear models suitable for count
+data were considered (e.g. negative binomial); however, the algorithm
+would not converge and model coefficients could not be obtained. On the
+other hand, regression models build for the low-count data using
+`LinearRegression` and `XGBRegressor` had promising validation RMSE
+values of 54 and 35, respectively.
 
-Table 3.
+Table 3. Locations of .ipynb files containing modeling work using the
+new dataset.
 
-|                                                                                                                                           Filename | Model |
-| -------------------------------------------------------------------------------------------------------------------------------------------------: | ----- |
-|           [`training_SVR_CatBoost_02.ipynb`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/training_SVR_CatBoost_02.ipynb) |       |
-|                           [`training_LGBM_02.ipynb`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/training_LGBM_02.ipynb) |       |
-|         [`training_random_forest_02.ipynb`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/training_random_forest_02.ipynb) |       |
-|       [`training_gradient_boost_02.ipynb`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/training_gradient_boost_02.ipynb) |       |
-|             [`training_time_dependent.ipynb`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/training_time_dependent.ipynb) |       |
-| [`training_mixed_effects_Python.ipynb`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/training_mixed_effects_Python.ipynb) |       |
-|           [`training_mixed_effects_R.ipynb`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/training_mixed_effects_R.ipynb) |       |
-|                             [`training_tiered.ipynb`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/training_tiered.ipynb) |       |
+|                                                                                                                                                Filename | Model                                       |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------: | ------------------------------------------- |
+|           [`/src/training_SVR_CatBoost_02.ipynb`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/training_SVR_CatBoost_02.ipynb) | `SVR`, `CatBoostRegressor`                  |
+|                           [`/src/training_LGBM_02.ipynb`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/training_LGBM_02.ipynb) | `LGBMRegressor`                             |
+|         [`/src/training_random_forest_02.ipynb`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/training_random_forest_02.ipynb) | `RandomForestRegressor`                     |
+|       [`/src/training_gradient_boost_02.ipynb`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/training_gradient_boost_02.ipynb) | `GradientBoostingRegressor`, `XGBRegressor` |
+|             [`/src/training_time_dependent.ipynb`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/training_time_dependent.ipynb) | Time-series approach                        |
+| [`/src/training_mixed_effects_Python.ipynb`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/training_mixed_effects_Python.ipynb) | Mixed effects model (Python)                |
+|           [`/src/training_mixed_effects_R.ipynb`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/training_mixed_effects_R.ipynb) | Mixed effects model (R)                     |
+|                             [`/src/training_tiered.ipynb`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/training_tiered.ipynb) | Tiered model                                |
+
+With respect to the off-the-shelf regression algorithms (random forest
+and boosting methods), the validation RMSE values were in the range of
+100 and 130. However, we believe that this improvement in model
+performance is most likely attributed to the capping of the target
+variable.
 
 #### Time-series approach
 
@@ -179,57 +258,60 @@ not be used since the random partition of the data could result in data
 leakage. Moreover, we could not use an off-the-shelf time-series
 cross-validator because the number of observations for each month was
 inconsistent. As a result, we had to create our own implementation of
-nested cross-validation.
+nested cross-validation. With a validation RMSE value of 176, it did not
+outperform the off-the-shelf regression models mentioned above.
 
 #### Mixed effects
 
-Since not all the playgrounds appeared to behave the same (for example a
-playground in South of the US may have more visits in December than in
-summer because winter is not very cold, while summer is very hot), but
-there where not enough observations per playground and too many
-playgrounds to run a different model for each playground, we decided to
-implement mixed linear models. The way we did it is that we clustered
-the playgrounds using some similarities and then the model used fit a
-regression hyperplane on the whole data. Once we have this hyperplane,
-for each different hyperplan, the model adds a constant to it, so that
-there is one regression hyperplan per cluster. Through this, the
-regression plan of one cluster depends on the regression plan of another
-cluster, but each cluster still have it’s own equation, so the model is
-less geenric, more specific to a given playground.
+We assumed that not every playground observes the same behaviour with
+respect to visits. For example, playgrounds located in warmer climates
+may observe more visits in the spring or fall because it is unpleasantly
+hot in the summer. Meanwhile, playgrounds located in cooler climates may
+observe more visits in the summer because it is too cold to play outside
+in the winter. We could have fit a unique regression surface to
+observations derived from each playground, but it would have been
+unreasonable to create 2506 models and impossible to predict
+`unacast_session_count` for new playgrounds. A reasonable solution to
+incorporating these across-group differences was to build mixed effects
+models. We grouped the playgrounds using a specific characteristic and
+then fit a regression surface. However, each group was allowed to have
+its own intercept. As a result, information was shared across the groups
+to determine the regression surface, but the generated model was less
+generic than a pooled regression model.
 
-We build mixed effects models using both R (using `lmer` function) and
-Python (`smf` function from the `statsmodels.formula.api` library).
+We build these models using both R (using `lmer` function) and Python
+(`smf` function from the `statsmodels.formula.api` library).
 
-In R, we tried to cluster the data using the `state`, the `climate`, the
-`density_class` and the `income_class`. No improvement compared to
-before, validation RMSE around 200 and validation MAE around 100. We
-also tried to run K-means with 2 then 4 clusters, and use those clusters
-to run the mixed effects model. In this case, we have to highlight that
-a same playground may have values in different months. We decided to use
-K-means just to see if the results were significantly better, and digg
-more into this problem if this was the case. Unfortunately, this didn’t
-improve neither our RMSE (200) nor our MAE (100).
+Unfortunately, this didn’t improve neither our RMSE (200) nor our MAE
+(100).
 
-Runing Mixed effects model on Python was more of a trouble, because in
-contrary to R, the function in Python doesn’t have an arugment that
-allows you to drop the columns that make the algorithm not converging.
-First thing we had to do was to write a function that drops all those
-columns (see chunk of code starting by \#Find the columns that make the
-fit function fail). Then, we fitted mixed effects models using different
-clusters (as we did in R). The different clusters that we used were
-defined by the `climate`, the `density_class` and the `income_class`
-features (all separated in different models). We got no improvement here
-either. We got validation RMSE around 200 and validation MAE around 100.
-We then tried to capped the values at 0, so that we won’t have any
-predicted value that would be negative (as it would make no sense).
-However, this didn’t have much of an impact on the RMSE not on the MAE.
+In R, we grouped the observations using levels of categorical variables
+(i.e. `state`, `climate`, `density_class`, `income_class`). None of the
+models outperformed the off-the-shelf regression models mentioned
+earlier. The validation RMSE and MAE values were around 200 and 100,
+respectively. We also applied k-means clustering with *k* = 2, 4 to see
+if more meaningful groups could be obtained. However, it should be
+mentioned that, with this grouping strategy, observations from the same
+playground could have been placed in different clusters. Unfortunately,
+implementing the new grouping strategy resulted in the same validation
+RMSE and MAE values as described earlier.
+
+Building a mixed effects model in Python was troublesome because the
+`smf` function did not have an argument that enabled automatic dropping
+of columns that made the algorithm not converge. To compensate, we had
+to write a function that dropped these problematic columns. Similar to
+the implementation in R, observations were grouped using levels of
+categorical variables (i.e. `climate`, `density_class`, `income_class`).
+The results were similar to that of the R implementation with validation
+RMSE and MAE values of around 200 and 100, respectively.
 
 #### Tiered approach
 
 We also considered a tiered approach. This model consisted of a
 classifier which would predict an observation to be either low count or
-high count. Based on that decision, a prediction would be made using a
-regressor that was trained on low-count or high-count data.
+high count (i.e. below or above 300 sessions). Based on that decision, a
+prediction would be made using a regressor that was trained on low-count
+or high-count data.
 
 ## Data product
 
@@ -257,11 +339,12 @@ sets and saves them as .csv files in the
 directory. Smaller versions of the training and test sets are also saved
 as .csv files to serve as dummy data for testing. It should be noted
 that the preprocessing methods used here are identical to those used in
-the second iteration of modeling.
+the second iteration of modeling. *Note: features are not scaled because
+tree-based models are not sensitive to scaling.*
 [`/src/03_gbr_model.py`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/03_gbr_model.py),
 [`src/04_catboost_model.py`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/04_catboost_model.py),
 and
-[`05_lgbm_model.py`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/05_lgbm_model.py)
+[`/src/05_lgbm_model.py`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/05_lgbm_model.py)
 are the scripts in which modeling take place. The hyperparameters are
 hard coded based on the results of the random searches performed in the
 second iteration of modeling. In each script, a model is fit and then
@@ -280,7 +363,7 @@ run the makefile to predict on new data can be found
 [here](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/README.md).
 The data is preprocessed in the same way as described above: the imputer
 and one-hot encoder from earlier is loaded to transform the data.
-[`07_prediction.py`](https://github.com/Z2hMedia/capstone_machine_learning/blob/sirine/src/07_prediction.py)
+[`/src/07_prediction.py`](https://github.com/Z2hMedia/capstone_machine_learning/blob/sirine/src/07_prediction.py)
 outputs a .csv file in the
 [`/results`](https://github.com/Z2hMedia/capstone_machine_learning/tree/master/results)
 directory. Non-negative predictions from the three models are added as
