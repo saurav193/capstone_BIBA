@@ -26,7 +26,7 @@ Authors: Saurav Chowdhury, Sirine Chahma, Reiko Okamoto, Tani Barasch
 `python src/03_gbr_model.py --train=data/processed_train.zip --test=data/processed_test.zip --model_path=src/joblib/ --out_path=results/`
 
 ### Catboost
-`python .\src\04_catboost_model.py --train=data/processed_train.zip --test=data/processed_test.zip --model_path=src/joblib --out_path=results/`
+`python src/04_catboost_model.py --train=data/processed_train.zip --test=data/processed_test.zip --model_path=src/joblib --out_path=results/`
 
 ### LGBM
 `python src/05_lgbm_model.py --train=data/processed_train.zip --test=data/processed_test.zip --model_path=src/joblib/ --out_path=results/`
