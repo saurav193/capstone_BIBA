@@ -141,11 +141,10 @@ playgrounds in the United States. The dates ranged from January 2018 to
 December 2019. Data from January 2018 were excluded from our analysis
 because many observations are missing the target value for this month,
 as shown in Figure 5. Therefore, our training set consisted of
-observations from February 2018 through June 2019 and our validation set
-included observations from July 2019 through September 2019. The
-observations from the last three months were aside for model testing.
-This strategy enabled us to avoid data leakage when pursuing a time
-series approach.
+observations from February 2018 through September 2019. The observations
+from October 2019 to December 2019 were aside for model testing. This
+strategy enabled us to avoid data leakage when pursuing a time series
+approach.
 
 ## Analysis with the old dataset
 
