@@ -17,6 +17,7 @@ def plot_resid(model, X_train=None, y_train=None, X_valid=None, y_valid=None, pl
     
     y_valid: Array like set of validation target variable
     
+    plot: String, if 'valid' won't plot train, if 'train' won't plot valid, else will plot both
     
     Returns
     -------
