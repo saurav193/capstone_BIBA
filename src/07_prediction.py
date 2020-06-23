@@ -21,9 +21,13 @@ def main(new_data, model_path="src/joblib/", out_path="results/"):
     
  
     #create datasets
-    predict_data = pd.read_csv(new_data)
+    data = pd.read_csv(new_data)
     #checking if prediction data already contains target
-    assert "unacast_session_count" not in set(predict_data.columns), "prediction data has target column"
+    if "unacast_session_count" in set(data.columns):
+        y = data.loc[:, 'unacast_session_count']
+        predict_data = data.drop(columns=['unacast_session_count'])
+    else:
+        predict_data = data
     
     if model_path is None:
         model_path = "src/joblib/"
@@ -32,33 +36,35 @@ def main(new_data, model_path="src/joblib/", out_path="results/"):
     filepath = model_path+"lgbm_model.joblib" 
     lgbm = load(filepath)
 
-    # filepath = model_path+"xgb_model.joblib" 
-    # xgb = load(filepath)
+    filepath = model_path+"gbr_model.joblib" 
+    xgb = load(filepath)
 
-    # filepath = model_path+"catb_model.joblib" 
-    # catb = load(filepath)
+    filepath = model_path+"catboost_model.joblib" 
+    catb = load(filepath)
 
     # getting predictions from saved models
 
     y_preds_lgbm = lgbm.predict(predict_data)
-    # y_preds_xgb = xgb.predict(predict_data)
-    # y_preds_catb = catb.predict(predict_data)
+    y_preds_xgb = xgb.predict(predict_data)
+    y_preds_catb = catb.predict(predict_data)
 
     # capping the negative predicted values with 0
     y_preds_lgbm = list(map(lambda x: 0 if x<0 else x, y_preds_lgbm))
-    # y_preds_xgb = list(map(lambda x: 0 if x<0 else x, y_preds_xgb))
-    # y_preds_catb = list(map(lambda x: 0 if x<0 else x, y_preds_catb))
+    y_preds_xgb = list(map(lambda x: 0 if x<0 else x, y_preds_xgb))
+    y_preds_catb = list(map(lambda x: 0 if x<0 else x, y_preds_catb))
     
     # making session counts as integers
     y_preds_lgbm = list(map(lambda x: int(x), y_preds_lgbm))
-    # y_preds_xgb = list(map(lambda x: int(x), y_preds_xgb))
-    # y_preds_catb = list(map(lambda x: int(x), y_preds_catb))
+    y_preds_xgb = list(map(lambda x: int(x), y_preds_xgb))
+    y_preds_catb = list(map(lambda x: int(x), y_preds_catb))
     
     #adding the predicted values to dataframe
 
     predict_data['session_count_lightgbm'] = y_preds_lgbm
-    # predict_data['session_count_xgboost'] = y_preds_xgb
-    # predict_data['session_count_catboost'] = y_preds_catb
+    predict_data['session_count_xgboost'] = y_preds_xgb
+    predict_data['session_count_catboost'] = y_preds_catb
+    if "unacast_session_count" in set(data.columns):
+        predict_data['unacast_session_count'] = y
   
     if out_path is None:
         out_path = "results/predicted_data.zip"
@@ -81,6 +87,8 @@ def test_fun():
     pred_data_loc = "data/dummy/dummy_pred_data.zip"
     main(pred_data_loc)
     assert os.path.exists("results/predicted_data.zip"), "Predicted file not found in location"
+    os.remove("results/predicted_data.zip")
+
 
 if __name__ == "__main__":
     test_fun()
