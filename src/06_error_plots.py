@@ -22,7 +22,7 @@ import altair as alt
 
 opt = docopt(__doc__)
 
-def main(train, test, model_path="src/joblib/", out_path="results/report_figures"):
+def main(train, test, model_path="src/joblib/", out_path="results/report_figures/"):
     
  
     #create datasets
@@ -46,8 +46,8 @@ def main(train, test, model_path="src/joblib/", out_path="results/report_figures
     
     for name, model_try in {'lgbm':lgbm, 'xgb':xgb, 'catb':catb}.items():
         plots = plot_resid(model_try, X_train=X_train, y_train=y_train, X_valid=X_test, y_valid=y_test)
-        plots['Train'].save(out_path+name+'_train.html')
-        plots['Valid'].save(out_path+name+'_test.html')
+        plots['Train'].save(out_path+ '/' +name+'_train.html')
+        plots['Valid'].save(out_path+ '/' +name+'_test.html')
 
 
 def test_fun():
