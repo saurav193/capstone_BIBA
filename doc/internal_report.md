@@ -3,6 +3,17 @@ Internal report
 Saurav Chowdhury, Sirine Chahma, Reiko Okamoto, Tani Barasch
 17/06/2020
 
+  - [Purpose](#purpose)
+  - [Description of the data](#description-of-the-data)
+  - [Rationale behind the output](#rationale-behind-the-output)
+  - [Rationale behind the data split](#rationale-behind-the-data-split)
+  - [Analysis with the old dataset](#analysis-with-the-old-dataset)
+  - [Analysis with the new dataset](#analysis-with-the-new-dataset)
+  - [Data product](#data-product)
+  - [Recommendations](#recommendations)
+  - [Conclusion](#conclusion)
+  - [Acknowledgements](#acknowledgements)
+
 ## Purpose
 
 This report serves four purposes: (1) help individuals navigate our
@@ -46,11 +57,11 @@ Figure 1. Marginal distribution of the target variable.
 
 <div class="figure">
 
-<img src="../results/report_figures/figure_2.png" alt="Figure 2. Counts of features with a certain proportion of zeros." width="450" />
+<img src="../results/report_figures/figure_2.png" alt="Figure 2. Counts of features by proportion of zeros." width="450" />
 
 <p class="caption">
 
-Figure 2. Counts of features with a certain proportion of zeros.
+Figure 2. Counts of features by proportion of zeros.
 
 </p>
 
@@ -58,11 +69,11 @@ Figure 2. Counts of features with a certain proportion of zeros.
 
 <div class="figure">
 
-<img src="../results/report_figures/figure_3.png" alt="Figure 3. Counts of features with a certain proportion of missing values" width="450" />
+<img src="../results/report_figures/figure_3.png" alt="Figure 3. Counts of features by proportion of missing values" width="450" />
 
 <p class="caption">
 
-Figure 3. Counts of features with a certain proportion of missing values
+Figure 3. Counts of features by proportion of missing values
 
 </p>
 
@@ -70,13 +81,13 @@ Figure 3. Counts of features with a certain proportion of missing values
 
 <div class="figure">
 
-<img src="../results/report_figures/figure_4.png" alt="Figure 4. Counts of playgrounds with a certain number of missing target values. Playgrounds missing less than two observations are excluded from this plot." width="450" />
+<img src="../results/report_figures/figure_4.png" alt="Figure 4. Counts of playgrounds by number of missing target values. Playgrounds missing less than two observations are excluded from this plot for readability." width="450" />
 
 <p class="caption">
 
-Figure 4. Counts of playgrounds with a certain number of missing target
-values. Playgrounds missing less than two observations are excluded from
-this plot.
+Figure 4. Counts of playgrounds by number of missing target values.
+Playgrounds missing less than two observations are excluded from this
+plot for readability.
 
 </p>
 
@@ -216,16 +227,7 @@ contain the functions that were used to preprocess the input data.
 Ten different kinds of models were pursued during this iteration. Table
 3 shows where the work for each model can be located. It should be
 mentioned that Jupyter notebooks were run on Amazon EC2 to reduce
-computation time. An `XGBClassifier` was created and its F1 score for
-the low-count class was 0.99 and that of the high-count class was 0.85.
-Given the skewness in the data, poisson regression was used to predict
-`unacast_session_count` for the high-count data. However, its validation
-RMSE was 1.22287e+73. Other generalized linear models suitable for count
-data were considered (e.g. negative binomial); however, the algorithm
-would not converge and model coefficients could not be obtained. On the
-other hand, regression models build for the low-count data using
-`LinearRegression` and `XGBRegressor` had promising validation RMSE
-values of 54 and 35, respectively.
+computation time.
 
 Table 3. Locations of .ipynb files containing modeling work using the
 new dataset.
@@ -311,7 +313,24 @@ We also considered a tiered approach. This model consisted of a
 classifier which would predict an observation to be either low count or
 high count (i.e. below or above 300 sessions). Based on that decision, a
 prediction would be made using a regressor that was trained on low-count
-or high-count data.
+or high-count data. An `XGBClassifier` was created and its F1 score for
+the low-count class was 0.99 and that of the high-count class was 0.85.
+Given the skewness in the data, poisson regression was used to predict
+`unacast_session_count` for the high-count data. However, its validation
+RMSE was 1.22287e+73. Other generalized linear models suitable for count
+data were considered (e.g. negative binomial); however, the algorithm
+would not converge and model coefficients could not be obtained. On the
+other hand, regression models build for the low-count data using
+`LinearRegression` and `XGBRegressor` had validation RMSE values of 54
+and 35, respectively. However, we acknowledge that these values are not
+reflective of the performance of the tiered model as a whole.
+
+#### Residual plots
+
+In order to assess the fit of the model, we created residual plots. In
+these plots, we observed a trend in the residuals. Residual plots
+derived from the median-predicting `GradientBoostingRegressor`,
+`LightGBM`, and `CatBoost` models are shown below.
 
 ## Data product
 
@@ -321,7 +340,15 @@ Our data product consists of three boosting models that predict the
 median `unacast_session_count`. We selected these models because they
 are least worst-performing models we came across in our analysis, they
 are relatively fast to train, and the median is less sensitive to
-extreme values than the mean, as mentioned earlier.
+extreme values than the mean, as mentioned earlier. Their performance is
+as follows:
+
+    ## # A tibble: 3 x 3
+    ##   model                    `train mae` `test mae`
+    ##   <chr>                          <dbl>      <dbl>
+    ## 1 GradientBoostedRegressor        38.8       98.6
+    ## 2 LightGBM                        15.6      104. 
+    ## 3 CatBoost                        35.8       95.6
 
 #### Reproducing the data analysis
 
@@ -353,7 +380,8 @@ predict negative values, the nonsensical predictions are converted to
 zero prior to calculating the MAE. Each model is saved as a .joblib file
 and its performance metrics are saved as a .csv file in the
 [`/results`](https://github.com/Z2hMedia/capstone_machine_learning/tree/master/results)
-directory. The last script in the makefile renders this report.
+directory. This file, which is not part of the makefile, renders this
+report.
 
 #### Predicting on new data
 
