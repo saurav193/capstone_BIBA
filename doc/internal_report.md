@@ -9,8 +9,21 @@ Saurav Chowdhury, Sirine Chahma, Reiko Okamoto, Tani Barasch
   - [Rationale behind the data split](#rationale-behind-the-data-split)
   - [Analysis with the old dataset](#analysis-with-the-old-dataset)
   - [Analysis with the new dataset](#analysis-with-the-new-dataset)
+      - [Time-series approach](#time-series-approach)
+      - [Mixed effects](#mixed-effects)
+      - [Tiered approach](#tiered-approach)
+      - [Residual plots](#residual-plots)
   - [Data product](#data-product)
+      - [Results](#results)
+      - [Reproducing the data analysis](#reproducing-the-data-analysis)
+      - [Predicting on new data](#predicting-on-new-data)
   - [Recommendations](#recommendations)
+      - [Outliers in the target](#outliers-in-the-target)
+      - [Missing values in the target](#missing-values-in-the-target)
+      - [Missing values in explanatory
+        variables](#missing-values-in-explanatory-variables)
+      - [Feature engineering and
+        selection](#feature-engineering-and-selection)
   - [Conclusion](#conclusion)
   - [Acknowledgements](#acknowledgements)
 
@@ -49,7 +62,8 @@ playgrounds.
 
 <p class="caption">
 
-Figure 1. Marginal distribution of the target variable.
+Figure 1. Marginal distribution of the target
+variable.
 
 </p>
 
@@ -61,7 +75,8 @@ Figure 1. Marginal distribution of the target variable.
 
 <p class="caption">
 
-Figure 2. Counts of features by proportion of zeros.
+Figure 2. Counts of features by proportion of
+zeros.
 
 </p>
 
@@ -73,7 +88,8 @@ Figure 2. Counts of features by proportion of zeros.
 
 <p class="caption">
 
-Figure 3. Counts of features by proportion of missing values
+Figure 3. Counts of features by proportion of missing
+values
 
 </p>
 
@@ -87,7 +103,8 @@ Figure 3. Counts of features by proportion of missing values
 
 Figure 4. Counts of playgrounds by number of missing target values.
 Playgrounds missing less than two observations are excluded from this
-plot for readability.
+plot for
+readability.
 
 </p>
 
@@ -162,7 +179,8 @@ Ten algorithms were used. Table 1 shows where the .ipynb file for each
 algorithm can be found.
 
 Table 1. Locations of .ipynb files containing modeling work using the
-old dataset.
+old
+dataset.
 
 |                                                                                                                                          Filename | Algorithms                                                          |
 | ------------------------------------------------------------------------------------------------------------------------------------------------: | ------------------------------------------------------------------- |
@@ -182,7 +200,8 @@ contains the functions used to perform PCA. Table 2 describes where the
 work can be found.
 
 Table 2. Locations of .ipynb files containing modeling work on data in
-which PCA was applied.
+which PCA was
+applied.
 
 |                                                                                                                                          Filename | Algorithms                  |
 | ------------------------------------------------------------------------------------------------------------------------------------------------: | --------------------------- |
@@ -229,7 +248,8 @@ mentioned that Jupyter notebooks were run on Amazon EC2 to reduce
 computation time.
 
 Table 3. Locations of .ipynb files containing modeling work using the
-new dataset.
+new
+dataset.
 
 |                                                                                                                                                Filename | Model                                       |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------: | ------------------------------------------- |
@@ -331,6 +351,16 @@ these plots, we observed a trend in the residuals. Residual plots
 derived from the median-predicting `GradientBoostingRegressor`,
 `LightGBM`, and `CatBoost` models are shown below.
 
+![Figure 6. Residual plots of the median-predicting
+GradientBoostingRegressor
+model.](internal_report_files/figure-gfm/Figure%206-1.png)
+
+![Figure 7. Residual plots of the median-predicting LightGBM
+model.](internal_report_files/figure-gfm/Figure%207-1.png)
+
+![Figure 8. Residual plots of the median-predicting CatBoost
+model.](internal_report_files/figure-gfm/Figure%208-1.png)
+
 ## Data product
 
 #### Results
@@ -346,7 +376,7 @@ as follows:
     ##   model                    `train mae` `test mae`
     ##   <chr>                          <dbl>      <dbl>
     ## 1 GradientBoostedRegressor        38.8       98.6
-    ## 2 LightGBM                        15.6      104. 
+    ## 2 LightGBM                        27.7      104. 
     ## 3 CatBoost                        35.8       95.6
 
 #### Reproducing the data analysis

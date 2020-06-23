@@ -149,9 +149,9 @@ plot_grid(p3, p4)
 
 ``` {r Figure 8, echo=FALSE, message=FALSE, fig.cap="Figure 8. Residual plots of the median-predicting CatBoost model."}
 
-#p5 <- ggdraw() + draw_image("../results/report_figures/")
-#p6 <- ggdraw() + draw_image("../results/report_figures/")
-#plot_grid(p5, p6)
+p5 <- ggdraw() + draw_image("../results/report_figures/catb_train.png")
+p6 <- ggdraw() + draw_image("../results/report_figures/catb_test.png")
+plot_grid(p5, p6)
 ```
 
 ## Data product
