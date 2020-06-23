@@ -148,7 +148,7 @@ than estimates that incorporate uncertainty, we chose to build models
 that predict either the mean or median `unacast_session_count`. The
 performance of these models were evaluated using the root mean squared
 error (RMSE) and mean absolute error (MAE), respectively. Quantile
-regression was also pursued here because the mean is less sensitive to
+regression was also pursued here because the median is less sensitive to
 extreme values than the mean.
 
 ## Rationale behind the data split
