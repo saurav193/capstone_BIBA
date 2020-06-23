@@ -35,6 +35,11 @@ results/catboost_train_result.csv src/joblib/catboost_model.joblib : src/04_catb
 results/lgbm_train_result.csv src/joblib/lgbm_model.joblib : src/05_lgbm_model.py data/processed_train.zip data/processed_test.zip data/dummy/dummy_test_data.zip data/dummy/dummy_train_data.zip
 	python src/05_lgbm_model.py --train=data/processed_train.zip --test=data/processed_test.zip --model_path=src/joblib/ --out_path=results/
 	
+# Plots of the errors
+# 
+# This script plots the residual plots of the 3 models we run in our pipeline (LightGBM, CatBoost and GradientBoostingRegressor)
+all the plots : src/06_error_plots.py data/processed_train.zip data/processed_test.zip data/dummy/dummy_test_data.zip data/dummy/dummy_train_data.zip src/joblib/lgbm_model.joblib src/joblib/catboost_model.joblib src/joblib/gbr_model.joblib
+    python .\src\06_error_plots.py --train=data/processed_train.zip --test=data/processed_test.zip --model_path=src/joblib/ --out_path=results/report_figures/
 
 ##############################
 # Prediction Pipeline
