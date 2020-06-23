@@ -32,7 +32,7 @@ def main(test, train=None):
     compression_opts = dict(method='zip', archive_name='out.csv')  
 
     #import name of the columns for the data we worked on
-    former_data = pd.read_csv('../data/columns_name.csv')
+    former_data = pd.read_csv('data/columns_name.csv')
     former_columns = list(former_data.columns)
 
     #===================================
@@ -94,16 +94,16 @@ def main(test, train=None):
     if 'unacast_session_count' in list(test_data.columns):
         test_data = drop_missing_unacast(test_data)
 
-    if list(former_data.drop(columns=['unacast_session_count']).columns) != list(test_data.columns):
-        print('The data you are using is not similar to the one we used to train our models, the pipeline may throw an error at some point')
-
-
     # create X and y
     if 'unacast_session_count' in list(test_data.columns):
         X_test = test_data.drop('unacast_session_count', axis=1)
         y_test = test_data.loc[:, 'unacast_session_count']
     else:
         X_test = test_data
+
+    if list(former_data.drop(columns=['unacast_session_count']).columns) != list(X_test.columns):
+        print('The data you are using is not similar to the one we used to train our models, the pipeline may throw an error at some point')
+
 
     # transform data using saved imputer
     X_test = apply_imputer(X_test, filename='src/joblib/imputer.joblib')

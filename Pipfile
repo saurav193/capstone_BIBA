@@ -18,6 +18,7 @@ catboost = "*"
 statsmodels = "*"
 hyperopt = "*"
 docopt = "*"
+altair-saver = "*"
 
 [requires]
 python_version = "3.7"

@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import altair as alt
 
 def plot_resid(model, X_train=None, y_train=None, X_valid=None, y_valid=None, plot = 'both'):
     """
@@ -27,7 +28,7 @@ def plot_resid(model, X_train=None, y_train=None, X_valid=None, y_valid=None, pl
     d = dict()
     
     if plot != 'valid':
-        train_df = pd.DataFrame({'Predicted Train':model.predict(X_train), 'True Train':y_train})
+        train_df = pd.DataFrame({'Predicted Train':list(map(lambda x: 0 if x<0 else x, model.predict(X_train))), 'True Train':y_train})
         train_df['Train Error'] =  train_df['Predicted Train'] - train_df['True Train']
         train_dist = alt.Chart(train_df).mark_circle().encode(alt.X("True Train:Q"), y=alt.Y('Train Error:Q'))
         d["Train"] = train_dist
@@ -36,12 +37,11 @@ def plot_resid(model, X_train=None, y_train=None, X_valid=None, y_valid=None, pl
         
         
     if plot != 'train':
-        valid_df = pd.DataFrame({'Predicted Valid':model.predict(X_valid), 'True Valid':y_valid})
+        valid_df = pd.DataFrame({'Predicted Valid':list(map(lambda x: 0 if x<0 else x, model.predict(X_valid))), 'True Valid':y_valid})
         valid_df['Valid Error'] =  valid_df['Predicted Valid'] - valid_df['True Valid']
-        
-        valid_dist = alt.Chart(valid_df).mark_circle().encode(alt.X("True Valid:Q"), y=alt.Y('Valid Error Distance:Q'))
+        valid_dist = alt.Chart(valid_df).mark_circle().encode(alt.X("True Valid:Q"), y=alt.Y('Valid Error:Q'))
         d["Valid"] = valid_dist
     else:
-        d["Valid"] = "No training set given""
+        d["Valid"] = "No training set given"
         
     return d
