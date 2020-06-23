@@ -38,6 +38,8 @@ Run the scripts in the following order:
 
 ### Makefile
 
+**Note** : Both pipelines take around 2 hours to run from beginning to end.
+
 **Caution** : If the data set that you use doesn't have the same stucture/features in the same order, as the one we trained our models on, this may throw an error. When running the Makefile with your data, you will be warned if this is the case. 
 
 To generate the report using the Makefile : 

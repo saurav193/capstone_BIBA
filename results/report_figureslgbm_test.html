@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    .error {
+        color: red;
+    }
+  </style>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm//vega@5"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm//vega-lite@4.8.1"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm//vega-embed@6"></script>
+</head>
+<body>
+  <div id="vis"></div>
+  <script>
+    (function(vegaEmbed) {
+      var spec = {"config": {"view": {"continuousWidth": 400, "continuousHeight": 300}}, "data": {"name": "data-48c8a3a515b8870ad17d8b70c36485d1"}, "mark": "circle", "encoding": {"x": {"type": "quantitative", "field": "True Valid"}, "y": {"type": "quantitative", "field": "Valid Error Distance"}}, "$schema": "https://vega.github.io/schema/vega-lite/v4.8.1.json", "datasets": {"data-48c8a3a515b8870ad17d8b70c36485d1": [{"Predicted Valid": 1399.147876348623, "True Valid": 677.0, "Valid Error": 722.147876348623}, {"Predicted Valid": 0.0, "True Valid": 16.0, "Valid Error": -16.0}, {"Predicted Valid": 140.4533422442693, "True Valid": 11.0, "Valid Error": 129.4533422442693}, {"Predicted Valid": 45.406938331494054, "True Valid": 15.0, "Valid Error": 30.406938331494054}, {"Predicted Valid": 1233.3133690027878, "True Valid": 995.0, "Valid Error": 238.3133690027878}, {"Predicted Valid": 84.69737365738897, "True Valid": 17.0, "Valid Error": 67.69737365738897}, {"Predicted Valid": 12.036100326179765, "True Valid": 5.0, "Valid Error": 7.036100326179765}, {"Predicted Valid": 64.26550658628818, "True Valid": 22.0, "Valid Error": 42.26550658628818}, {"Predicted Valid": 25.15540245348246, "True Valid": 9.0, "Valid Error": 16.15540245348246}, {"Predicted Valid": 34.233727351355476, "True Valid": 2.0, "Valid Error": 32.233727351355476}, {"Predicted Valid": 66.02965369446899, "True Valid": 10.0, "Valid Error": 56.02965369446899}, {"Predicted Valid": 164.51936156250065, "True Valid": 24.0, "Valid Error": 140.51936156250065}, {"Predicted Valid": 515.95639577483, "True Valid": 310.0, "Valid Error": 205.95639577482996}, {"Predicted Valid": 35.51776174052884, "True Valid": 4.0, "Valid Error": 31.51776174052884}, {"Predicted Valid": 122.71950934015256, "True Valid": 34.0, "Valid Error": 88.71950934015256}, {"Predicted Valid": 54.48611953499888, "True Valid": 7.0, "Valid Error": 47.48611953499888}, {"Predicted Valid": 122.79486467839003, "True Valid": 28.0, "Valid Error": 94.79486467839003}, {"Predicted Valid": 30.0699742573425, "True Valid": 1.0, "Valid Error": 29.0699742573425}, {"Predicted Valid": 110.03846302193897, "True Valid": 46.0, "Valid Error": 64.03846302193897}, {"Predicted Valid": 117.3475188110426, "True Valid": 28.0, "Valid Error": 89.3475188110426}]}};
+      var embedOpt = {"mode": "vega-lite"};
+
+      function showError(el, error){
+          el.innerHTML = ('<div class="error" style="color:red;">'
+                          + '<p>JavaScript Error: ' + error.message + '</p>'
+                          + "<p>This usually means there's a typo in your chart specification. "
+                          + "See the javascript console for the full traceback.</p>"
+                          + '</div>');
+          throw error;
+      }
+      const el = document.getElementById('vis');
+      vegaEmbed("#vis", spec, embedOpt)
+        .catch(error => showError(el, error));
+    })(vegaEmbed);
+
+  </script>
+</body>
+</html>
