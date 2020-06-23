@@ -74,8 +74,6 @@ def main(train, test, model_path="src/joblib/", out_path="results/"):
         writer.writerow(["Catboost", train_mae, test_mae])
     f.close()
 
-    print('catboost model has been trained!')
-
 def test_fun():
     """
     This functions checks if the main function is able to fit a model and store the results in csv file.

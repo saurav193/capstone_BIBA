@@ -1,0 +1,2 @@
+model,train mae,test mae
+LightGBM,15.59751039906225,103.52568794163028

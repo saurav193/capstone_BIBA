@@ -1,12 +1,13 @@
 # author: Saurav Chowdhury, Sirine Chahma, Reiko Okamoto, Tani Barasch
 # date: 2020-06-18
 
-all: results/lgbm_train_result.csv results/catboost_train_result.csv results/gbr_train_result.csv
+report : results/lgbm_train_result.csv results/catboost_train_result.csv results/gbr_train_result.csv
+predict : results/predicted_data.csv
 
 
 # Split the data
 # 
-#This script splits the data into train and test sets. The test set correspond to the data callected between October and December 2019
+#This script splits the data into train and test sets. The test set corresponds to the data collected between October and December 2019
 data/test_data.zip data/train_data.zip data/playground_stats.zip : src/01_split_data.py data/playground_stats.csv
 	python src/01_split_data.py --in_path=data/playground_stats.csv --out_path=data
 	
@@ -34,9 +35,26 @@ results/catboost_train_result.csv src/joblib/catboost_model.joblib : src/04_catb
 results/lgbm_train_result.csv src/joblib/lgbm_model.joblib : src/05_lgbm_model.py data/processed_train.zip data/processed_test.zip data/dummy/dummy_test_data.zip data/dummy/dummy_train_data.zip
 	python src/05_lgbm_model.py --train=data/processed_train.zip --test=data/processed_test.zip --model_path=src/joblib/ --out_path=results/
 	
+
+##############################
+# Prediction Pipeline
+##############################
+
+# Preprocessing of the new data
+
+data/processed_pred.zip data/dummy/dummy_pred_data.zip : src/02_preprocessing.py src/joblib/imputer.joblib src/joblib/ohe.joblib data/X_pred.zip
+	python src/02_preprocessing.py --test=data/X_pred.zip
+
+# Predictions
+# 
+# This scripts predicts the unacast_session_count for the file named 'X_pred'
+results/predicted_data.csv : src/07_prediction.py src/joblib/lgbm_model.joblib src/joblib/catboost_model.joblib src/joblib/gbr_model.joblib data/processed_pred.zip
+	python src/07_prediction.py --new_data=data/processed_pred.zip
+
+
 	
 # cleaning everything
-clean:
+clean :
 	rm -rf results/lgbm_train_result.csv
 	rm -rf src/joblib/lgbm_model.joblib
 	rm -rf results/catboost_train_result.csv
@@ -52,3 +70,4 @@ clean:
 	rm -rf data/test_data.zip
 	rm -rf data/train_data.zip
 	rm -rf data/playground_stats.zip
+	rm -rf data/dummy/dummy_pred_data.zip
