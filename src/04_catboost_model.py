@@ -74,8 +74,6 @@ def main(train, test, model_path="src/joblib/", out_path="results/"):
         writer.writerow(["Catboost", train_mae, test_mae])
     f.close()
 
-    print('catboost model has been trained!')
-
 def test_fun():
     """
     This functions checks if the main function is able to fit a model and store the results in csv file.
@@ -86,6 +84,8 @@ def test_fun():
     main(train_data_loc, test_data_loc)
     assert os.path.exists("src/joblib/catboost_model.joblib"), "Model dump not found in location"
     assert os.path.exists("results/catboost_train_result.csv"), "Results file not found in location"
+    os.remove("src/joblib/catboost_model.joblib")
+    os.remove("results/catboost_train_result.csv")
 
 
 if __name__ == "__main__":

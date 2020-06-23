@@ -1,5 +1,7 @@
 """This script fits a model using sklearn's GradientBoostingRegressor, saves the fitted model, and outputs the MAE values as a CSV file.
+
 Usage: src/03_gbr_model.py --train=<train> --test=<test> [--model_path=<model_path>] [--out_path=<out_path>]
+
 Options:
 --train=<train>             The path (including filename) of the train dataset file in zip/csv format relative to the root 
 --test=<test>               The path (including filename) of the test dataset file in zip/csv format relative to the root
@@ -82,6 +84,8 @@ def test_fun():
     main(train_data_loc, test_data_loc)
     assert os.path.exists("src/joblib/gbr_model.joblib"), "Model dump not found in location"
     assert os.path.exists("results/gbr_train_result.csv"), "Results file not found in location"
+    os.remove("src/joblib/gbr_model.joblib")
+    os.remove("results/gbr_train_result.csv")
 
 
 if __name__ == "__main__":
