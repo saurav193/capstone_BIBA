@@ -2,15 +2,19 @@
 title: "Internal report"
 author: "Saurav Chowdhury, Sirine Chahma, Reiko Okamoto, Tani Barasch"
 date: "17/06/2020"
-output: github_document
+always_allow_html: true
+output: 
+  github_document:
+    toc: true
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE)
 
 library(knitr)
 library(kableExtra)
 library(tidyverse)
+library(cowplot)
 ```
 
 ## Purpose
@@ -27,15 +31,15 @@ The key observations are as follows. First, the marginal distribution of the `un
 include_graphics("../results/report_figures/figure_1.png")
 ```
 
-``` {r Figure 2, echo=FALSE, message=FALSE, fig.cap="Figure 2. Counts of features with a certain proportion of zeros."}
+``` {r Figure 2, echo=FALSE, message=FALSE, fig.cap="Figure 2. Counts of features by proportion of zeros."}
 include_graphics("../results/report_figures/figure_2.png")
 ```
 
-``` {r Figure 3, echo=FALSE, message=FALSE, fig.cap="Figure 3. Counts of features with a certain proportion of missing values"}
+``` {r Figure 3, echo=FALSE, message=FALSE, fig.cap="Figure 3. Counts of features by proportion of missing values"}
 include_graphics("../results/report_figures/figure_3.png")
 ```
 
-``` {r Figure 4, echo=FALSE, message=FALSE, fig.cap="Figure 4. Counts of playgrounds with a certain number of missing target values. Playgrounds missing less than two observations are excluded from this plot."}
+``` {r Figure 4, echo=FALSE, message=FALSE, fig.cap="Figure 4. Counts of playgrounds by number of missing target values. Playgrounds missing less than two observations are excluded from this plot for readability."}
 include_graphics("../results/report_figures/figure_4.png")
 ```
 
@@ -51,7 +55,7 @@ At first, we considered creating regression models that output either a confiden
 
 ## Rationale behind the data split
 
-The dataset consists of 24 monthly observations for 2506 Biba-enabled playgrounds in the United States. The dates ranged from January 2018 to December 2019. Data from January 2018 were excluded from our analysis because many observations are missing the target value for this month, as shown in Figure 5. Therefore, our training set consisted of observations from February 2018 through June 2019 and our validation set included observations from July 2019 through September 2019. The observations from the last three months were aside for model testing. This strategy enabled us to avoid data leakage when pursuing a time series approach.
+The dataset consists of 24 monthly observations for 2506 Biba-enabled playgrounds in the United States. The dates ranged from January 2018 to December 2019. Data from January 2018 were excluded from our analysis because many observations are missing the target value for this month, as shown in Figure 5. Therefore, our training set consisted of observations from February 2018 through September 2019. The observations from October 2019 to December 2019 were aside for model testing. This strategy enabled us to avoid data leakage when pursuing a time series approach.
 
 ## Analysis with the old dataset
 
@@ -88,7 +92,7 @@ The data used in this iteration of modeling can be found [here](https://github.c
 
 Preprocessing techniques were reconsidered. As for imputation, we began by taking a closer look at each feature. In some features, missing values were in fact synonymous with zeros. In others, it made more sense to replace missing values with the mean or a specific value. For example, missing values related to presidential election results in Alaska were filled in manually. Feature engineering and selection were also performed to reduce dimensionality. This involved dropping columns with low fill rates, removing correlated features, and combining columns using domain knowledge. The discussion surrounding feature engineering and selection is documented [here](https://github.com/Z2hMedia/capstone_machine_learning/issues/95). [`/src/imputer.py`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/imputer.py), [`/src/feature_eng.py`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/feature_eng.py), and [`/src/drop.py`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/drop.py) contain the functions that were used to preprocess the input data.
 
-Ten different kinds of models were pursued during this iteration. Table 3 shows where the work for each model can be located. It should be mentioned that Jupyter notebooks were run on Amazon EC2 to reduce computation time. An `XGBClassifier` was created and its F1 score for the low-count class was 0.99 and that of the high-count class was 0.85. Given the skewness in the data, poisson regression was used to predict `unacast_session_count` for the high-count data. However, its validation RMSE was 1.22287e+73. Other generalized linear models suitable for count data were considered (e.g. negative binomial); however, the algorithm would not converge and model coefficients could not be obtained. On the other hand, regression models build for the low-count data using `LinearRegression` and `XGBRegressor` had promising validation RMSE values of 54 and 35, respectively.
+Ten different kinds of models were pursued during this iteration. Table 3 shows where the work for each model can be located. It should be mentioned that Jupyter notebooks were run on Amazon EC2 to reduce computation time. 
 
 Table 3. Locations of .ipynb files containing modeling work using the new dataset.
 
@@ -123,23 +127,51 @@ Building a mixed effects model in Python was troublesome because the `smf` funct
   
 #### Tiered approach
 
-We also considered a tiered approach. This model consisted of a classifier which would predict an observation to be either low count or high count (i.e. below or above 300 sessions). Based on that decision, a prediction would be made using a regressor that was trained on low-count or high-count data.
+We also considered a tiered approach. This model consisted of a classifier which would predict an observation to be either low count or high count (i.e. below or above 300 sessions). Based on that decision, a prediction would be made using a regressor that was trained on low-count or high-count data. An `XGBClassifier` was created and its F1 score for the low-count class was 0.99 and that of the high-count class was 0.85. Given the skewness in the data, poisson regression was used to predict `unacast_session_count` for the high-count data. However, its validation RMSE was 1.22287e+73. Other generalized linear models suitable for count data were considered (e.g. negative binomial); however, the algorithm would not converge and model coefficients could not be obtained. On the other hand, regression models build for the low-count data using `LinearRegression` and `XGBRegressor` had validation RMSE values of 54 and 35, respectively. However, we acknowledge that these values are not reflective of the performance of the tiered model as a whole.
 
-``` {r Residual plots}
+#### Residual plots
+
+In order to assess the fit of the model, we created residual plots. In these plots, we observed a trend in the residuals. Residual plots derived from the median-predicting `GradientBoostingRegressor`, `LightGBM`, and `CatBoost` models are shown below.
+
+``` {r Figure 6, echo=FALSE, message=FALSE, fig.cap="Figure 6. Residual plots of the median-predicting GradientBoostingRegressor model."}
+
+#p1 <- ggdraw() + draw_image("<FILEPATH TO TRAIN PLOT>")
+#p2 <- ggdraw() + draw_image("<FILEPATH TO VALID PLOT>")
+#plot_grid(p1, p2)
+```
+
+``` {r Figure 7, echo=FALSE, message=FALSE, fig.cap="Figure 7. Residual plots of the median-predicting LightGBM model."}
+
+#p3 <- ggdraw() + draw_image("<FILEPATH TO TRAIN PLOT>")
+#p4 <- ggdraw() + draw_image("<FILEPATH TO VALID PLOT>")
+#plot_grid(p3, p4)
+```
+
+``` {r Figure 8, echo=FALSE, message=FALSE, fig.cap="Figure 8. Residual plots of the median-predicting CatBoost model."}
+
+#p5 <- ggdraw() + draw_image("<FILEPATH TO TRAIN PLOT>")
+#p6 <- ggdraw() + draw_image("<FILEPATH TO VALID PLOT>")
+#plot_grid(p5, p6)
 ```
 
 ## Data product
 
 #### Results
 
-Our data product consists of three boosting models that predict the median `unacast_session_count`. We selected these models because they are least worst-performing models we came across in our analysis, they are relatively fast to train, and the median is less sensitive to extreme values than the mean, as mentioned earlier.
+Our data product consists of three boosting models that predict the median `unacast_session_count`. We selected these models because they are least worst-performing models we came across in our analysis, they are relatively fast to train, and the median is less sensitive to extreme values than the mean, as mentioned earlier. Their performance is as follows:
 
-``` {r Evaluation metrics}
+``` {r Model performance, echo=FALSE, message=FALSE}
+gbr <- read_csv("../results/gbr_train_result.csv")
+lgbm <- read_csv("../results/lgbm_train_result.csv")
+cat <- read_csv("../results/catboost_train_result.csv") %>%
+  mutate(model = 'CatBoost')
+
+rbind(gbr, lgbm, cat)
 ```
 
 #### Reproducing the data analysis
 
-Instructions on how to run the makefile to reproduce this report can be found [here](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/README.md). The makefile automates the execution of six scripts. The first script [`/src/01_split_data.py`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/01_split_data.py) splits the raw data into the training and test sets. The second script [`/src/02_preprocessing.py`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/02_preprocessing.py) fits an imputer and one-hot encoder on the training set and saves them as .joblib files for later use. It also transforms the training and test sets and saves them as .csv files in the [`/data`](https://github.com/Z2hMedia/capstone_machine_learning/tree/master/data) directory. Smaller versions of the training and test sets are also saved as .csv files to serve as dummy data for testing. It should be noted that the preprocessing methods used here are identical to those used in the second iteration of modeling. *Note: features are  not scaled because tree-based models are not sensitive to scaling.* [`/src/03_gbr_model.py`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/03_gbr_model.py), [`src/04_catboost_model.py`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/04_catboost_model.py), and [`/src/05_lgbm_model.py`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/05_lgbm_model.py) are the scripts in which modeling take place. The hyperparameters are hard coded based on the results of the random searches performed in the second iteration of modeling. In each script, a model is fit and then used to predict on the training and test sets. Since these models can predict negative values, the nonsensical predictions are converted to zero prior to calculating the MAE. Each model is saved as a .joblib file and its performance metrics are saved as a .csv file in the [`/results`](https://github.com/Z2hMedia/capstone_machine_learning/tree/master/results) directory. The last script in the makefile renders this report.
+Instructions on how to run the makefile to reproduce this report can be found [here](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/README.md). The makefile automates the execution of six scripts. The first script [`/src/01_split_data.py`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/01_split_data.py) splits the raw data into the training and test sets. The second script [`/src/02_preprocessing.py`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/02_preprocessing.py) fits an imputer and one-hot encoder on the training set and saves them as .joblib files for later use. It also transforms the training and test sets and saves them as .csv files in the [`/data`](https://github.com/Z2hMedia/capstone_machine_learning/tree/master/data) directory. Smaller versions of the training and test sets are also saved as .csv files to serve as dummy data for testing. It should be noted that the preprocessing methods used here are identical to those used in the second iteration of modeling. *Note: features are  not scaled because tree-based models are not sensitive to scaling.* [`/src/03_gbr_model.py`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/03_gbr_model.py), [`src/04_catboost_model.py`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/04_catboost_model.py), and [`/src/05_lgbm_model.py`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/05_lgbm_model.py) are the scripts in which modeling take place. The hyperparameters are hard coded based on the results of the random searches performed in the second iteration of modeling. In each script, a model is fit and then used to predict on the training and test sets. Since these models can predict negative values, the nonsensical predictions are converted to zero prior to calculating the MAE. Each model is saved as a .joblib file and its performance metrics are saved as a .csv file in the [`/results`](https://github.com/Z2hMedia/capstone_machine_learning/tree/master/results) directory. This file, which is not part of the makefile, renders this report.
 
 #### Predicting on new data
 
