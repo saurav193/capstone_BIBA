@@ -4,6 +4,9 @@ A capstone project for the UBC Master of Data Science program
 
 Authors: Saurav Chowdhury, Sirine Chahma, Reiko Okamoto, Tani Barasch
 
+## Introduction
+Biba creates a mobile games experience that incorporates outdoor play to get children active. Integrating data collected through their app with third-party data, we built a data analysis pipeline and populated a GitHub repository with scripts and well-annotated Jupyter notebook files. We hope that our models and supplemental write-ups will provide useful information to Biba and subsequently playground owners and managers, guiding them through the decision-making process surrounding community play spaces.
+
 ## Report
 Link to the [final report](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/doc/internal_report.md).
 
