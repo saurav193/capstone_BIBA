@@ -28,7 +28,12 @@ from create_apply_ohe import create_ohe, apply_ohe
 
 def main(test, train=None):
     
+
     compression_opts = dict(method='zip', archive_name='out.csv')  
+
+    #import name of the columns for the data we worked on
+    former_data = pd.read_csv('../data/columns_name.csv')
+    former_columns = list(former_data.columns)
 
     #===================================
     # PREPROCESS X_TRAIN_VALID
@@ -37,6 +42,10 @@ def main(test, train=None):
     if train is not None:
 
         train_data = pd.read_csv(train)
+
+        # check if the columns are the same as in the data we work with
+        if former_columns != list(train_data.columns):
+            print('The data you are using is not similar to the one we used to train our models, the pipeline may throw an error at some point')
 
         # drop observations missing `unacast_session_count`
         train_data = drop_missing_unacast(train_data)
@@ -85,6 +94,10 @@ def main(test, train=None):
     if 'unacast_session_count' in list(test_data.columns):
         test_data = drop_missing_unacast(test_data)
 
+    if list(former_data.drop(columns=['unacast_session_count']).columns) != list(test_data.columns):
+        print('The data you are using is not similar to the one we used to train our models, the pipeline may throw an error at some point')
+
+
     # create X and y
     if 'unacast_session_count' in list(test_data.columns):
         X_test = test_data.drop('unacast_session_count', axis=1)
@@ -104,19 +117,26 @@ def main(test, train=None):
     # transfrom data using saved one-hot encoder
     X_test = apply_ohe(X_test, to_encode=['income_class', 'density_class', 'climate'], filename='src/joblib/ohe.joblib')
 
-    print('Preprocessing X_test successful!')
+    if train is not None: 
+        print('Preprocessing X_test successful!')
+    else:
+        print('Preprocessing X_pred successful!')
 
     # attach y
     if 'unacast_session_count' in list(test_data.columns):
         X_test['unacast_session_count'] = y_test
 
     # save processed data
-    X_test.to_csv('data/processed_test.zip', index=False, compression=compression_opts)
-
-    # save preprocessed dummy data (first 20 rows)
-    X_test.head(20).to_csv('data/dummy/dummy_test_data.zip', index=False, compression=compression_opts)
-
-    print('Saving preprocessed X_test successful!')
+    if train is not None: 
+        X_test.to_csv('data/processed_test.zip', index=False, compression=compression_opts)
+        # save preprocessed dummy data (first 20 rows)
+        X_test.head(20).to_csv('data/dummy/dummy_test_data.zip', index=False, compression=compression_opts)
+        print('Saving preprocessed X_test successful!')
+    else:
+        X_test.to_csv('data/processed_pred.zip', index=False, compression=compression_opts)
+        # save preprocessed dummy data (first 20 rows)
+        X_test.head(20).to_csv('data/dummy/dummy_pred_data.zip', index=False, compression=compression_opts)
+        print('Saving preprocessed X_pred successful!')
 
     return
 
