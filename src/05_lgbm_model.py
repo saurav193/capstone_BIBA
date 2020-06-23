@@ -1,4 +1,3 @@
-
 """This script fits a model using LightGBM, saves the fitted model, and outputs the MAE values as a CSV file.
 
 Usage: src/05_lgbm_model.py --train=<train> --test=<test> [--model_path=<model_path>] [--out_path=<out_path>]
@@ -85,6 +84,8 @@ def test_fun():
     main(train_data_loc, test_data_loc)
     assert os.path.exists("src/joblib/lgbm_model.joblib"), "Model dump not found in location"
     assert os.path.exists("results/lgbm_train_result.csv"), "Results file not found in location"
+    os.remove("src/joblib/lgbm_model.joblib")
+    os.remove("results/lgbm_train_result.csv")
 
 
 if __name__ == "__main__":
