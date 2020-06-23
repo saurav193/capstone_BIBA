@@ -34,7 +34,9 @@ Link to the [final report](https://github.com/Z2hMedia/capstone_machine_learning
 
 ### To automate script execution using the Makefile:
 
-**Warning**: if the dataset being used doesn't have the same features in the same order as the one that was used for training, this may throw an error. When running the Makefile with such dataset, a warning will appear. 
+**Warning #1**: it can take up to **2 hours** to run this pipeline.
+
+**Warning #2**: if the dataset being used doesn't have the same features in the same order as the one that was used for training, this may throw an error. When running the Makefile with such dataset, a warning will appear. 
 
 To generate the the report using the Makefile: 
 1. Make sure that the data you want to use to train the models is saved in the `/data` repository, with the name `playground_stats.csv`. 
