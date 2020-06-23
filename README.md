@@ -4,61 +4,69 @@ A capstone project for the UBC Master of Data Science program
 
 Authors: Saurav Chowdhury, Sirine Chahma, Reiko Okamoto, Tani Barasch
 
-## About
+## Introduction
+Biba creates a mobile games experience that incorporates outdoor play to get children active. Integrating data collected through their app with third-party data, we built a data analysis pipeline and populated a GitHub repository with scripts and well-annotated Jupyter notebook files. We hope that our models and supplemental write-ups will provide useful information to Biba and subsequently playground owners and managers, guiding them through the decision-making process surrounding community play spaces.
 
 ## Report
-- Link to proposal
-- Link to final report
+Link to the [final report](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/doc/internal_report.md).
 
 ## Usage
-- How to manage pipenv virtual environment
-- How to use Makefile 1 (analysis pipeline)
-- How to render the RMarkdown file
-- How to use Makefile 2 (prediction pipeline)
-- Run each script independently
 
-### Run the scripts independently 
-
-Run the scripts in the following order: 
+### To execute each script independently, run these commands in the following order:
 
 #### Split the data
-`python src/01_split_data.py --in_path=data/playground_stats.csv --out_path=data`
+```python src/01_split_data.py --in_path=data/playground_stats.csv --out_path=data```
 
-#### Preprocessing
-`python src/02_preprocessing.py --test=data/test_data.zip --train=data/train_data.zip`
+#### Preprocess the data
+```python src/02_preprocessing.py --test=data/test_data.zip --train=data/train_data.zip```
 
-#### GBR
-`python src/03_gbr_model.py --train=data/processed_train.zip --test=data/processed_test.zip --model_path=src/joblib/ --out_path=results/`
+#### Fit and save a `GradientBoostingRegressor`
+```python src/03_gbr_model.py --train=data/processed_train.zip --test=data/processed_test.zip --model_path=src/joblib/ --out_path=results/```
 
-#### Catboost
-`python src/04_catboost_model.py --train=data/processed_train.zip --test=data/processed_test.zip --model_path=src/joblib --out_path=results/`
+#### Fit and save a `CatBoostRegressor`
+```python src/04_catboost_model.py --train=data/processed_train.zip --test=data/processed_test.zip --model_path=src/joblib --out_path=results/```
 
-#### LGBM
-`python src/05_lgbm_model.py --train=data/processed_train.zip --test=data/processed_test.zip --model_path=src/joblib/ --out_path=results/`
+#### Fit and save a `LGBMRegressor`
+```python src/05_lgbm_model.py --train=data/processed_train.zip --test=data/processed_test.zip --model_path=src/joblib/ --out_path=results/```
 
-### Makefile
+#### Render the RMarkdown report
+```Rscript -e "library(rmarkdown); render('doc/internal_report.Rmd', output_format = 'github_document')"```
 
-**Note** : Both pipelines take around 2 hours to run from beginning to end.
+### To automate script execution using the Makefile:
 
-**Caution** : If the data set that you use doesn't have the same stucture/features in the same order, as the one we trained our models on, this may throw an error. When running the Makefile with your data, you will be warned if this is the case. 
+**Caution** : The pipeline may take around 2 hours to run from beginning to end.
+**Caution**: If the dataset being used doesn't have the same features in the same order, as the one the models were trained on, this may throw an error. When running the Makefile with such dataset, you will be warned if this is the case. 
 
-To generate the report using the Makefile : 
-1. make sure that you put the data you want to use to generate the report in the data folder, under the name `playground_stats.csv`. 
-2. run `make report` in your command line from the root of the repository.
+To generate the the report using the Makefile: 
+1. Make sure that you put the data you want to use to generate the report in the data folder, under the name `playground_stats.csv`. 
+2. Run `make report` in your command line from the root of the repository.
 3. The report will be generated in the `doc` folder.
 
-To predict the target variable from the models we selected, using the Makefile
-1. make sure that you put the data you want to use to generate the report in the data folder, under the name `playground_stats.csv`
-2. make sure that you saved the data for which you want to predict the target variable, in the data folder, under the name `X_pred.zip`. This file can or can not contain the target variable as one of its features.
-3. run `make predict` in your command line from the root of the repository.
-4. A `.csv` file will be generated in the `report` folder. This file will gather all the rows that were in the data used as an input, and one raw in which there will be the predictions for each model.
+To predict the target variable from the models we selected, using the Makefile:
+1. Make sure that you put the data you want to use to generate the report in the data folder, under the name `playground_stats.csv`.
+2. Make sure that you saved the data for which you want to predict the target variable, in the data folder, under the name `X_pred.zip`. This file can or can not contain the target variable as one of its features.
+3. Run `make predict` in your command line from the root of the repository.
+4. A `.csv` file will be generated in the `report` folder. Non-negative predictions from the three models are added as new columns to the input data.
 
-To clear all the outputs generated by the Makefile
-- run `make clear` in the command line from the root of the repository.
-
+To clear all the outputs generated by the Makefile:
+- Run `make clear` in the command line from the root of the repository.
 
 ## Dependencies
-- Python 3.7 and packages
-- R and packages
+- Python 3.7 and packages (versions are managed by `pipenv`; click [here](https://docs.google.com/document/d/1s7LvSFgmgiFV2snWN_mQWf2isiiWykX_8K8iGaxqwKQ/edit) to see a guide)
+    - `pandas`
+    - `altair`
+    - `numpy`
+    - `matplotlib`
+    - `scikit-learn`
+    - `ipykernel`
+    - `xgboost`
+    - `lightgbm`
+    - `catboost`
+    - `statsmodels`
+    - `hyperopt`
+    - `docopt`
 
-## References
+- R 3.6.2 and packages
+    - `knitr` == 1.28
+    - `kableExtra` == 1.1.0
+    - `tidyverse` == 1.3.0
