@@ -3,6 +3,30 @@ Internal report
 Saurav Chowdhury, Sirine Chahma, Reiko Okamoto, Tani Barasch
 17/06/2020
 
+  - [Purpose](#purpose)
+  - [Description of the data](#description-of-the-data)
+  - [Rationale behind the output](#rationale-behind-the-output)
+  - [Rationale behind the data split](#rationale-behind-the-data-split)
+  - [Analysis with the old dataset](#analysis-with-the-old-dataset)
+  - [Analysis with the new dataset](#analysis-with-the-new-dataset)
+      - [Time-series approach](#time-series-approach)
+      - [Mixed effects](#mixed-effects)
+      - [Tiered approach](#tiered-approach)
+      - [Residual plots](#residual-plots)
+  - [Data product](#data-product)
+      - [Results](#results)
+      - [Reproducing the data analysis](#reproducing-the-data-analysis)
+      - [Predicting on new data](#predicting-on-new-data)
+  - [Recommendations](#recommendations)
+      - [Outliers in the target](#outliers-in-the-target)
+      - [Missing values in the target](#missing-values-in-the-target)
+      - [Missing values in explanatory
+        variables](#missing-values-in-explanatory-variables)
+      - [Feature engineering and
+        selection](#feature-engineering-and-selection)
+  - [Conclusion](#conclusion)
+  - [Acknowledgements](#acknowledgements)
+
 ## Purpose
 
 This report serves four purposes: (1) help individuals navigate our
@@ -38,7 +62,8 @@ playgrounds.
 
 <p class="caption">
 
-Figure 1. Marginal distribution of the target variable.
+Figure 1. Marginal distribution of the target
+variable.
 
 </p>
 
@@ -46,11 +71,12 @@ Figure 1. Marginal distribution of the target variable.
 
 <div class="figure">
 
-<img src="../results/report_figures/figure_2.png" alt="Figure 2. Counts of features with a certain proportion of zeros." width="450" />
+<img src="../results/report_figures/figure_2.png" alt="Figure 2. Counts of features by proportion of zeros." width="450" />
 
 <p class="caption">
 
-Figure 2. Counts of features with a certain proportion of zeros.
+Figure 2. Counts of features by proportion of
+zeros.
 
 </p>
 
@@ -58,11 +84,12 @@ Figure 2. Counts of features with a certain proportion of zeros.
 
 <div class="figure">
 
-<img src="../results/report_figures/figure_3.png" alt="Figure 3. Counts of features with a certain proportion of missing values" width="450" />
+<img src="../results/report_figures/figure_3.png" alt="Figure 3. Counts of features by proportion of missing values" width="450" />
 
 <p class="caption">
 
-Figure 3. Counts of features with a certain proportion of missing values
+Figure 3. Counts of features by proportion of missing
+values
 
 </p>
 
@@ -70,13 +97,14 @@ Figure 3. Counts of features with a certain proportion of missing values
 
 <div class="figure">
 
-<img src="../results/report_figures/figure_4.png" alt="Figure 4. Counts of playgrounds with a certain number of missing target values. Playgrounds missing less than two observations are excluded from this plot." width="450" />
+<img src="../results/report_figures/figure_4.png" alt="Figure 4. Counts of playgrounds by number of missing target values. Playgrounds missing less than two observations are excluded from this plot for readability." width="450" />
 
 <p class="caption">
 
-Figure 4. Counts of playgrounds with a certain number of missing target
-values. Playgrounds missing less than two observations are excluded from
-this plot.
+Figure 4. Counts of playgrounds by number of missing target values.
+Playgrounds missing less than two observations are excluded from this
+plot for
+readability.
 
 </p>
 
@@ -120,7 +148,7 @@ than estimates that incorporate uncertainty, we chose to build models
 that predict either the mean or median `unacast_session_count`. The
 performance of these models were evaluated using the root mean squared
 error (RMSE) and mean absolute error (MAE), respectively. Quantile
-regression was also pursued here because the mean is less sensitive to
+regression was also pursued here because the median is less sensitive to
 extreme values than the mean.
 
 ## Rationale behind the data split
@@ -130,11 +158,10 @@ playgrounds in the United States. The dates ranged from January 2018 to
 December 2019. Data from January 2018 were excluded from our analysis
 because many observations are missing the target value for this month,
 as shown in Figure 5. Therefore, our training set consisted of
-observations from February 2018 through June 2019 and our validation set
-included observations from July 2019 through September 2019. The
-observations from the last three months were aside for model testing.
-This strategy enabled us to avoid data leakage when pursuing a time
-series approach.
+observations from February 2018 through September 2019. The observations
+from October 2019 to December 2019 were aside for model testing. This
+strategy enabled us to avoid data leakage when pursuing a time series
+approach.
 
 ## Analysis with the old dataset
 
@@ -152,7 +179,8 @@ Ten algorithms were used. Table 1 shows where the .ipynb file for each
 algorithm can be found.
 
 Table 1. Locations of .ipynb files containing modeling work using the
-old dataset.
+old
+dataset.
 
 |                                                                                                                                          Filename | Algorithms                                                          |
 | ------------------------------------------------------------------------------------------------------------------------------------------------: | ------------------------------------------------------------------- |
@@ -172,7 +200,8 @@ contains the functions used to perform PCA. Table 2 describes where the
 work can be found.
 
 Table 2. Locations of .ipynb files containing modeling work on data in
-which PCA was applied.
+which PCA was
+applied.
 
 |                                                                                                                                          Filename | Algorithms                  |
 | ------------------------------------------------------------------------------------------------------------------------------------------------: | --------------------------- |
@@ -216,19 +245,11 @@ contain the functions that were used to preprocess the input data.
 Ten different kinds of models were pursued during this iteration. Table
 3 shows where the work for each model can be located. It should be
 mentioned that Jupyter notebooks were run on Amazon EC2 to reduce
-computation time. An `XGBClassifier` was created and its F1 score for
-the low-count class was 0.99 and that of the high-count class was 0.85.
-Given the skewness in the data, poisson regression was used to predict
-`unacast_session_count` for the high-count data. However, its validation
-RMSE was 1.22287e+73. Other generalized linear models suitable for count
-data were considered (e.g. negative binomial); however, the algorithm
-would not converge and model coefficients could not be obtained. On the
-other hand, regression models build for the low-count data using
-`LinearRegression` and `XGBRegressor` had promising validation RMSE
-values of 54 and 35, respectively.
+computation time.
 
 Table 3. Locations of .ipynb files containing modeling work using the
-new dataset.
+new
+dataset.
 
 |                                                                                                                                                Filename | Model                                       |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------: | ------------------------------------------- |
@@ -311,7 +332,34 @@ We also considered a tiered approach. This model consisted of a
 classifier which would predict an observation to be either low count or
 high count (i.e. below or above 300 sessions). Based on that decision, a
 prediction would be made using a regressor that was trained on low-count
-or high-count data.
+or high-count data. An `XGBClassifier` was created and its F1 score for
+the low-count class was 0.99 and that of the high-count class was 0.85.
+Given the skewness in the data, poisson regression was used to predict
+`unacast_session_count` for the high-count data. However, its validation
+RMSE was 1.22287e+73. Other generalized linear models suitable for count
+data were considered (e.g. negative binomial); however, the algorithm
+would not converge and model coefficients could not be obtained. On the
+other hand, regression models build for the low-count data using
+`LinearRegression` and `XGBRegressor` had validation RMSE values of 54
+and 35, respectively. However, we acknowledge that these values are not
+reflective of the performance of the tiered model as a whole.
+
+#### Residual plots
+
+In order to assess the fit of the model, we created residual plots. In
+these plots, we observed a trend in the residuals. Residual plots
+derived from the median-predicting `GradientBoostingRegressor`,
+`LightGBM`, and `CatBoost` models are shown below.
+
+![Figure 6. Residual plots of the median-predicting
+GradientBoostingRegressor
+model.](internal_report_files/figure-gfm/Figure%206-1.png)
+
+![Figure 7. Residual plots of the median-predicting LightGBM
+model.](internal_report_files/figure-gfm/Figure%207-1.png)
+
+![Figure 8. Residual plots of the median-predicting CatBoost
+model.](internal_report_files/figure-gfm/Figure%208-1.png)
 
 ## Data product
 
@@ -321,7 +369,15 @@ Our data product consists of three boosting models that predict the
 median `unacast_session_count`. We selected these models because they
 are least worst-performing models we came across in our analysis, they
 are relatively fast to train, and the median is less sensitive to
-extreme values than the mean, as mentioned earlier.
+extreme values than the mean, as mentioned earlier. Their performance is
+as follows:
+
+    ## # A tibble: 3 x 3
+    ##   model                    `train mae` `test mae`
+    ##   <chr>                          <dbl>      <dbl>
+    ## 1 GradientBoostedRegressor        38.8       98.6
+    ## 2 LightGBM                        27.7      104. 
+    ## 3 CatBoost                        35.8       95.6
 
 #### Reproducing the data analysis
 
@@ -353,7 +409,8 @@ predict negative values, the nonsensical predictions are converted to
 zero prior to calculating the MAE. Each model is saved as a .joblib file
 and its performance metrics are saved as a .csv file in the
 [`/results`](https://github.com/Z2hMedia/capstone_machine_learning/tree/master/results)
-directory. The last script in the makefile renders this report.
+directory. This file, which is not part of the makefile, renders this
+report.
 
 #### Predicting on new data
 

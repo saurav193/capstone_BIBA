@@ -61,12 +61,10 @@ def get_pca_trans_data(input_df, var_per_rqd):
     #storing the # components for given percentage explained variance
     num_components.append(i)
     
-    pca_df = pd.DataFrame(pca_trans_data)
+    output_data = pd.DataFrame(pca_trans_data)
     
-    output_data = pd.concat([pca_df, data.loc[:,categorical_features]], axis=1)
-
-    test_get_pca_trans_data(var_ratio, var_per_rqd, output_data, input_df)
-
+#     test_get_pca_trans_data(var_ratio, var_per_rqd, output_data, input_df)
+    
     return output_data
     
 
@@ -91,10 +89,16 @@ def pca_fit_transform(input_df, var_per_rqd = 0.99, by_groups = False):
     pandas.DataFrame
         data projected onto orthogonal axes with reduced dimensionality, if attainable
     """
+    global principal_components
+    global num_components
+    
     input_data = input_df.copy()
     categorical_features = list(input_df.loc[:, input_df.dtypes == "object"].columns)
     input_df = input_df.drop(columns=categorical_features)
-
+    
+    principal_components = []
+    num_components = []
+    
     if by_groups:
 
         # creating categories from entire data
@@ -123,10 +127,10 @@ def pca_fit_transform(input_df, var_per_rqd = 0.99, by_groups = False):
         pcs_df = pd.DataFrame()
         pcs_df = get_pca_trans_data(input_df, var_per_rqd)
 
-    test_pca_fit_transform(pcs_df, input_data)
+#     test_pca_fit_transform(pcs_df, input_data)
     
     if input_df.shape[0] == pcs_df.shape[0]:
-        output_data = pd.concat([pcs_df, input_data.loc[:,categorical_features]], axis=1)
+        output_data = pd.concat([pcs_df, input_data.loc[:,categorical_features].reset_index(drop = True)], axis=1)
         return output_data
     else:
         print("The number of records don't match")
@@ -195,17 +199,15 @@ def pca_transform(input_df, var_per_rqd = 0.99, by_groups = False):
     else:
         # transfomring the entire data by matrix multiplication with pca components from train data
         # taking only the number of columns in train data for each group
-        print(input_df.to_numpy().shape)
-        print(principal_components[0].shape)
         transformed_data = (input_df.to_numpy() @ principal_components[0].T)[:, 0:num_components[0]]
         pcs_df = pd.DataFrame(transformed_data)
         
-    test_pca_transform(pcs_df, input_data)
+#     test_pca_transform(pcs_df, input_data)
 
     if input_df.shape[0] == pcs_df.shape[0]:
         principal_components = []
         num_components = []
-        output_data = pd.concat([pcs_df, input_data.loc[:,categorical_features]], axis=1)
+        output_data = pd.concat([pcs_df, input_data.loc[:,categorical_features].reset_index(drop = True)], axis=1)
         return output_data
     else:
         print("The number of records don't match")
