@@ -152,15 +152,20 @@ extreme values than the mean.
 
 ## Rationale behind the hold-out set
 
-The dataset consists of 24 monthly observations for 2506 Biba-enabled
-playgrounds in the United States. The dates ranged from January 2018 to
-December 2019. Data from January 2018 were excluded from our analysis
-because many observations are missing the target value for this month,
-as shown in Figure 5. Therefore, our training set consisted of
-observations from February 2018 through September 2019. The observations
-from October 2019 to December 2019 were aside for model testing. This
-strategy enabled us to avoid data leakage when pursuing a time series
-approach.
+The original data consisted of 24 monthly observations for 2506
+Biba-enabled playgrounds in the United States. The dates ranged from
+January 2018 to December 2019. However, as mentioned in the previous
+section, observations from January 2018 were excluded from modeling. It
+was also found that one playground was actually located in Canada. All
+observations from that playground were subsequently removed. The
+observations from the last three months (October 2019 to December 2019)
+were set aside for model testing. Observations from February 2018
+through September 2019 were randomly assigned to training and validation
+sets using scikit-learn’s `train_test_split` with one exception. When
+pursuing a time-series approach, to avoid data leakage, the training set
+consisted of observations from February 2018 through June 2019 while the
+validation set consisted of observations from July 2019 through
+September 2019.
 
 ## Analysis with the old dataset
 
@@ -339,11 +344,16 @@ Given the skewness in the data, poisson regression was used to predict
 RMSE was 1.22287e+73 sessions. Other generalized linear models suitable
 for count data were considered (e.g. negative binomial); however, the
 algorithm would not converge and model coefficients could not be
-obtained. On the other hand, regression models build for the low-count
+obtained. On the other hand, regression models built for the low-count
 data using `LinearRegression` and `XGBRegressor` had validation RMSE
 values of 54 sessions and 35 sessions, respectively. However, we
 acknowledge that these values are not reflective of the performance of
-the tiered model as a whole.
+the tiered model as a whole. It should be mentioned that these low-count
+and high-count regression models could have been consolidated into a
+weight sum model. Instead of a label, the classifier could have
+predicted class probabilities. Then, the predicted probabilities could
+have been used to weigh the estimated session counts derived from the
+two different regression models.
 
 #### Residual plots
 
