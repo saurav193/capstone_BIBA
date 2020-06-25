@@ -368,26 +368,27 @@ two different regression models.
 In order to assess the fit of the model, we created residual plots. In
 these plots, we observed a trend in the residuals. Residual plots
 derived from the median-predicting `GradientBoostingRegressor`,
-`LightGBM`, and `CatBoost` models are shown below.
+`LGBMRegressor`, and `CatBoostRegressor` models are shown below.
 
-|                                                          |                                                     |
-| -------------------------------------------------------- | --------------------------------------------------- |
-| ![GBR training](../results/report_figures/gbr_train.png) | ![GBR test](../results/report_figures/gbr_test.png) |
+|                                                                          |                                                                 |
+| ------------------------------------------------------------------------ | --------------------------------------------------------------- |
+| *Training data* ![GBR training](../results/report_figures/gbr_train.png) | *Test data* ![GBR test](../results/report_figures/gbr_test.png) |
 
 Figure 6. Residual plots of the median-predicting
-GradientBoostingRegressor model.
+`GradientBoostingRegressor` model.
 
-|                                                                |                                                           |
-| -------------------------------------------------------------- | --------------------------------------------------------- |
-| ![LightGBM training](../results/report_figures/lgbm_train.png) | ![LightGBM test](../results/report_figures/lgbm_test.png) |
+|                                                                                |                                                                       |
+| ------------------------------------------------------------------------------ | --------------------------------------------------------------------- |
+| *Training data* ![LightGBM training](../results/report_figures/lgbm_train.png) | *Test data* ![LightGBM test](../results/report_figures/lgbm_test.png) |
 
-Figure 7. Residual plots of the median-predicting LightGBM model.
+Figure 7. Residual plots of the median-predicting `LGBMRegressor` model.
 
-|                                                                |                                                           |
-| -------------------------------------------------------------- | --------------------------------------------------------- |
-| ![CatBoost training](../results/report_figures/catb_train.png) | ![CatBoost test](../results/report_figures/catb_test.png) |
+|                                                                                |                                                                       |
+| ------------------------------------------------------------------------------ | --------------------------------------------------------------------- |
+| *Training data* ![CatBoost training](../results/report_figures/catb_train.png) | *Test data* ![CatBoost test](../results/report_figures/catb_test.png) |
 
-Figure 8. Residual plots of the median-predicting CatBoost model.
+Figure 8. Residual plots of the median-predicting `CatBoostRegressor`
+model.
 
 The residuals (error values) are calculated as predicted minus true. It
 should also be emphasized that negative predicted values were converted
