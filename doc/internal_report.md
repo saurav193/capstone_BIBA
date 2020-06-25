@@ -3,6 +3,30 @@ Internal report
 Saurav Chowdhury, Sirine Chahma, Reiko Okamoto, Tani Barasch
 17/06/2020
 
+  - [Purpose](#purpose)
+  - [Description of the data](#description-of-the-data)
+  - [Rationale behind the output](#rationale-behind-the-output)
+  - [Rationale behind the data split](#rationale-behind-the-data-split)
+  - [Analysis with the old dataset](#analysis-with-the-old-dataset)
+  - [Analysis with the new dataset](#analysis-with-the-new-dataset)
+      - [Time-series approach](#time-series-approach)
+      - [Mixed effects](#mixed-effects)
+      - [Tiered approach](#tiered-approach)
+      - [Residual plots](#residual-plots)
+  - [Data product](#data-product)
+      - [Results](#results)
+      - [Reproducing the data analysis](#reproducing-the-data-analysis)
+      - [Predicting on new data](#predicting-on-new-data)
+  - [Recommendations](#recommendations)
+      - [Outliers in the target](#outliers-in-the-target)
+      - [Missing values in the target](#missing-values-in-the-target)
+      - [Missing values in explanatory
+        variables](#missing-values-in-explanatory-variables)
+      - [Feature engineering and
+        selection](#feature-engineering-and-selection)
+  - [Conclusion](#conclusion)
+  - [Acknowledgements](#acknowledgements)
+
 ## Purpose
 
 This report serves four purposes: (1) help individuals navigate our
@@ -51,7 +75,7 @@ months.](../results/report_figures/figure_5.png)
 Exploratory data analysis also revealed the possible duplication of
 information in the dataset. For example, among the features derived from
 the U.S. Census, information related to sex is encoded in several places
-(i.e. “Sex by Age”, “Sex by Marital Status”, “Sex by School
+(i.e. “Sex by Age”, “Sex by Marital Status”, “Sex by School
 Enrollment”). Upon closer inspection of the dataset, we also
 discovered that some columns are merely the sum of others. The pattern
 can be observed among the U.S. Census-related features; for example,
@@ -105,8 +129,7 @@ Ten algorithms were used. Table 1 shows where the .ipynb file for each
 algorithm can be found.
 
 Table 1. Locations of .ipynb files containing modeling work using the
-old
-dataset.
+old dataset.
 
 |                                                                                                                                          Filename | Algorithms                                                          |
 | ------------------------------------------------------------------------------------------------------------------------------------------------: | ------------------------------------------------------------------- |
@@ -126,8 +149,7 @@ contains the functions used to perform PCA. Table 2 describes where the
 work can be found.
 
 Table 2. Locations of .ipynb files containing modeling work on data in
-which PCA was
-applied.
+which PCA was applied.
 
 |                                                                                                                                          Filename | Algorithms                  |
 | ------------------------------------------------------------------------------------------------------------------------------------------------: | --------------------------- |
@@ -174,8 +196,7 @@ mentioned that Jupyter notebooks were run on Amazon EC2 to reduce
 computation time.
 
 Table 3. Locations of .ipynb files containing modeling work using the
-new
-dataset.
+new dataset.
 
 |                                                                                                                                                Filename | Model                                       |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------: | ------------------------------------------- |
@@ -233,7 +254,7 @@ Unfortunately, this didn’t improve neither our RMSE (200) nor our MAE
 (100).
 
 In R, we grouped the observations using levels of categorical variables
-(i.e. `state`, `climate`, `density_class`, `income_class`). None of the
+(i.e. `state`, `climate`, `density_class`, `income_class`). None of the
 models outperformed the off-the-shelf regression models mentioned
 earlier. The validation RMSE and MAE values were around 200 and 100,
 respectively. We also applied k-means clustering with *k* = 2, 4 to see
@@ -248,7 +269,7 @@ Building a mixed effects model in Python was troublesome because the
 of columns that made the algorithm not converge. To compensate, we had
 to write a function that dropped these problematic columns. Similar to
 the implementation in R, observations were grouped using levels of
-categorical variables (i.e. `climate`, `density_class`, `income_class`).
+categorical variables (i.e. `climate`, `density_class`, `income_class`).
 The results were similar to that of the R implementation with validation
 RMSE and MAE values of around 200 and 100, respectively.
 

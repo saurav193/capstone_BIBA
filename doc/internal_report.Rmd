@@ -1,6 +1,7 @@
 ---
 title: "Internal report"
 author: "Saurav Chowdhury, Sirine Chahma, Reiko Okamoto, Tani Barasch"
+
 date: "17/06/2020"
 always_allow_html: true
 output: 
@@ -17,9 +18,11 @@ library(tidyverse)
 library(cowplot)
 ```
 
+
 ## Purpose
 
 This report serves four purposes: (1) help individuals navigate our GitHub repository; (2) discuss our analysis and findings; (3) report the performances of selected models: and (4) provide recommendations on how to move forward.
+
 
 ## Description of the data
 
