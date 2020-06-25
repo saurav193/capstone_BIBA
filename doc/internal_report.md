@@ -167,7 +167,7 @@ consisted of observations from February 2018 through June 2019 while the
 validation set consisted of observations from July 2019 through
 September 2019.
 
-## Analysis with the old dataset
+## Analysis with the original dataset
 
 The data used in this iteration of modeling can be found
 [here](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/data/old_train_data.zip).
