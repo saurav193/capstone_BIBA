@@ -1,5 +1,5 @@
 ---
-title: "classifier_poisson"
+title: "Tiered model"
 output: github_document
 ---
 
@@ -15,18 +15,18 @@ See `/src/training_tiered.ipynb` for a summary on the tiered modeling strategy.
 Load the data for *high* observations:
 
 ``` {r, message=FALSE}
-X_train_hi <- read_csv("../data/tiered_modeling/X_train_hi.csv")
-X_valid_hi <- read_csv("../data/tiered_modeling/X_valid_hi.csv")
-y_train_hi <- read_csv("../data/tiered_modeling/y_train_hi.csv")
-y_valid_hi <- read_csv("../data/tiered_modeling/y_valid_hi.csv")
+X_train_hi <- read_csv("../data/tiered_modeling/X_train_hi.zip")
+X_valid_hi <- read_csv("../data/tiered_modeling/X_valid_hi.zip")
+y_train_hi <- read_csv("../data/tiered_modeling/y_train_hi.zip")
+y_valid_hi <- read_csv("../data/tiered_modeling/y_valid_hi.zip")
 ```
 
 Load the data for *low* observations:
 ``` {r, message=FALSE}
-X_train_lo <- read_csv("../data/tiered_modeling/X_train_lo.csv")
-X_valid_lo <- read_csv("../data/tiered_modeling/X_valid_lo.csv")
-y_train_lo <- read_csv("../data/tiered_modeling/y_train_lo.csv")
-y_valid_lo <- read_csv("../data/tiered_modeling/y_valid_lo.csv")
+X_train_lo <- read_csv("../data/tiered_modeling/X_train_lo.zip")
+X_valid_lo <- read_csv("../data/tiered_modeling/X_valid_lo.zip")
+y_train_lo <- read_csv("../data/tiered_modeling/y_train_lo.zip")
+y_valid_lo <- read_csv("../data/tiered_modeling/y_valid_lo.zip")
 ```
 
 ### Analysis for *high* observations
