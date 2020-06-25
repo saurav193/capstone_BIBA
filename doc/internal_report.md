@@ -12,8 +12,21 @@ Saurav Chowdhury, Sirine Chahma, Reiko Okamoto, Tani Barasch
     dataset](#analysis-with-the-original-dataset)
   - [Analysis with an updated
     dataset](#analysis-with-an-updated-dataset)
+      - [Time-series approach](#time-series-approach)
+      - [Mixed effects](#mixed-effects)
+      - [Tiered approach](#tiered-approach)
+      - [Residual plots](#residual-plots)
   - [Data product](#data-product)
+      - [Results](#results)
+      - [Reproducing the data analysis](#reproducing-the-data-analysis)
+      - [Predicting on new data](#predicting-on-new-data)
   - [Recommendations](#recommendations)
+      - [Outliers in the target](#outliers-in-the-target)
+      - [Missing values in the target](#missing-values-in-the-target)
+      - [Missing values in explanatory
+        variables](#missing-values-in-explanatory-variables)
+      - [Feature engineering and
+        selection](#feature-engineering-and-selection)
   - [Conclusion](#conclusion)
   - [Acknowledgements](#acknowledgements)
 
@@ -45,69 +58,30 @@ directory.
 The key observations are as follows. First, the marginal distribution of
 the `unacast_session_count` has a positive skew (Figure 1).
 
-<div class="figure">
-
-<img src="../results/report_figures/figure_1.png" alt="Figure 1. Marginal distribution of the target variable." width="464" />
-
-<p class="caption">
-
-Figure 1. Marginal distribution of the target variable.
-
-</p>
-
-</div>
+![Figure 1. Marginal distribution of the target
+variable.](../results/report_figures/figure_1.png)
 
 Second, Figure 2 shows the sparsity of the data. Many of the features
 derived from data collected through the app contain zeros in the
 original dataset.
 
-<div class="figure">
-
-<img src="../results/report_figures/figure_2.png" alt="Figure 2. Histogram of the proportion of zeros in each of the 860 explanatory variables." width="450" />
-
-<p class="caption">
-
-Figure 2. Histogram of the proportion of zeros in each of the 860
-explanatory variables.
-
-</p>
-
-</div>
+![Figure 2. Histogram of the proportion of zeros in each of the 860
+explanatory variables.](../results/report_figures/figure_2.png)
 
 Third, missing values were present in both the explanatory and response
 variables. The presence of missing values across the explanatory
 variables is summarized in Figure 3.
 
-<div class="figure">
-
-<img src="../results/report_figures/figure_3.png" alt="Figure 3. Histogram of the proportion of missing values in each of the 860 explanatory variables." width="450" />
-
-<p class="caption">
-
-Figure 3. Histogram of the proportion of missing values in each of the
-860 explanatory variables.
-
-</p>
-
-</div>
+![Figure 3. Histogram of the proportion of missing values in each of the
+860 explanatory variables.](../results/report_figures/figure_3.png)
 
 The next two histograms illustrate the distribution of missing
 `unacast_session_count`. As shown in Figure 4, there are a handful of
 playgrounds that have the target value available for fewer than half of
 the months.
 
-<div class="figure">
-
-<img src="../results/report_figures/figure_4.png" alt="Figure 4. Histogram of the number of target values available for each of the 2505 playgrounds." width="464" />
-
-<p class="caption">
-
-Figure 4. Histogram of the number of target values available for each of
-the 2505 playgrounds.
-
-</p>
-
-</div>
+![Figure 4. Histogram of the number of target values available for each
+of the 2505 playgrounds.](../results/report_figures/figure_4.png)
 
 Figure 5 suggests that the target value for January 2018 is missing for
 many playgrounds. The jump from January to February of that year can be
@@ -116,18 +90,9 @@ tracking more users. Since the location data for January 2018 captures a
 smaller population than those captured in the following months,
 observations from the first month were removed from subsequent analysis.
 
-<div class="figure">
-
-<img src="../results/report_figures/figure_5.png" alt="Figure 5. Histogram of the number of target values available for each month included in the data set aside for modeling." width="619" />
-
-<p class="caption">
-
-Figure 5. Histogram of the number of target values available for each
-month included in the data set aside for modeling.
-
-</p>
-
-</div>
+![Figure 5. Histogram of the number of target values available for each
+month included in the data set aside for
+modeling.](../results/report_figures/figure_5.png)
 
 Exploratory data analysis also revealed the possible duplication of
 information in the dataset. For example, among the features derived from

@@ -1,6 +1,7 @@
 ---
 title: "Internal report"
 author: "Saurav Chowdhury, Sirine Chahma, Reiko Okamoto, Tani Barasch"
+
 date: "17/06/2020"
 always_allow_html: true
 output: 
@@ -17,11 +18,14 @@ library(tidyverse)
 library(cowplot)
 ```
 
+
 ## Introduction and purpose
 
 The Master of Data Science program at the University of British Columbia is a professional graduate degree program which enables students to build a solid foundation in the areas of computer science and statistics. During the last two months of the program, students have the opportunity to apply the skills they gained in the classroom to real-world challenges. More information about the capstone project can be found [here](https://ubc-mds.github.io/capstone/about/). Under the supervision of an academic mentor, our team was brought on to address the following question: how many sessions took place on a playground in a given month?
 
+
 This report serves four purposes: (1) help individuals navigate our GitHub repository; (2) discuss our analysis and findings; (3) report the performances of selected models: and (4) provide recommendations on how to move forward.
+
 
 ## Description of the data
 
