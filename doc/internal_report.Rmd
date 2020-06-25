@@ -27,23 +27,31 @@ This report serves four purposes: (1) help individuals navigate our GitHub repos
 
 Exploratory data analysis was performed at the beginning of the project. The code for the exploratory data analysis can be found in the [`/eda`](https://github.com/Z2hMedia/capstone_machine_learning/tree/master/eda) directory.
 
-The key observations are as follows. First, the marginal distribution of the `unacast_session_count` has a positive skew (Figure 1). Second, Figure 2 shows the sparsity of the data. Many of the features derived from data collected through the app are sparse. Third, missing values were present in both the explanatory and response variables. The presence of missing values across the explanatory variables is summarized in Figure 3. The next two histograms illustrate the distribution of missing `unacast_session_count`. As shown in Figure 4, there are a handful of playgrounds that have the target value available for fewer than half of the months. Figure 5 suggests that the target value for January 2018 is missing for many playgrounds. The jump from January to February of that year can be attributed to Unacast’s SDK being incorporated into more apps, thereby tracking more users. Since the location data for January 2018 captures a smaller population than those captured in the following months, observations from the first month were removed from subsequent analysis. 
+The key observations are as follows. First, the marginal distribution of the `unacast_session_count` has a positive skew (Figure 1). 
 
 ```{r Figure 1, echo=FALSE, message=FALSE, fig.cap="Figure 1. Marginal distribution of the target variable."}
 include_graphics("../results/report_figures/figure_1.png")
 ```
 
+Second, Figure 2 shows the sparsity of the data. Many of the features derived from data collected through the app contain zeros in the original dataset.
+
 ``` {r Figure 2, echo=FALSE, message=FALSE, fig.cap="Figure 2. Histogram of the proportion of zeros in each of the 860 explanatory variables."}
 include_graphics("../results/report_figures/figure_2.png")
 ```
+
+Third, missing values were present in both the explanatory and response variables. The presence of missing values across the explanatory variables is summarized in Figure 3.
 
 ``` {r Figure 3, echo=FALSE, message=FALSE, fig.cap="Figure 3. Histogram of the proportion of missing values in each of the 860 explanatory variables."}
 include_graphics("../results/report_figures/figure_3.png")
 ```
 
+The next two histograms illustrate the distribution of missing `unacast_session_count`. As shown in Figure 4, there are a handful of playgrounds that have the target value available for fewer than half of the months.
+
 ``` {r Figure 4, echo=FALSE, message=FALSE, fig.cap="Figure 4. Histogram of the number of target values available for each of the 2505 playgrounds."}
 include_graphics("../results/report_figures/figure_4.png")
 ```
+
+Figure 5 suggests that the target value for January 2018 is missing for many playgrounds. The jump from January to February of that year can be attributed to Unacast’s SDK being incorporated into more apps, thereby tracking more users. Since the location data for January 2018 captures a smaller population than those captured in the following months, observations from the first month were removed from subsequent analysis.
 
 ``` {r Figure 5, echo=FALSE, message=FALSE, fig.cap="Figure 5. Histogram of the number of target values available for each month included in the data set aside for modeling."}
 include_graphics("../results/report_figures/figure_5.png")
@@ -59,7 +67,7 @@ At first, we considered creating regression models that output either a confiden
 
 The original data consisted of 24 monthly observations for 2506 Biba-enabled playgrounds in the United States. The dates ranged from January 2018 to December 2019. However, as mentioned in the previous section, observations from January 2018 were excluded from modeling. It was also found that one playground was actually located in Canada. All observations from that playground were subsequently removed. The observations from the last three months (October 2019 to December 2019) were set aside for model testing. Observations from February 2018 through September 2019 were randomly assigned to training and validation sets using scikit-learn’s `train_test_split` with one exception. When pursuing a time-series approach, to avoid data leakage, the training set consisted of observations from February 2018 through June 2019 while the validation set consisted of observations from July 2019 through September 2019. 
 
-## Analysis with the old dataset
+## Analysis with the original dataset
 
 The data used in this iteration of modeling can be found [here](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/data/old_train_data.zip). On Google Drive, it is saved as `playground_stats.csv`. Since the focus of this iteration was to evaluate the baseline performance of rudimentary models, emphasis was not placed on perfecting preprocessing techniques. For this reason, rows missing the target value were dropped and missing values in the explanatory variables were imputed with zeros. [`/src/preprocessing_old.py`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/preprocessing_old.py) contains the functions that were used to clean the data prior to modeling.
 
@@ -88,7 +96,7 @@ Table 2. Locations of .ipynb files containing modeling work on data in which PCA
 
 Out of curiousity, we also tried fitting models to data in which the playgrounds with historic session counts greater than 70000 were removed. This dramatically improved the fit of the model, decreasing the error in both the training and validation set. [`/src/training_gradient_boost_01.ipynb`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/training_gradient_boost_01.ipynb) illustrates the improvement in model performance.
 
-## Analysis with the new dataset
+## Analysis with an updated dataset 
 
 The data used in this iteration of modeling can be found [here](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/data/train_data.zip). On Google Drive, it is saved as `playground_stats_capped.csv`. The major difference between the new and old dataset is the range of the target variable. `unacast_session_count` values over 3000 were normalized to fall between 3000 and 4000.
 
@@ -96,7 +104,7 @@ Preprocessing techniques were reconsidered. As for imputation, we began by takin
 
 Ten different kinds of models were pursued during this iteration. Table 3 shows where the work for each model can be located. It should be mentioned that Jupyter notebooks were run on Amazon EC2 to reduce computation time. 
 
-Table 3. Locations of .ipynb files containing modeling work using the new dataset.
+Table 3. Locations of .ipynb files containing modeling work using the updated dataset (`playground_stats_capped.csv`).
 
 | Filename  | Model  |
 |--:|---|
@@ -119,7 +127,7 @@ A time-series approach was pursued in which the lagged target variable was inclu
 
 We assumed that not every playground observes the same behaviour with respect to visits. For example, playgrounds located in warmer climates may observe more visits in the spring or fall because it is unpleasantly hot in the summer. Meanwhile, playgrounds located in cooler climates may observe more visits in the summer because it is too cold to play outside in the winter. We could have fit a unique regression surface to observations derived from each playground, but it would have been unreasonable to create 2500 models and impossible to predict `unacast_session_count` for new playgrounds. A reasonable solution to incorporating these across-group differences was to build mixed effects models. We grouped the playgrounds using a specific characteristic and then fit a regression surface. However, each group was allowed to have its own intercept. As a result, information was shared across the groups to determine the regression surface, but the generated model was less generic than a pooled regression model.
 
-We build these models using both R (`lmer` function) and Python (`smf` function from the `statsmodels.formula.api` library).
+We built these models using both R (`lmer` function) and Python (`smf` function from the `statsmodels.formula.api` library).
   
 Unfortunately, this didn't improve neither our RMSE (200 sessions) nor MAE (100 sessions).
   
@@ -168,7 +176,9 @@ lgbm <- read_csv("../results/lgbm_train_result.csv")
 cat <- read_csv("../results/catboost_train_result.csv") %>%
   mutate(model = 'CatBoost')
 
-rbind(gbr, lgbm, cat)
+df <- rbind(gbr, lgbm, cat)
+
+kable(df)
 ```
 
 #### Reproducing the data analysis

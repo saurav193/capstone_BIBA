@@ -8,8 +8,10 @@ Saurav Chowdhury, Sirine Chahma, Reiko Okamoto, Tani Barasch
   - [Rationale behind the output](#rationale-behind-the-output)
   - [Rationale behind the hold-out
     set](#rationale-behind-the-hold-out-set)
-  - [Analysis with the old dataset](#analysis-with-the-old-dataset)
-  - [Analysis with the new dataset](#analysis-with-the-new-dataset)
+  - [Analysis with the original
+    dataset](#analysis-with-the-original-dataset)
+  - [Analysis with an updated
+    dataset](#analysis-with-an-updated-dataset)
   - [Data product](#data-product)
   - [Recommendations](#recommendations)
   - [Conclusion](#conclusion)
@@ -41,21 +43,7 @@ The code for the exploratory data analysis can be found in the
 directory.
 
 The key observations are as follows. First, the marginal distribution of
-the `unacast_session_count` has a positive skew (Figure 1). Second,
-Figure 2 shows the sparsity of the data. Many of the features derived
-from data collected through the app are sparse. Third, missing values
-were present in both the explanatory and response variables. The
-presence of missing values across the explanatory variables is
-summarized in Figure 3. The next two histograms illustrate the
-distribution of missing `unacast_session_count`. As shown in Figure 4,
-there are a handful of playgrounds that have the target value available
-for fewer than half of the months. Figure 5 suggests that the target
-value for January 2018 is missing for many playgrounds. The jump from
-January to February of that year can be attributed to Unacast’s SDK
-being incorporated into more apps, thereby tracking more users. Since
-the location data for January 2018 captures a smaller population than
-those captured in the following months, observations from the first
-month were removed from subsequent analysis.
+the `unacast_session_count` has a positive skew (Figure 1).
 
 <div class="figure">
 
@@ -68,6 +56,10 @@ Figure 1. Marginal distribution of the target variable.
 </p>
 
 </div>
+
+Second, Figure 2 shows the sparsity of the data. Many of the features
+derived from data collected through the app contain zeros in the
+original dataset.
 
 <div class="figure">
 
@@ -82,6 +74,10 @@ explanatory variables.
 
 </div>
 
+Third, missing values were present in both the explanatory and response
+variables. The presence of missing values across the explanatory
+variables is summarized in Figure 3.
+
 <div class="figure">
 
 <img src="../results/report_figures/figure_3.png" alt="Figure 3. Histogram of the proportion of missing values in each of the 860 explanatory variables." width="450" />
@@ -95,6 +91,11 @@ Figure 3. Histogram of the proportion of missing values in each of the
 
 </div>
 
+The next two histograms illustrate the distribution of missing
+`unacast_session_count`. As shown in Figure 4, there are a handful of
+playgrounds that have the target value available for fewer than half of
+the months.
+
 <div class="figure">
 
 <img src="../results/report_figures/figure_4.png" alt="Figure 4. Histogram of the number of target values available for each of the 2505 playgrounds." width="464" />
@@ -107,6 +108,13 @@ the 2505 playgrounds.
 </p>
 
 </div>
+
+Figure 5 suggests that the target value for January 2018 is missing for
+many playgrounds. The jump from January to February of that year can be
+attributed to Unacast’s SDK being incorporated into more apps, thereby
+tracking more users. Since the location data for January 2018 captures a
+smaller population than those captured in the following months,
+observations from the first month were removed from subsequent analysis.
 
 <div class="figure">
 
@@ -167,7 +175,7 @@ consisted of observations from February 2018 through June 2019 while the
 validation set consisted of observations from July 2019 through
 September 2019.
 
-## Analysis with the old dataset
+## Analysis with the original dataset
 
 The data used in this iteration of modeling can be found
 [here](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/data/old_train_data.zip).
@@ -219,7 +227,7 @@ error in both the training and validation set.
 [`/src/training_gradient_boost_01.ipynb`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/training_gradient_boost_01.ipynb)
 illustrates the improvement in model performance.
 
-## Analysis with the new dataset
+## Analysis with an updated dataset
 
 The data used in this iteration of modeling can be found
 [here](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/data/train_data.zip).
@@ -251,7 +259,7 @@ mentioned that Jupyter notebooks were run on Amazon EC2 to reduce
 computation time.
 
 Table 3. Locations of .ipynb files containing modeling work using the
-new dataset.
+updated dataset (`playground_stats_capped.csv`).
 
 |                                                                                                                                                Filename | Model                                       |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------: | ------------------------------------------- |
@@ -304,7 +312,7 @@ its own intercept. As a result, information was shared across the groups
 to determine the regression surface, but the generated model was less
 generic than a pooled regression model.
 
-We build these models using both R (`lmer` function) and Python (`smf`
+We built these models using both R (`lmer` function) and Python (`smf`
 function from the `statsmodels.formula.api` library).
 
 Unfortunately, this didn’t improve neither our RMSE (200 sessions) nor
@@ -383,12 +391,105 @@ are relatively fast to train, and the median is less sensitive to
 extreme values than the mean, as mentioned earlier. Their performance is
 as follows:
 
-    ## # A tibble: 3 x 3
-    ##   model                    `train mae` `test mae`
-    ##   <chr>                          <dbl>      <dbl>
-    ## 1 GradientBoostedRegressor        38.8       98.6
-    ## 2 LightGBM                        27.7      104. 
-    ## 3 CatBoost                        35.8       95.6
+<table>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+model
+
+</th>
+
+<th style="text-align:right;">
+
+train mae
+
+</th>
+
+<th style="text-align:right;">
+
+test mae
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+GradientBoostedRegressor
+
+</td>
+
+<td style="text-align:right;">
+
+38.76802
+
+</td>
+
+<td style="text-align:right;">
+
+98.59166
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+LightGBM
+
+</td>
+
+<td style="text-align:right;">
+
+27.69420
+
+</td>
+
+<td style="text-align:right;">
+
+104.25689
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+CatBoost
+
+</td>
+
+<td style="text-align:right;">
+
+35.76047
+
+</td>
+
+<td style="text-align:right;">
+
+95.64640
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
 
 #### Reproducing the data analysis
 
