@@ -3,30 +3,6 @@ Internal report
 Saurav Chowdhury, Sirine Chahma, Reiko Okamoto, Tani Barasch
 17/06/2020
 
-  - [Purpose](#purpose)
-  - [Description of the data](#description-of-the-data)
-  - [Rationale behind the output](#rationale-behind-the-output)
-  - [Rationale behind the data split](#rationale-behind-the-data-split)
-  - [Analysis with the old dataset](#analysis-with-the-old-dataset)
-  - [Analysis with the new dataset](#analysis-with-the-new-dataset)
-      - [Time-series approach](#time-series-approach)
-      - [Mixed effects](#mixed-effects)
-      - [Tiered approach](#tiered-approach)
-      - [Residual plots](#residual-plots)
-  - [Data product](#data-product)
-      - [Results](#results)
-      - [Reproducing the data analysis](#reproducing-the-data-analysis)
-      - [Predicting on new data](#predicting-on-new-data)
-  - [Recommendations](#recommendations)
-      - [Outliers in the target](#outliers-in-the-target)
-      - [Missing values in the target](#missing-values-in-the-target)
-      - [Missing values in explanatory
-        variables](#missing-values-in-explanatory-variables)
-      - [Feature engineering and
-        selection](#feature-engineering-and-selection)
-  - [Conclusion](#conclusion)
-  - [Acknowledgements](#acknowledgements)
-
 ## Purpose
 
 This report serves four purposes: (1) help individuals navigate our
@@ -56,76 +32,26 @@ pattern in the distribution of missing target values.
 months; notably, the target value for January 2018 is missing for many
 playgrounds.
 
-<div class="figure">
+![Figure 1. Marginal distribution of the target
+variable.](../results/report_figures/figure_1.png)
 
-<img src="../results/report_figures/figure_1.png" alt="Figure 1. Marginal distribution of the target variable." width="464" />
+![Figure 2. Counts of features by proportion of
+zeros.](../results/report_figures/figure_2.png)
 
-<p class="caption">
+![Figure 3. Counts of features by proportion of missing
+values](../results/report_figures/figure_3.png)
 
-Figure 1. Marginal distribution of the target
-variable.
-
-</p>
-
-</div>
-
-<div class="figure">
-
-<img src="../results/report_figures/figure_2.png" alt="Figure 2. Counts of features by proportion of zeros." width="450" />
-
-<p class="caption">
-
-Figure 2. Counts of features by proportion of
-zeros.
-
-</p>
-
-</div>
-
-<div class="figure">
-
-<img src="../results/report_figures/figure_3.png" alt="Figure 3. Counts of features by proportion of missing values" width="450" />
-
-<p class="caption">
-
-Figure 3. Counts of features by proportion of missing
-values
-
-</p>
-
-</div>
-
-<div class="figure">
-
-<img src="../results/report_figures/figure_4.png" alt="Figure 4. Counts of playgrounds by number of missing target values. Playgrounds missing less than two observations are excluded from this plot for readability." width="450" />
-
-<p class="caption">
-
-Figure 4. Counts of playgrounds by number of missing target values.
+![Figure 4. Counts of playgrounds by number of missing target values.
 Playgrounds missing less than two observations are excluded from this
-plot for
-readability.
+plot for readability.](../results/report_figures/figure_4.png)
 
-</p>
-
-</div>
-
-<div class="figure">
-
-<img src="../results/report_figures/figure_5.png" alt="Figure 5. Distribution of missing target values across months." width="458" />
-
-<p class="caption">
-
-Figure 5. Distribution of missing target values across months.
-
-</p>
-
-</div>
+![Figure 5. Distribution of missing target values across
+months.](../results/report_figures/figure_5.png)
 
 Exploratory data analysis also revealed the possible duplication of
 information in the dataset. For example, among the features derived from
 the U.S. Census, information related to sex is encoded in several places
-(i.e. “Sex by Age”, “Sex by Marital Status”, “Sex by School
+(i.e. “Sex by Age”, “Sex by Marital Status”, “Sex by School
 Enrollment”). Upon closer inspection of the dataset, we also
 discovered that some columns are merely the sum of others. The pattern
 can be observed among the U.S. Census-related features; for example,
@@ -307,7 +233,7 @@ Unfortunately, this didn’t improve neither our RMSE (200) nor our MAE
 (100).
 
 In R, we grouped the observations using levels of categorical variables
-(i.e. `state`, `climate`, `density_class`, `income_class`). None of the
+(i.e. `state`, `climate`, `density_class`, `income_class`). None of the
 models outperformed the off-the-shelf regression models mentioned
 earlier. The validation RMSE and MAE values were around 200 and 100,
 respectively. We also applied k-means clustering with *k* = 2, 4 to see
@@ -322,7 +248,7 @@ Building a mixed effects model in Python was troublesome because the
 of columns that made the algorithm not converge. To compensate, we had
 to write a function that dropped these problematic columns. Similar to
 the implementation in R, observations were grouped using levels of
-categorical variables (i.e. `climate`, `density_class`, `income_class`).
+categorical variables (i.e. `climate`, `density_class`, `income_class`).
 The results were similar to that of the R implementation with validation
 RMSE and MAE values of around 200 and 100, respectively.
 
