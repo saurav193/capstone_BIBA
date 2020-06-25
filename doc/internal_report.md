@@ -333,17 +333,50 @@ two different regression models.
 In order to assess the fit of the model, we created residual plots. In
 these plots, we observed a trend in the residuals. Residual plots
 derived from the median-predicting `GradientBoostingRegressor`,
-`LightGBM`, and `CatBoost` models are shown below.
+`LGBMRegressor`, and `CatBoostRegressor` models are shown below.
 
-![Figure 6. Residual plots of the median-predicting
-GradientBoostingRegressor
-model.](internal_report_files/figure-gfm/Figure%206-1.png)
+|                                                                          |                                                                 |
+| ------------------------------------------------------------------------ | --------------------------------------------------------------- |
+| *Training data* ![GBR training](../results/report_figures/gbr_train.png) | *Test data* ![GBR test](../results/report_figures/gbr_test.png) |
 
-![Figure 7. Residual plots of the median-predicting LightGBM
-model.](internal_report_files/figure-gfm/Figure%207-1.png)
+Figure 6. Residual plots of the median-predicting
+`GradientBoostingRegressor` model.
 
-![Figure 8. Residual plots of the median-predicting CatBoost
-model.](internal_report_files/figure-gfm/Figure%208-1.png)
+|                                                                                |                                                                       |
+| ------------------------------------------------------------------------------ | --------------------------------------------------------------------- |
+| *Training data* ![LightGBM training](../results/report_figures/lgbm_train.png) | *Test data* ![LightGBM test](../results/report_figures/lgbm_test.png) |
+
+Figure 7. Residual plots of the median-predicting `LGBMRegressor` model.
+
+|                                                                                |                                                                       |
+| ------------------------------------------------------------------------------ | --------------------------------------------------------------------- |
+| *Training data* ![CatBoost training](../results/report_figures/catb_train.png) | *Test data* ![CatBoost test](../results/report_figures/catb_test.png) |
+
+Figure 8. Residual plots of the median-predicting `CatBoostRegressor`
+model.
+
+The residuals (error values) are calculated as predicted minus true. It
+should also be emphasized that negative predicted values were converted
+to zero prior to this calculation. With respect to the residual plots
+for the training data, a similar trend is observed across the three
+models. The error value decreases linearly from 0 to -500 as the true
+training value increases from 0 to 3000. This suggests that the bias is
+higher for high-count predictions. The large drop observed around the
+3000 mark could be attributed to the fact that `unacast_session_count`
+above 3000 were normalized to fall between 3000 and 4000. Beyond a true
+training value of 3500, the error values hover around -2500.
+
+As for the residual plots for the test data, in all three models, the
+error value deviates away from 0 as the true test value increases.
+However, there are no large drops observed here.
+
+While the trend suggests that the model tends to underestimate for
+high-count predictions, it’s worthwhile to mention that the deviation of
+the residual away from 0 does not necessarily suggest that the
+prediction is worse for larger values. It is important to consider the
+percentage error. That is to say, even if the prediction is off by 50
+sessions, perhaps the error is still within a sensible range if the
+actual value is 500.
 
 ## Data product
 
