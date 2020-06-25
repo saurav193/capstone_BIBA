@@ -370,15 +370,24 @@ these plots, we observed a trend in the residuals. Residual plots
 derived from the median-predicting `GradientBoostingRegressor`,
 `LightGBM`, and `CatBoost` models are shown below.
 
-![Figure 6. Residual plots of the median-predicting
-GradientBoostingRegressor
-model.](internal_report_files/figure-gfm/Figure%206-1.png)
+|                                                          |                                                      |
+| -------------------------------------------------------- | ---------------------------------------------------- |
+| ![GBR training](../results/report_figures/gbr_train.png) | ![GBR test](../results/report_figures/gbr_train.png) |
 
-![Figure 7. Residual plots of the median-predicting LightGBM
-model.](internal_report_files/figure-gfm/Figure%207-1.png)
+Figure 6. Residual plots of the median-predicting
+GradientBoostingRegressor model.
 
-![Figure 8. Residual plots of the median-predicting CatBoost
-model.](internal_report_files/figure-gfm/Figure%208-1.png)
+|                                                                |                                                           |
+| -------------------------------------------------------------- | --------------------------------------------------------- |
+| ![LightGBM training](../results/report_figures/lgbm_train.png) | ![LightGBM test](../results/report_figures/lgbm_test.png) |
+
+Figure 7. Residual plots of the median-predicting LightGBM model.
+
+|                                                                |                                                           |
+| -------------------------------------------------------------- | --------------------------------------------------------- |
+| ![CatBoost training](../results/report_figures/catb_train.png) | ![CatBoost test](../results/report_figures/catb_test.png) |
+
+Figure 8. Residual plots of the median-predicting CatBoost model.
 
 ## Data product
 

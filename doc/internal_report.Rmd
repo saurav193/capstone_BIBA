@@ -14,7 +14,6 @@ knitr::opts_chunk$set(echo = FALSE, warning = FALSE)
 library(knitr)
 library(kableExtra)
 library(tidyverse)
-library(cowplot)
 ```
 
 ## Introduction and purpose
@@ -143,26 +142,20 @@ We also considered a tiered approach. This model consisted of a classifier which
 
 In order to assess the fit of the model, we created residual plots. In these plots, we observed a trend in the residuals. Residual plots derived from the median-predicting `GradientBoostingRegressor`, `LightGBM`, and `CatBoost` models are shown below.
 
-``` {r Figure 6, echo=FALSE, message=FALSE, fig.cap="Figure 6. Residual plots of the median-predicting GradientBoostingRegressor model."}
+|   |   |
+|---|---|
+|![GBR training](../results/report_figures/gbr_train.png){width=35%} | ![GBR test](../results/report_figures/gbr_train.png){width=35%}|
+Figure 6. Residual plots of the median-predicting GradientBoostingRegressor model.
 
-p1 <- ggdraw() + draw_image("../results/report_figures/gbr_train.png")
-p2 <- ggdraw() + draw_image("../results/report_figures/gbr_test.png")
-plot_grid(p1, p2)
-```
+|   |   |
+|---|---|
+|![LightGBM training](../results/report_figures/lgbm_train.png){width=35%} | ![LightGBM test](../results/report_figures/lgbm_test.png){width=35%}|
+Figure 7. Residual plots of the median-predicting LightGBM model.
 
-``` {r Figure 7, echo=FALSE, message=FALSE, fig.cap="Figure 7. Residual plots of the median-predicting LightGBM model."}
-
-p3 <- ggdraw() + draw_image("../results/report_figures/lgbm_train.png")
-p4 <- ggdraw() + draw_image("../results/report_figures/lgbm_test.png")
-plot_grid(p3, p4)
-```
-
-``` {r Figure 8, echo=FALSE, message=FALSE, fig.cap="Figure 8. Residual plots of the median-predicting CatBoost model."}
-
-p5 <- ggdraw() + draw_image("../results/report_figures/catb_train.png")
-p6 <- ggdraw() + draw_image("../results/report_figures/catb_test.png")
-plot_grid(p5, p6)
-```
+|   |   |
+|---|---|
+|![CatBoost training](../results/report_figures/catb_train.png){width=35%} | ![CatBoost test](../results/report_figures/catb_test.png){width=35%}|
+Figure 8. Residual plots of the median-predicting CatBoost model.
 
 ## Data product
 
