@@ -1,28 +1,31 @@
-classifier\_poisson
+Tiered model
 ================
+
+See `/src/training_tiered.ipynb` for a summary on the tiered modeling
+strategy.
 
 Load the data for *high* observations:
 
 ``` r
-X_train_hi <- read_csv("../data/X_train_hi.csv")
+X_train_hi <- read_csv("../data/tiered_modeling/X_train_hi.zip")
 ```
 
     ## Warning: Missing column names filled in: 'X1' [1]
 
 ``` r
-X_valid_hi <- read_csv("../data/X_valid_hi.csv")
+X_valid_hi <- read_csv("../data/tiered_modeling/X_valid_hi.zip")
 ```
 
     ## Warning: Missing column names filled in: 'X1' [1]
 
 ``` r
-y_train_hi <- read_csv("../data/y_train_hi.csv")
+y_train_hi <- read_csv("../data/tiered_modeling/y_train_hi.zip")
 ```
 
     ## Warning: Missing column names filled in: 'X1' [1]
 
 ``` r
-y_valid_hi <- read_csv("../data/y_valid_hi.csv")
+y_valid_hi <- read_csv("../data/tiered_modeling/y_valid_hi.zip")
 ```
 
     ## Warning: Missing column names filled in: 'X1' [1]
@@ -30,25 +33,25 @@ y_valid_hi <- read_csv("../data/y_valid_hi.csv")
 Load the data for *low* observations:
 
 ``` r
-X_train_lo <- read_csv("../data/X_train_lo.csv")
+X_train_lo <- read_csv("../data/tiered_modeling/X_train_lo.zip")
 ```
 
     ## Warning: Missing column names filled in: 'X1' [1]
 
 ``` r
-X_valid_lo <- read_csv("../data/X_valid_lo.csv")
+X_valid_lo <- read_csv("../data/tiered_modeling/X_valid_lo.zip")
 ```
 
     ## Warning: Missing column names filled in: 'X1' [1]
 
 ``` r
-y_train_lo <- read_csv("../data/y_train_lo.csv")
+y_train_lo <- read_csv("../data/tiered_modeling/y_train_lo.zip")
 ```
 
     ## Warning: Missing column names filled in: 'X1' [1]
 
 ``` r
-y_valid_lo <- read_csv("../data/y_valid_lo.csv")
+y_valid_lo <- read_csv("../data/tiered_modeling/y_valid_lo.zip")
 ```
 
     ## Warning: Missing column names filled in: 'X1' [1]
