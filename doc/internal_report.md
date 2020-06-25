@@ -3,12 +3,15 @@ Internal report
 Saurav Chowdhury, Sirine Chahma, Reiko Okamoto, Tani Barasch
 17/06/2020
 
-  - [Purpose](#purpose)
+  - [Introduction and purpose](#introduction-and-purpose)
   - [Description of the data](#description-of-the-data)
   - [Rationale behind the output](#rationale-behind-the-output)
-  - [Rationale behind the data split](#rationale-behind-the-data-split)
-  - [Analysis with the old dataset](#analysis-with-the-old-dataset)
-  - [Analysis with the new dataset](#analysis-with-the-new-dataset)
+  - [Rationale behind the hold-out
+    set](#rationale-behind-the-hold-out-set)
+  - [Analysis with the original
+    dataset](#analysis-with-the-original-dataset)
+  - [Analysis with an updated
+    dataset](#analysis-with-an-updated-dataset)
       - [Time-series approach](#time-series-approach)
       - [Mixed effects](#mixed-effects)
       - [Tiered approach](#tiered-approach)
@@ -27,7 +30,18 @@ Saurav Chowdhury, Sirine Chahma, Reiko Okamoto, Tani Barasch
   - [Conclusion](#conclusion)
   - [Acknowledgements](#acknowledgements)
 
-## Purpose
+## Introduction and purpose
+
+The Master of Data Science program at the University of British Columbia
+is a professional graduate degree program which enables students to
+build a solid foundation in the areas of computer science and
+statistics. During the last two months of the program, students have the
+opportunity to apply the skills they gained in the classroom to
+real-world challenges. More information about the capstone project can
+be found [here](https://ubc-mds.github.io/capstone/about/). Under the
+supervision of an academic mentor, our team was brought on to address
+the following question: how many sessions took place on a playground in
+a given month?
 
 This report serves four purposes: (1) help individuals navigate our
 GitHub repository; (2) discuss our analysis and findings; (3) report the
@@ -42,35 +56,43 @@ The code for the exploratory data analysis can be found in the
 directory.
 
 The key observations are as follows. First, the marginal distribution of
-the `unacast_session_count` has a positive skew (Figure 1). Second,
-Figure 2 shows the sparsity of the data. Many of the features derived
-from data collected through the app are sparse. Third, missing values
-were present in both the explanatory and response variables. The
-presence of missing values across the explanatory variables is
-summarized in Figure 3. The next two histograms illustrate the
-distribution of missing `unacast_session_count`. As shown in Figure 4,
-there are a handful of playgrounds that are missing the target value for
-over half of the months. Figure 5 suggests that there is a temporal
-pattern in the distribution of missing target values.
-`unacast_session_count` is more likely to be missing in the winter
-months; notably, the target value for January 2018 is missing for many
-playgrounds.
+the `unacast_session_count` has a positive skew (Figure 1).
 
 ![Figure 1. Marginal distribution of the target
 variable.](../results/report_figures/figure_1.png)
 
-![Figure 2. Counts of features by proportion of
-zeros.](../results/report_figures/figure_2.png)
+Second, Figure 2 shows the sparsity of the data. Many of the features
+derived from data collected through the app contain zeros in the
+original dataset.
 
-![Figure 3. Counts of features by proportion of missing
-values](../results/report_figures/figure_3.png)
+![Figure 2. Histogram of the proportion of zeros in each of the 860
+explanatory variables.](../results/report_figures/figure_2.png)
 
-![Figure 4. Counts of playgrounds by number of missing target values.
-Playgrounds missing less than two observations are excluded from this
-plot for readability.](../results/report_figures/figure_4.png)
+Third, missing values were present in both the explanatory and response
+variables. The presence of missing values across the explanatory
+variables is summarized in Figure 3.
 
-![Figure 5. Distribution of missing target values across
-months.](../results/report_figures/figure_5.png)
+![Figure 3. Histogram of the proportion of missing values in each of the
+860 explanatory variables.](../results/report_figures/figure_3.png)
+
+The next two histograms illustrate the distribution of missing
+`unacast_session_count`. As shown in Figure 4, there are a handful of
+playgrounds that have the target value available for fewer than half of
+the months.
+
+![Figure 4. Histogram of the number of target values available for each
+of the 2505 playgrounds.](../results/report_figures/figure_4.png)
+
+Figure 5 suggests that the target value for January 2018 is missing for
+many playgrounds. The jump from January to February of that year can be
+attributed to Unacast’s SDK being incorporated into more apps, thereby
+tracking more users. Since the location data for January 2018 captures a
+smaller population than those captured in the following months,
+observations from the first month were removed from subsequent analysis.
+
+![Figure 5. Histogram of the number of target values available for each
+month included in the data set aside for
+modeling.](../results/report_figures/figure_5.png)
 
 Exploratory data analysis also revealed the possible duplication of
 information in the dataset. For example, among the features derived from
@@ -101,26 +123,32 @@ error (RMSE) and mean absolute error (MAE), respectively. Quantile
 regression was also pursued here because the median is less sensitive to
 extreme values than the mean.
 
-## Rationale behind the data split
+## Rationale behind the hold-out set
 
-The dataset consists of 24 monthly observations for 2506 Biba-enabled
-playgrounds in the United States. The dates ranged from January 2018 to
-December 2019. Data from January 2018 were excluded from our analysis
-because many observations are missing the target value for this month,
-as shown in Figure 5. Therefore, our training set consisted of
-observations from February 2018 through September 2019. The observations
-from October 2019 to December 2019 were aside for model testing. This
-strategy enabled us to avoid data leakage when pursuing a time series
-approach.
+The original data consisted of 24 monthly observations for 2506
+Biba-enabled playgrounds in the United States. The dates ranged from
+January 2018 to December 2019. However, as mentioned in the previous
+section, observations from January 2018 were excluded from modeling. It
+was also found that one playground was actually located in Canada. All
+observations from that playground were subsequently removed. The
+observations from the last three months (October 2019 to December 2019)
+were set aside for model testing. Observations from February 2018
+through September 2019 were randomly assigned to training and validation
+sets using scikit-learn’s `train_test_split` with one exception. When
+pursuing a time-series approach, to avoid data leakage, the training set
+consisted of observations from February 2018 through June 2019 while the
+validation set consisted of observations from July 2019 through
+September 2019.
 
-## Analysis with the old dataset
+## Analysis with the original dataset
 
 The data used in this iteration of modeling can be found
 [here](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/data/old_train_data.zip).
 On Google Drive, it is saved as `playground_stats.csv`. Since the focus
-of this iteration was not on preprocessing, rows missing the target
-value were dropped and missing values in the explanatory variables were
-imputed with zeros.
+of this iteration was to evaluate the baseline performance of
+rudimentary models, emphasis was not placed on perfecting preprocessing
+techniques. For this reason, rows missing the target value were dropped
+and missing values in the explanatory variables were imputed with zeros.
 [`/src/preprocessing_old.py`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/preprocessing_old.py)
 contains the functions that were used to clean the data prior to
 modeling.
@@ -138,8 +166,8 @@ old dataset.
 | [`/src/training_gradient_boost_01.ipynb`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/training_gradient_boost_01.ipynb) | `GradientBoostingRegressor`, `XGBRegressor`                         |
 |     [`/src/training_SVR_CatBoost_01.ipynb`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/training_SVR_CatBoost_01.ipynb) | `SVR`, `CatBoostRegressor`                                          |
 
-Across the board, these rudimentary models performed poorly. The
-validation RMSE values were in the range of 300 to 600.
+Across the board, the validation RMSE values were in the range of 250 to
+770 sessions.
 
 We also fit models to data in which the number of dimensions was reduced
 via PCA. PCA was performed in two ways: (1) on the whole dataset and (2)
@@ -164,7 +192,7 @@ error in both the training and validation set.
 [`/src/training_gradient_boost_01.ipynb`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/training_gradient_boost_01.ipynb)
 illustrates the improvement in model performance.
 
-## Analysis with the new dataset
+## Analysis with an updated dataset
 
 The data used in this iteration of modeling can be found
 [here](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/data/train_data.zip).
@@ -196,7 +224,7 @@ mentioned that Jupyter notebooks were run on Amazon EC2 to reduce
 computation time.
 
 Table 3. Locations of .ipynb files containing modeling work using the
-new dataset.
+updated dataset (`playground_stats_capped.csv`).
 
 |                                                                                                                                                Filename | Model                                       |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------: | ------------------------------------------- |
@@ -211,7 +239,7 @@ new dataset.
 
 With respect to the off-the-shelf regression algorithms (random forest
 and boosting methods), the validation RMSE values were in the range of
-100 and 130. However, we believe that this improvement in model
+100 and 130 sessions. However, we believe that this improvement in model
 performance is most likely attributed to the capping of the target
 variable.
 
@@ -221,13 +249,15 @@ A time-series approach was pursued in which the lagged target variable
 was included as an explanatory variable. We assumed that session counts
 would be similar across consecutive months for a given playground and
 would therefore serve as useful input signals. It is worth mentioning
-that, when training this model, ordinary *k*-fold cross validation could
-not be used since the random partition of the data could result in data
-leakage. Moreover, we could not use an off-the-shelf time-series
-cross-validator because the number of observations for each month was
-inconsistent. As a result, we had to create our own implementation of
-nested cross-validation. With a validation RMSE value of 176, it did not
-outperform the off-the-shelf regression models mentioned above.
+that, when fitting a `XGBRegressor` to this data, we optimized the
+hyperparameters using nested cross-validation as opposed to *k*-fold
+cross-validation because the prior is more robust to temporal
+dependence. However, we could not use scikit-learn’s implementation of a
+time-series cross-validator because the number of observations for each
+month was inconsistent. As a result, we created our own implementation
+of nested cross-validation. With a validation RMSE value of 176
+sessions, it did not outperform the off-the-shelf regression models
+mentioned above.
 
 #### Mixed effects
 
@@ -238,7 +268,7 @@ hot in the summer. Meanwhile, playgrounds located in cooler climates may
 observe more visits in the summer because it is too cold to play outside
 in the winter. We could have fit a unique regression surface to
 observations derived from each playground, but it would have been
-unreasonable to create 2506 models and impossible to predict
+unreasonable to create 2500 models and impossible to predict
 `unacast_session_count` for new playgrounds. A reasonable solution to
 incorporating these across-group differences was to build mixed effects
 models. We grouped the playgrounds using a specific characteristic and
@@ -247,22 +277,22 @@ its own intercept. As a result, information was shared across the groups
 to determine the regression surface, but the generated model was less
 generic than a pooled regression model.
 
-We build these models using both R (using `lmer` function) and Python
-(`smf` function from the `statsmodels.formula.api` library).
+We built these models using both R (`lmer` function) and Python (`smf`
+function from the `statsmodels.formula.api` library).
 
-Unfortunately, this didn’t improve neither our RMSE (200) nor our MAE
-(100).
+Unfortunately, this didn’t improve neither our RMSE (200 sessions) nor
+MAE (100 sessions).
 
 In R, we grouped the observations using levels of categorical variables
 (i.e. `state`, `climate`, `density_class`, `income_class`). None of the
 models outperformed the off-the-shelf regression models mentioned
-earlier. The validation RMSE and MAE values were around 200 and 100,
-respectively. We also applied k-means clustering with *k* = 2, 4 to see
-if more meaningful groups could be obtained. However, it should be
-mentioned that, with this grouping strategy, observations from the same
-playground could have been placed in different clusters. Unfortunately,
-implementing the new grouping strategy resulted in the same validation
-RMSE and MAE values as described earlier.
+earlier. The validation RMSE and MAE values were around 200 sessions and
+100 sessions, respectively. We also applied k-means clustering with *k*
+= 2, 4 to see if more meaningful groups could be obtained. However, it
+should be mentioned that, with this grouping strategy, observations from
+the same playground could have been placed in different clusters.
+Unfortunately, implementing the new grouping strategy resulted in the
+same validation RMSE and MAE values as described earlier.
 
 Building a mixed effects model in Python was troublesome because the
 `smf` function did not have an argument that enabled automatic dropping
@@ -271,7 +301,8 @@ to write a function that dropped these problematic columns. Similar to
 the implementation in R, observations were grouped using levels of
 categorical variables (i.e. `climate`, `density_class`, `income_class`).
 The results were similar to that of the R implementation with validation
-RMSE and MAE values of around 200 and 100, respectively.
+RMSE and MAE values of around 200 sessions and 100 sessions,
+respectively.
 
 #### Tiered approach
 
@@ -283,13 +314,19 @@ or high-count data. An `XGBClassifier` was created and its F1 score for
 the low-count class was 0.99 and that of the high-count class was 0.85.
 Given the skewness in the data, poisson regression was used to predict
 `unacast_session_count` for the high-count data. However, its validation
-RMSE was 1.22287e+73. Other generalized linear models suitable for count
-data were considered (e.g. negative binomial); however, the algorithm
-would not converge and model coefficients could not be obtained. On the
-other hand, regression models build for the low-count data using
-`LinearRegression` and `XGBRegressor` had validation RMSE values of 54
-and 35, respectively. However, we acknowledge that these values are not
-reflective of the performance of the tiered model as a whole.
+RMSE was 1.22287e+73 sessions. Other generalized linear models suitable
+for count data were considered (e.g. negative binomial); however, the
+algorithm would not converge and model coefficients could not be
+obtained. On the other hand, regression models built for the low-count
+data using `LinearRegression` and `XGBRegressor` had validation RMSE
+values of 54 sessions and 35 sessions, respectively. However, we
+acknowledge that these values are not reflective of the performance of
+the tiered model as a whole. It should be mentioned that these low-count
+and high-count regression models could have been consolidated into a
+weight sum model. Instead of a label, the classifier could have
+predicted class probabilities. Then, the predicted probabilities could
+have been used to weigh the estimated session counts derived from the
+two different regression models.
 
 #### Residual plots
 
@@ -319,19 +356,112 @@ are relatively fast to train, and the median is less sensitive to
 extreme values than the mean, as mentioned earlier. Their performance is
 as follows:
 
-    ## # A tibble: 3 x 3
-    ##   model                    `train mae` `test mae`
-    ##   <chr>                          <dbl>      <dbl>
-    ## 1 GradientBoostedRegressor        38.8       98.6
-    ## 2 LightGBM                        27.7      104. 
-    ## 3 CatBoost                        35.8       95.6
+<table>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+model
+
+</th>
+
+<th style="text-align:right;">
+
+train mae
+
+</th>
+
+<th style="text-align:right;">
+
+test mae
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+GradientBoostedRegressor
+
+</td>
+
+<td style="text-align:right;">
+
+38.76802
+
+</td>
+
+<td style="text-align:right;">
+
+98.59166
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+LightGBM
+
+</td>
+
+<td style="text-align:right;">
+
+27.69420
+
+</td>
+
+<td style="text-align:right;">
+
+104.25689
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+CatBoost
+
+</td>
+
+<td style="text-align:right;">
+
+35.76047
+
+</td>
+
+<td style="text-align:right;">
+
+95.64640
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
 
 #### Reproducing the data analysis
 
-Instructions on how to run the makefile to reproduce this report can be
+Instructions on how to run the Makefile to reproduce this report can be
 found
 [here](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/README.md).
-The makefile automates the execution of six scripts. The first script
+The Makefile automates the execution of six scripts. The first script
 [`/src/01_split_data.py`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/01_split_data.py)
 splits the raw data into the training and test sets. The second script
 [`/src/02_preprocessing.py`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/02_preprocessing.py)
@@ -345,7 +475,7 @@ that the preprocessing methods used here are identical to those used in
 the second iteration of modeling. *Note: features are not scaled because
 tree-based models are not sensitive to scaling.*
 [`/src/03_gbr_model.py`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/03_gbr_model.py),
-[`src/04_catboost_model.py`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/04_catboost_model.py),
+[`/src/04_catboost_model.py`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/04_catboost_model.py),
 and
 [`/src/05_lgbm_model.py`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/05_lgbm_model.py)
 are the scripts in which modeling take place. The hyperparameters are
@@ -356,18 +486,18 @@ predict negative values, the nonsensical predictions are converted to
 zero prior to calculating the MAE. Each model is saved as a .joblib file
 and its performance metrics are saved as a .csv file in the
 [`/results`](https://github.com/Z2hMedia/capstone_machine_learning/tree/master/results)
-directory. This file, which is not part of the makefile, renders this
+directory. This file, which is not part of the Makefile, renders this
 report.
 
 #### Predicting on new data
 
 It is also possible to predict `unacast_session_count` values for an
 unseen dataset using the models described above. Instructions on how to
-run the makefile to predict on new data can be found
+run the Makefile to predict on new data can be found
 [here](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/README.md).
 The data is preprocessed in the same way as described above: the imputer
 and one-hot encoder from earlier is loaded to transform the data.
-[`/src/07_prediction.py`](https://github.com/Z2hMedia/capstone_machine_learning/blob/sirine/src/07_prediction.py)
+[`/src/07_prediction.py`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/07_prediction.py)
 outputs a .csv file in the
 [`/results`](https://github.com/Z2hMedia/capstone_machine_learning/tree/master/results)
 directory. Non-negative predictions from the three models are added as
@@ -392,19 +522,22 @@ place than there actually were.
 
 Prior to modeling, we simply removed rows with missing target values.
 However, we stress that these values can be dealt with more elegantly.
-For example, if evidence emerges that a playground sees visitors year
-round, but is located in an area with poor network coverage, missing
-values could be filled by multiple imputation. On the other hand, an
-observation missing `unacast_session_count` could be dropped if evidence
-shows that the playground was not in operation that month. These
-scenarios demonstrate that there is no one-size-fits-all solution.
+If, for a particular playground, back-to-back missing target values are
+followed by months for which the values are available, this might
+suggest that the playground was not in operation during the former
+months. In such cases, the missing values could be imputed with zeros.
+In other situations, where the reason for the missing value is unclear
+or the true value cannot be inferred, it may be worth continuing to drop
+the entire observation. These scenarios demonstrate that there is no
+one-size-fits-all approach.
 
 #### Missing values in explanatory variables
 
-We dropped a handful of columns with a high proportion of missing
-values. However, some of those features may in fact be important
-predictors of playground usage. If time and resources permit, it may be
-worth consulting additional external sources to fill in those values.
+We dropped a handful of columns with a high proportion of missing values
+(e.g. `transit_score`). However, the information that could be contained
+within these features may be inherently important in predicting the
+target value. If time and resources permit, it may be worth consulting
+additional external sources to fill in those values.
 
 #### Feature engineering and selection
 
