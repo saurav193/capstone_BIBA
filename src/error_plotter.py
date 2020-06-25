@@ -42,7 +42,7 @@ def plot_resid(model, X_train=None, y_train=None, X_valid=None, y_valid=None, pl
     if plot != 'train':
         valid_df = pd.DataFrame({'Predicted Valid':list(map(lambda x: 0 if x<0 else x, model.predict(X_valid))), 'True Valid':y_valid}).sort_values(by=['True Valid'])
         valid_df['Valid Error'] =  valid_df['Predicted Valid'] - valid_df['True Valid']
-        valid_dist_point = alt.Chart(valid_df).mark_circle().encode(alt.X("True Valid:Q"), y=alt.Y('Valid Error:Q', axis=alt.Axis(title='Test error (rolling_mean)')))
+        valid_dist_point = alt.Chart(valid_df).mark_circle().encode(alt.X("True Valid:Q", axis=alt.Axis(title='True test')), y=alt.Y('Valid Error:Q', axis=alt.Axis(title='Test error (rolling_mean)')))
         valid_dist_line = alt.Chart(valid_df).mark_line(color='red',size=1).transform_window(rolling_mean='mean(Valid Error)',frame=np.array([-40, 40])
                                                                                         ).encode(alt.X("True Valid:Q"), y=alt.Y('rolling_mean:Q'))
         valid_dist = valid_dist_point + valid_dist_line
