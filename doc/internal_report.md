@@ -32,7 +32,7 @@ a given month?
 
 This report serves four purposes: (1) help individuals navigate our
 GitHub repository; (2) discuss our analysis and findings; (3) report the
-performances of selected models: and (4) provide recommendations on how
+performances of selected models; and (4) provide recommendations on how
 to move forward.
 
 ## Description of the data

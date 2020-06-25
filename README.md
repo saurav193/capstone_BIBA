@@ -8,7 +8,8 @@ Authors: Saurav Chowdhury, Sirine Chahma, Reiko Okamoto, Tani Barasch
 Biba creates a mobile games experience that incorporates outdoor play to get children active. Integrating data collected through their app with third-party data, we built a data analysis pipeline and populated a GitHub repository with scripts and well-annotated Jupyter notebook files. We hope that our models and supplemental write-ups will provide useful information to Biba and subsequently playground owners and managers, guiding them through the decision-making process surrounding community play spaces.
 
 ## Report
-Link to the [final report](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/doc/internal_report.md).
+Link to the [final report](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/pipenv_instructions.md). This report serves four purposes: (1) to help individuals navigate our GitHub repository; (2) to discuss our analysis and findings; (3) to report the performances of selected models; and (4) to identify areas for improvement.
+
 
 ## Usage
 
@@ -40,9 +41,9 @@ Link to the [final report](https://github.com/Z2hMedia/capstone_machine_learning
 
 To generate the the report using the Makefile: 
 1. Make sure that the data you want to use to train the models is saved in the `/data` repository, with the name `playground_stats.csv`. 
-2. Enter the virtual environment (`pipenv install`,  `pipenv shell`) 
-3. In the command line, run `make report` from the root of the repository.
-4. Outside of the virtual environment, execute the command to render the RMarkdown report (see above).
+2. From the root of the repository, run `pipenv install` followed by `pipenv shell` to enter the virtual environment.
+3. Again, from the root of the repository, run `make report`.
+4. Once the scripts have been executed, outside of the virtual environment, run the command to render the RMarkdown report (see above).
 4. The report will be generated in the `doc` folder.
 
 To predict `unacast_session_count` from the trained models, using the Makefile:
