@@ -1,2 +1,0 @@
-model,train mae,test mae
-GradientBoostedRegressor,38.76802354731589,98.5916587809137
