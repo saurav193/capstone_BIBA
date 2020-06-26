@@ -226,7 +226,7 @@ def preprocess_weather(input_data):
     
     output_data = input_data.copy()
     output_data.loc[:, 'Democrats_08_Votes':] = df_weather.loc[:, 'Democrats_08_Votes':]
-    output_data['climate'] = df_weather['climate']
+    output_data['climate'] = input_data['climate'].fillna(value = input_data['climate'].mode()[0])
     
     #Tests
     
