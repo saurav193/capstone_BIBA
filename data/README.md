@@ -2,7 +2,7 @@
 
 In this folder, you will find `.csv` files and `.zip` files containing the different dataframes we used.
 
-Details : 
+Details: 
 - the `dummy` folder contains all the dummy datasets we used in our different tests
 - the `columns_names` file contains an empty dataframe with the same columns as the dataset we worked with (in case the main dataset is changed)
 - the files containing the word `old` refer to the first dataset we worked with (which wasn't capped to 4000)
