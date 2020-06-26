@@ -1,4 +1,4 @@
-# eda folder
+# `eda` directory
 
 This folder contains the explanatory data analysis we realized on the first dataset that was given to us. 
 - The files containing `eda` take care of analysing a part of the data (we decided to split the data in 4)
