@@ -1,4 +1,4 @@
-# Data folder
+# `data` directory
 
 In this folder, you will find `.csv` files and `.zip` files containing the different dataframes we used.
 
