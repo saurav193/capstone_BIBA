@@ -21,10 +21,10 @@ import numpy as np
 from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
 
-from drop import drop_columns, drop_missing_unacast
-from create_apply_imputer import create_imputer, apply_imputer
-from feature_eng import comb_cols
-from create_apply_ohe import create_ohe, apply_ohe
+from scripts_misc.drop import drop_columns, drop_missing_unacast
+from scripts_misc.create_apply_imputer import create_imputer, apply_imputer
+from scripts_misc.feature_eng import comb_cols
+from scripts_misc.create_apply_ohe import create_ohe, apply_ohe
 
 def main(test, train=None):
     
