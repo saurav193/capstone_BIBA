@@ -184,7 +184,7 @@ of this iteration was to evaluate the baseline performance of
 rudimentary models, emphasis was not placed on perfecting preprocessing
 techniques. For this reason, rows missing the target value were dropped
 and missing values in the explanatory variables were imputed with 0s.
-[`/src/preprocessing_old.py`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/preprocessing_old.py)
+[`/src/scripts_misc/preprocessing_old.py`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/scripts_misc/preprocessing_old.py)
 contains the functions that were used to clean the data prior to
 modeling.
 
@@ -207,7 +207,7 @@ Across the board, the validation RMSE values were in the range of 250 to
 We also fit models to data in which the number of dimensions was reduced
 via PCA. PCA was performed in two ways: (1) on the whole dataset and (2)
 on groups of related columns.
-[`/src/PCA_data.py`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/PCA_data.py)
+[`/src/scripts_misc/PCA_data.py`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/scripts_misc/PCA_data.py)
 contains the functions used to perform PCA. Table 2 describes where the
 relevant work can be found.
 
@@ -247,10 +247,10 @@ low fill rates, removing correlated features, and combining columns
 using domain knowledge. The discussion surrounding feature engineering
 and selection is documented
 [here](https://github.com/Z2hMedia/capstone_machine_learning/issues/95).
-[`/src/imputer.py`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/imputer.py),
-[`/src/feature_eng.py`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/feature_eng.py),
+[`/src/scripts_misc/imputer.py`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/scripts_misc/imputer.py),
+[`/src/scripts_misc/feature_eng.py`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/scripts_misc/feature_eng.py),
 and
-[`/src/drop.py`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/drop.py)
+[`/src/scripts_misc/drop.py`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/scripts_misc/drop.py)
 contain the functions that were used to preprocess the input data.
 
 Ten different kinds of models were pursued during this iteration. Table
@@ -265,18 +265,18 @@ hand, those that were evaluated using the MAE predicted the conditional
 *median*. The tiered model was comprised of two regression models which
 were both optimized to minimize the RMSE.
 
-|                                   Filename |              Algorithm(s)              | Lagged values |                          Random effects                          | Evaluation |
-| -----------------------------------------: | :------------------------------------: | :-----------: | :--------------------------------------------------------------: | :--------: |
-|      `/src/training_SVR_CatBoost_02.ipynb` |                 `SVR`                  | Not included  |                           Not included                           | RMSE, MAE  |
-|      `/src/training_SVR_CatBoost_02.ipynb` |          `CatBoostRegressor`           | Not included  |                           Not included                           | RMSE, MAE  |
-|              `/src/training_LGBM_02.ipynb` |            `LGBMRegressor`             | Not included  |                           Not included                           | RMSE, MAE  |
-|     `/src/training_random_forest_02.ipynb` |        `RandomForestRegressor`         | Not included  |                           Not included                           |    RMSE    |
-|    `/src/training_gradient_boost_02.ipynb` |      `GradientBoostingRegressor`       | Not included  |                           Not included                           | RMSE, MAE  |
-|    `/src/training_gradient_boost_02.ipynb` |             `XGBRegressor`             | Not included  |                           Not included                           |    RMSE    |
-|       `/src/training_time_dependent.ipynb` |             `XGBRegressor`             |   Included    |                           Not included                           |    RMSE    |
-| `/src/training_mixed_effects_Python.ipynb` |                 `smf`                  | Not included  |            `income_class`, `density_class`, `climate`            | RMSE, MAE  |
-|      `/src/training_mixed_effects_R.ipynb` |                 `lmer`                 | Not included  | `income_class`, `density_class`, `climate`; *k*-means clustering | RMSE, MAE  |
-|               `/src/training_tiered.ipynb` | `XGBClassifier`; `XGBRegressor`, `glm` | Not included  |                           Not included                           |   Tiered   |
+|                                                                                                                                                Filename |              Algorithm(s)              | Lagged values |                          Random effects                          | Evaluation |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------: | :------------------------------------: | :-----------: | :--------------------------------------------------------------: | :--------: |
+|           [`/src/training_SVR_CatBoost_02.ipynb`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/training_SVR_CatBoost_02.ipynb) |                 `SVR`                  | Not included  |                           Not included                           | RMSE, MAE  |
+|           [`/src/training_SVR_CatBoost_02.ipynb`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/training_SVR_CatBoost_02.ipynb) |          `CatBoostRegressor`           | Not included  |                           Not included                           | RMSE, MAE  |
+|                           [`/src/training_LGBM_02.ipynb`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/training_LGBM_02.ipynb) |            `LGBMRegressor`             | Not included  |                           Not included                           | RMSE, MAE  |
+|         [`/src/training_random_forest_02.ipynb`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/training_random_forest_02.ipynb) |        `RandomForestRegressor`         | Not included  |                           Not included                           |    RMSE    |
+|       [`/src/training_gradient_boost_02.ipynb`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/training_gradient_boost_02.ipynb) |      `GradientBoostingRegressor`       | Not included  |                           Not included                           | RMSE, MAE  |
+|       [`/src/training_gradient_boost_02.ipynb`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/training_gradient_boost_02.ipynb) |             `XGBRegressor`             | Not included  |                           Not included                           |    RMSE    |
+|             [`/src/training_time_dependent.ipynb`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/training_time_dependent.ipynb) |             `XGBRegressor`             |   Included    |                           Not included                           |    RMSE    |
+| [`/src/training_mixed_effects_Python.ipynb`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/training_mixed_effects_Python.ipynb) |                 `smf`                  | Not included  |            `income_class`, `density_class`, `climate`            | RMSE, MAE  |
+|           [`/src/training_mixed_effects_R.ipynb`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/training_mixed_effects_R.ipynb) |                 `lmer`                 | Not included  | `income_class`, `density_class`, `climate`; *k*-means clustering | RMSE, MAE  |
+|                             [`/src/training_tiered.ipynb`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/training_tiered.ipynb) | `XGBClassifier`; `XGBRegressor`, `glm` | Not included  |                           Not included                           |   Tiered   |
 
 With respect to the off-the-shelf regression algorithms (random forest
 and boosting methods), the validation RMSE values were in the range of
@@ -532,7 +532,7 @@ CatBoostRegressor
 Instructions on how to run the Makefile to reproduce this report can be
 found
 [here](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/README.md).
-The Makefile automates the execution of six scripts. The first script
+This Makefile automates the execution of five scripts. The first script
 [`/src/01_split_data.py`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/01_split_data.py)
 splits the raw data into the training and test sets. The second script
 [`/src/02_preprocessing.py`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/02_preprocessing.py)
@@ -541,10 +541,10 @@ as .joblib files for later use. It also transforms the training and test
 sets and saves them as .zip files in the
 [`/data`](https://github.com/Z2hMedia/capstone_machine_learning/tree/master/data)
 directory. Smaller versions of the training and test sets are also saved
-as .zip files to serve as dummy data for testing. It should be noted
-that the preprocessing methods used here are identical to those used in
-the second iteration of modeling. *Note: features are not scaled because
-tree-based models are not sensitive to scaling.*
+as .zip files to serve as dummy data for unit testing. It should be
+noted that the preprocessing methods used here are identical to those
+used in the second iteration of modeling. **Note: features are not
+scaled because tree-based models are not sensitive to scaling.**
 [`/src/03_gbr_model.py`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/03_gbr_model.py),
 [`/src/04_catboost_model.py`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/04_catboost_model.py),
 and
