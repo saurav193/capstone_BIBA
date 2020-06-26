@@ -315,9 +315,6 @@ generic than a pooled regression model.
 We built these models using both R (`lmer` function) and Python (`smf`
 function from the `statsmodels.formula.api` library).
 
-Unfortunately, this didn’t improve neither our RMSE (200 sessions) nor
-MAE (100 sessions).
-
 In R, we grouped the observations using levels of categorical variables
 (i.e. `state`, `climate`, `density_class`, `income_class`). None of the
 models outperformed the off-the-shelf regression models mentioned
@@ -326,8 +323,8 @@ earlier. The validation RMSE and MAE values were around 200 sessions and
 = 2, 4 to see if more meaningful groups could be obtained. However, it
 should be mentioned that, with this grouping strategy, observations from
 the same playground could have been placed in different clusters.
-Unfortunately, implementing the new grouping strategy resulted in the
-same validation RMSE and MAE values as described earlier.
+Unfortunately, implementing the new grouping strategy resulted in
+similar validation RMSE and MAE values as described earlier.
 
 Building a mixed effects model in Python was troublesome because the
 `smf` function did not have an argument that enabled automatic dropping
@@ -438,13 +435,13 @@ model
 
 <th style="text-align:right;">
 
-train mae
+train MAE
 
 </th>
 
 <th style="text-align:right;">
 
-test mae
+test MAE
 
 </th>
 
@@ -458,19 +455,19 @@ test mae
 
 <td style="text-align:left;">
 
-GradientBoostedRegressor
+GradientBoostingRegressor
 
 </td>
 
 <td style="text-align:right;">
 
-38.76802
+38.77
 
 </td>
 
 <td style="text-align:right;">
 
-98.59166
+98.59
 
 </td>
 
@@ -480,19 +477,19 @@ GradientBoostedRegressor
 
 <td style="text-align:left;">
 
-LightGBM
+LGBMRegressor
 
 </td>
 
 <td style="text-align:right;">
 
-27.69420
+27.69
 
 </td>
 
 <td style="text-align:right;">
 
-104.25689
+104.26
 
 </td>
 
@@ -502,19 +499,19 @@ LightGBM
 
 <td style="text-align:left;">
 
-CatBoost
+CatBoostRegressor
 
 </td>
 
 <td style="text-align:right;">
 
-35.76047
+35.76
 
 </td>
 
 <td style="text-align:right;">
 
-95.64640
+95.65
 
 </td>
 

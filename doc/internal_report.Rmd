@@ -128,9 +128,7 @@ We assumed that not every playground observes the same behaviour with respect to
 
 We built these models using both R (`lmer` function) and Python (`smf` function from the `statsmodels.formula.api` library).
   
-Unfortunately, this didn't improve neither our RMSE (200 sessions) nor MAE (100 sessions).
-  
-In R, we grouped the observations using levels of categorical variables (i.e. `state`, `climate`, `density_class`, `income_class`). None of the models outperformed the off-the-shelf regression models mentioned earlier. The validation RMSE and MAE values were around 200 sessions and 100 sessions, respectively. We also applied k-means clustering with _k_ = 2, 4 to see if more meaningful groups could be obtained. However, it should be mentioned that, with this grouping strategy, observations from the same playground could have been placed in different clusters. Unfortunately, implementing the new grouping strategy resulted in the same validation RMSE and MAE values as described earlier.  
+In R, we grouped the observations using levels of categorical variables (i.e. `state`, `climate`, `density_class`, `income_class`). None of the models outperformed the off-the-shelf regression models mentioned earlier. The validation RMSE and MAE values were around 200 sessions and 100 sessions, respectively. We also applied k-means clustering with _k_ = 2, 4 to see if more meaningful groups could be obtained. However, it should be mentioned that, with this grouping strategy, observations from the same playground could have been placed in different clusters. Unfortunately, implementing the new grouping strategy resulted in similar validation RMSE and MAE values as described earlier.  
 
 Building a mixed effects model in Python was troublesome because the `smf` function did not have an argument that enabled automatic dropping of columns that made the algorithm not converge. To compensate, we had to write a function that dropped these problematic columns. Similar to the implementation in R, observations were grouped using levels of categorical variables (i.e. `climate`, `density_class`, `income_class`). The results were similar to that of the R implementation with validation RMSE and MAE values of around 200 sessions and 100 sessions, respectively. 
   
@@ -176,6 +174,18 @@ cat <- read_csv("../results/catboost_train_result.csv") %>%
   mutate(model = 'CatBoost')
 
 df <- rbind(gbr, lgbm, cat)
+
+# Wrangle data for readability
+df <- df %>%
+  rename(`train MAE` = `train mae`,
+         `test MAE` = `test mae`) %>%
+  mutate(model = case_when(model == "GradientBoostedRegressor" ~ "GradientBoostingRegressor",
+                           model == "LightGBM" ~ "LGBMRegressor ",
+                           model == "CatBoost" ~ "CatBoostRegressor"),
+         `train MAE`= round(`train MAE`, 2),
+         `test MAE` = round(`test MAE`, 2)
+)
+
 kable(df)
 ```
 
