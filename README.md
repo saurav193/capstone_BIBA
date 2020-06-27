@@ -16,11 +16,11 @@ Link to the [final report](https://github.com/Z2hMedia/capstone_machine_learning
 ### To execute each script independently, run these commands in the following order:
 
 #### Setup
-- Make sure that the data you want to use to train the models is saved in the `/data` repository, with the name `playground_stats.zip`
+- Make sure that the data you want to use to train the models is saved in the `/data` repository, with the name `playground_stats.csv`
 - From the root of the repository, run `pipenv install` followed by `pipenv shell`
 
 #### Split the data
-```python src/01_split_data.py --in_path=data/playground_stats.zip --out_path=data```
+```python src/01_split_data.py --in_path=data/playground_stats.csv --out_path=data```
 
 #### Preprocess the data
 ```python src/02_preprocessing.py --test=data/test_data.zip --train=data/train_data.zip```
@@ -44,14 +44,14 @@ Link to the [final report](https://github.com/Z2hMedia/capstone_machine_learning
 **Warning #2**: if the dataset being used doesn't have the same features in the same order as the one that was used for training, this may throw an error. When running the Makefile with such dataset, a warning will appear. 
 
 To generate the the report using the Makefile: 
-1. Make sure that the data you want to use to train the models is saved in the `/data` repository, with the name `playground_stats.zip`. 
+1. Make sure that the data you want to use to train the models is saved in the `/data` repository, with the name `playground_stats.csv`. 
 2. From the root of the repository, run `pipenv install` followed by `pipenv shell` to enter the virtual environment.
 3. Again, from the root of the repository, run `make report`.
 4. Once the scripts have been executed, run the command to render the RMarkdown report (see above).
 4. The report will be generated in the `doc` folder.
 
 To predict `unacast_session_count` from the trained models, using the Makefile:
-1. Make sure that the data you want to use to train the models is saved in the `/data` repository, with the name `playground_stats.zip`. 
+1. Make sure that the data you want to use to train the models is saved in the `/data` repository, with the name `playground_stats.csv`. 
 2. Make sure that the data you want to predict on is in the `/data` repository, with the name `X_pred.zip`. This file can or can not contain the target variable as one of its features.
 3. Enter the virtual environment (see above).
 3. In the command line, run `make predict` from the root of the repository.
