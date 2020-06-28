@@ -32,7 +32,7 @@ a given month?
 
 This report serves four purposes: (1) help individuals navigate our
 GitHub repository; (2) discuss our analysis and findings; (3) report the
-performances of selected models; and (4) provide recommendations on how
+performance of selected models; and (4) provide recommendations on how
 to move forward.
 
 ## Description of the data
@@ -155,7 +155,7 @@ than estimates that incorporate uncertainty, we chose to build models
 that predict either the mean or median `unacast_session_count`. The
 performance of these models were evaluated using the root mean squared
 error (RMSE) and mean absolute error (MAE), respectively. Quantile
-regression was also pursued here because the median is less sensitive to
+regression was also pursued because the median is less sensitive to
 extreme values than the mean.
 
 ## Rationale behind the hold-out set
@@ -179,8 +179,8 @@ September 2019.
 
 The data used in this iteration of modeling can be found
 [here](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/data/old_train_data.zip).
-On Google Drive, it is saved as `playground_stats.csv`. Since the focus
-of this iteration was to evaluate the baseline performance of
+On Google Drive, it corresponds to `playground_stats.csv`. Since the
+focus of this iteration was to evaluate the baseline performance of
 rudimentary models, emphasis was not placed on perfecting preprocessing
 techniques. For this reason, rows missing the target value were dropped
 and missing values in the explanatory variables were imputed with 0s.
@@ -220,7 +220,7 @@ which PCA was applied.
 | [`/src/training_gradient_boost_01.ipynb`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/training_gradient_boost_01.ipynb) | `GradientBoostingRegressor` |
 |                     [`/src/training_LGBM_01.ipynb`](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/src/training_LGBM_01.ipynb) |  `Ridge`, `LGBMRegressor`   |
 
-Out of curiousity, we also tried fitting models to data in which the
+Out of curiosity, we also tried fitting models to data in which the
 playgrounds with historic session counts greater than 70000 were
 removed. This dramatically improved the fit of the model, decreasing the
 error in both the training and validation set.
@@ -231,9 +231,9 @@ illustrates the improvement in model performance.
 
 The data used in this iteration of modeling can be found
 [here](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/data/train_data.zip).
-On Google Drive, it is saved as `playground_stats_capped.csv`. The major
-difference between this dataset and the previous one is the range of the
-target variable. `unacast_session_count` values over 3000 were
+On Google Drive, it corresponds to `playground_stats_capped.csv`. The
+major difference between this dataset and the previous one is the range
+of the target variable. `unacast_session_count` values over 3000 were
 normalized to fall between 3000 and 4000.
 
 Preprocessing techniques were reconsidered. As for imputation, we began
@@ -255,7 +255,7 @@ contain the functions that were used to preprocess the input data.
 
 Ten different kinds of models were pursued during this iteration. Table
 3 shows where the relevant work for each model can be located. It should
-be mentioned that Jupyter notebooks were run on Amazon EC2 to reduce
+be mentioned that Jupyter Notebooks were run on Amazon EC2 to reduce
 computation time.
 
 Table 3. Locations of .ipynb files containing modeling work using the
@@ -310,7 +310,7 @@ observe more visits in the summer because it is too cold to play outside
 in the winter. We could have fit a unique regression surface to
 observations derived from each playground, but it would have been
 unreasonable to create 2500 models and impossible to predict
-`unacast_session_count` for new playgrounds. A reasonable solution to
+`unacast_session_count` for new playgrounds. A reasonable compromise to
 incorporating these across-group differences was to build mixed effects
 models. We grouped the playgrounds using a specific characteristic and
 then fit a regression surface. However, each group was allowed to have
@@ -322,11 +322,11 @@ We built these models using both R (`lmer` function) and Python (`smf`
 function from the `statsmodels.formula.api` library).
 
 In R, we grouped the observations using levels of categorical variables
-(i.e. `state`, `climate`, `density_class`, `income_class`). None of the
-models outperformed the off-the-shelf regression models mentioned
-earlier. The validation RMSE and MAE values were around 200 sessions and
-100 sessions, respectively. We also applied k-means clustering with *k*
-= 2, 4 to see if more meaningful groups could be obtained. However, it
+(i.e. `climate`, `density_class`, `income_class`). None of the models
+outperformed the off-the-shelf regression models mentioned earlier. The
+validation RMSE and MAE values were around 200 sessions and 100
+sessions, respectively. We also applied *k*-means clustering with *k* =
+2, 4 to see if more meaningful groups could be obtained. However, it
 should be mentioned that, with this grouping strategy, observations from
 the same playground could have been placed in different clusters.
 Unfortunately, implementing the new grouping strategy resulted in
@@ -345,12 +345,12 @@ sessions and 100 sessions, respectively.
 #### Tiered approach
 
 We also considered a tiered approach. This model consisted of a
-classifier which would predict an observation to be either low count or
-high count (i.e. below or above 300 sessions). Based on that decision, a
+classifier which would predict an observation to be either low or high
+count (i.e. below or above 300 sessions). Based on that decision, a
 prediction would be made using a regressor that was trained on low-count
 or high-count data. An `XGBClassifier` was created and its F1 score of
 the low-count class was 0.99 and that of the high-count class was 0.85.
-Given the skewness in the data, poisson regression was used to predict
+Given the skewed data, Poisson regression was used to predict
 `unacast_session_count` for the high-count data. However, its validation
 RMSE was 1.22287e+73 sessions. Other generalized linear models suitable
 for count data were considered (e.g. negative binomial); however, the
@@ -361,7 +361,7 @@ values of 54 sessions and 35 sessions, respectively. However, we
 acknowledge that these values are not reflective of the performance of
 the tiered model as a whole. It should be mentioned that these low-count
 and high-count regression models could have been consolidated into a
-weight sum model. Instead of a label, the classifier could have
+weighted sum model. Instead of a label, the classifier could have
 predicted class probabilities. Then, the predicted probabilities could
 have been used to weigh the estimated session counts derived from the
 two different regression models.
@@ -397,24 +397,24 @@ The residuals (error values) are calculated as predicted minus true. It
 should also be emphasized that negative predicted values were converted
 to 0 prior to this calculation. With respect to the residual plots for
 the training data, a similar trend is observed across the three models.
-The error value decreases linearly from 0 to -500 as the true training
-value increases from 0 to 3000. This suggests that the bias is higher
-for high-count predictions. The large drop observed around the 3000 mark
-could be attributed to the fact that `unacast_session_count` above 3000
-were normalized to fall between 3000 and 4000. Beyond a true training
-value of 3500, the error values hover around -2500.
+The error value decreases linearly from 0 to -500 sessions as the true
+training value increases from 0 to 3000 sessions. This suggests that the
+bias is higher for high-count predictions. The large drop observed
+around the 3000 mark could be attributed to the fact that
+`unacast_session_count` above 3000 sessions were normalized to fall
+between 3000 and 4000 sessions.
 
 As for the residual plots for the test data, in all three models, the
 error value deviates away from 0 as the true test value increases.
 However, there are no large drops observed here.
 
-While the trend suggests that the models tend to underestimate for
-high-count predictions, it is worthwhile to mention that the deviation
-of the residual away from 0 does not necessarily suggest that the
-prediction is worse for larger values. It is important to consider the
-percentage error. That is to say, even if the prediction is off by 50
-sessions, perhaps the error is still within a sensible range if the
-actual number of sessions is 500.
+While the trend suggests that the models tend to underestimate higher
+session counts, it is worthwhile to mention that the deviation of the
+residual away from 0 does not necessarily suggest that the prediction is
+worse for larger values. It is important to consider the percentage
+error. That is to say, even if the prediction is off by 50 sessions,
+perhaps the error is still within a sensible range if the actual number
+of sessions is 500.
 
 ## Data product
 
@@ -422,8 +422,8 @@ actual number of sessions is 500.
 
 Our data product consists of three boosting models that predict the
 median `unacast_session_count`. We selected these models because they
-are least worst-performing models we came across in our analysis, they
-are relatively fast to train, and the median is less sensitive to
+are the least worst-performing models we came across in our analysis,
+they are relatively fast to train, and the median is less sensitive to
 extreme values than the mean, as mentioned earlier. Their performance is
 as follows:
 
@@ -557,8 +557,8 @@ predict negative values, the nonsensical predictions are converted to 0
 prior to calculating the MAE. Each model is saved as a .joblib file and
 its performance metrics are saved as a .csv file in the
 [`/results`](https://github.com/Z2hMedia/capstone_machine_learning/tree/master/results)
-directory. This file, which is not part of the Makefile, renders this
-report.
+directory. The RMarkdown file, which is not part of the Makefile,
+renders this report.
 
 #### Predicting on new data
 
@@ -584,10 +584,10 @@ other statistical or machine learning models that are more robust to
 outliers could be pursued. Alternatively, the strategy of fitting
 multiple hyperplanes to the data could be considered further. However,
 we believe that the most effective strategy for improving model fit is
-to reevaluate how the target value is calculated using cell phone
-location data. Perhaps the polygon that is drawn around some playgrounds
-are ill-shaped, giving the impression that more playground visits took
-place than there actually were.
+to reevaluate how the target value is calculated using mobile location
+data. Perhaps the polygon that is drawn around some playgrounds are
+ill-shaped, giving the impression that more playground visits took place
+than there actually were.
 
 #### Missing values in the target
 

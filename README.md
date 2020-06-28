@@ -5,17 +5,17 @@ A capstone project for the UBC Master of Data Science program
 Authors: Saurav Chowdhury, Sirine Chahma, Reiko Okamoto, Tani Barasch
 
 ## Introduction
-Biba creates a mobile games experience that incorporates outdoor play to get children active. Integrating data collected through their app with third-party data, we built a data analysis pipeline and populated a GitHub repository with scripts and well-annotated Jupyter notebook files. We hope that our models and supplemental write-ups will provide useful information to Biba and subsequently playground owners and managers, guiding them through the decision-making process surrounding community play spaces.
+Biba creates a mobile game experience that incorporates outdoor play to get children active. Integrating data collected through their app with third-party data, we built a data analysis pipeline and populated a GitHub repository with scripts and well-annotated Jupyter Notebook files. We hope that our models and supplemental write-ups will provide useful information to Biba and subsequently playground owners and managers, guiding them through the decision-making process around community play spaces.
 
 ## Report
-Link to the [final report](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/pipenv_instructions.md). This report serves four purposes: (1) to help individuals navigate our GitHub repository; (2) to discuss our analysis and findings; (3) to report the performances of selected models; and (4) to identify areas for improvement.
+Link to the [final report](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/doc/internal_report.md). This report serves four purposes: (1) to help individuals navigate our GitHub repository; (2) to discuss our analysis and findings; (3) to report the performance of selected models; and (4) to identify areas for improvement.
 
 ## Usage
 
 ### To execute each script independently, run these commands in the following order:
 
 #### Setup
-- Make sure that the data you want to use to train the models is saved in the `/data` repository, with the name `playground_stats.csv`
+- Make sure that the data you want to use to train the models is saved in the `/data` directory, with the name `playground_stats.csv`
 - From the root of the repository, run `pipenv install` followed by `pipenv shell`
 
 #### Split the data
@@ -36,31 +36,38 @@ Link to the [final report](https://github.com/Z2hMedia/capstone_machine_learning
 #### Render the RMarkdown report
 ```Rscript -e "library(rmarkdown); render('doc/internal_report.Rmd', output_format = 'github_document')"```
 
+#### Preprocess new data
+- Make sure that the data you want to predict on is in the `/data` directory with the name `X_pred.zip`. This file may or may not contain the target variable as one of its features.
+
+```python src/02_preprocessing.py --test=data/X_pred.zip```
+
+#### Predict on new data
+```python src/07_prediction.py --new_data=data/processed_pred.zip```
+
 ### To automate script execution using the Makefile:
 
 **Warning #1**: it can take up to **2 hours** to run this pipeline.
 
-**Warning #2**: if the dataset being used doesn't have the same features in the same order as the one that was used for training, this may throw an error. When running the Makefile with such dataset, a warning will appear. 
+**Warning #2**: if the dataset being used does not have the same features in the same order as the one that was used for training, this may throw an error. When running the Makefile with such dataset, a warning will appear. 
 
-To generate the the report using the Makefile: 
-1. Make sure that the data you want to use to train the models is saved in the `/data` repository, with the name `playground_stats.csv`. 
+#### To generate the the report using the Makefile: 
+1. Make sure that the data you want to use to train the models is saved in the `/data` directory, with the name `playground_stats.csv`. 
 2. From the root of the repository, run `pipenv install` followed by `pipenv shell` to enter the virtual environment.
 3. Again, from the root of the repository, run `make report`.
 4. Once the scripts have been executed, run the command to render the RMarkdown report (see above).
 4. The report will be generated in the `doc` folder.
 
-To predict `unacast_session_count` from the trained models, using the Makefile:
-1. Make sure that the data you want to use to train the models is saved in the `/data` repository, with the name `playground_stats.csv`. 
-2. Make sure that the data you want to predict on is in the `/data` repository, with the name `X_pred.zip`. This file can or can not contain the target variable as one of its features.
-3. Enter the virtual environment (see above).
+#### To predict `unacast_session_count` from the trained models, using the Makefile:
+1. Make sure that the data you want to predict on is in the `/data` directory with the name `X_pred.zip`. This file may or may not contain the target variable as one of its features.
+2. Enter the virtual environment (see above).
 3. In the command line, run `make predict` from the root of the repository.
-4. A file called `predicted_data.zip` will be generated in the `results` folder. Non-negative predictions from the three models are added as new columns to the input data.
+4. A file called `predicted_data.zip` will be generated in the `/results` directory. Non-negative predictions from the three models are added as new columns to the input data.
 
-To clear all outputs generated by the Makefiles:
+#### To clear all outputs generated by the Makefiles:
 - Run `make clean` in the command line from the root of the repository.
 
 ## Dependencies
-- Python 3.7 and packages (versions are managed by `pipenv`; click [here](https://docs.google.com/document/d/1s7LvSFgmgiFV2snWN_mQWf2isiiWykX_8K8iGaxqwKQ/edit) to see a guide)
+- Python 3.7 and packages (versions are managed by `pipenv`; click [here](https://github.com/Z2hMedia/capstone_machine_learning/blob/master/pipenv_instructions.md) to see a guide)
     - `pandas`
     - `altair`
     - `numpy`
@@ -81,5 +88,5 @@ To clear all outputs generated by the Makefiles:
     - `tidyverse` == 1.3.0
 
 ## Note
-The `mds` and `mds_<name>` branches contain work on the UBC-specific deliverables. These files in these branches are not directly relevant to our final data product.
+The `mds` and `mds_<name>` branches contain work on the UBC-specific deliverables. The files in these branches are not directly relevant to our final data product.
     
